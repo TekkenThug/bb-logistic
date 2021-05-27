@@ -29,6 +29,7 @@ Vue.component('v-footer', require('./components/Footer.vue').default);
  */
 
 import router from "./router";
+import auth from "./auth/index";
 
 router.beforeEach((to, from, next) => {
     document.title = to.meta.title || 'B&B Logistic';
@@ -37,5 +38,6 @@ router.beforeEach((to, from, next) => {
 
 const app = new Vue({
     el: '#app',
-    router
+    router,
+    auth
 });

@@ -40,9 +40,7 @@
                     </ul>
                 </div>
                 <div class="col-3 col-sm-2 d-flex justify-content-center align-items-center">
-                    <a class="header__logout" href="">Выйти</a>
-                    <form id="logout-form" action="" method="POST" style="display: none;">
-                    </form>
+                    <a class="header__logout" @click.prevent="$auth.logout()" href="#">Выйти</a>
                 </div>
             </div>
         </div>

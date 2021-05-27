@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 
 import Auth from "./views/Auth";
 
@@ -25,16 +25,17 @@ const routes = [
     {
         path: "/login",
         component: Auth,
-        meta: { title: postfix("Вход")}
+        meta: { title: postfix("Вход"), auth: false}
     },
     {
         path: "/client",
         component: Client,
         redirect: "/client/create",
+        meta: { auth: true },
         children: [
             {
                 path: "create",
-                meta: { title: postfix("Создать заявку")},
+                meta: { title: postfix("Создать заявку") },
                 component: ClientCreateOrder
             },
             {
@@ -48,6 +49,7 @@ const routes = [
         path: "/courier",
         component: Courier,
         redirect: "/courier/open",
+        meta: { auth: true },
         children: [
             {
                 path: "open",
@@ -65,6 +67,7 @@ const routes = [
         path: "/admin",
         component: Admin,
         redirect: "/admin/create-user",
+        meta: { auth: true },
         children: [
             {
                 path: "create-user",
@@ -88,7 +91,6 @@ const routes = [
             },
         ]
     }
-
 ];
 
 export default new VueRouter({

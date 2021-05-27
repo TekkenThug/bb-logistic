@@ -24,5 +24,9 @@
         "vue-loader": "^15.9.5",
         "vue-router": "^3.5.1",
         "vue-template-compiler": "^2.6.12"
+    },
+    "dependencies": {
+        "@websanova/vue-auth": "^4.1.2",
+        "vue-axios": "^3.2.4"
     }
 }
