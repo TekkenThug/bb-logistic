@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <img src="/images/preloader.gif" alt="preloader">
+    <div class="wrapper">
+        <img src="/images/preloader.svg" alt="preloader">
     </div>
 </template>
 
@@ -11,5 +11,11 @@ export default {
 </script>
 
 <style scoped>
+    .wrapper {
+        text-align: center;
+    }
 
+    .wrapper img {
+        width: 80px;
+    }
 </style>

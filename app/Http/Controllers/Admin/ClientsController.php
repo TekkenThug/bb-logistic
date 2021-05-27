@@ -13,9 +13,18 @@ class ClientsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $clients = Role::where('name', 'client')->first()->users;
+
+        if ($request->input('name')) {
+            $parametr = $request->input('name');
+            $clients = Role::where('name', 'client')
+                ->first()
+                ->users()
+                ->where('name', 'LIKE', "%{$parametr}%")
+                ->get();
+        } else
+            $clients = Role::where('name', 'client')->first()->users;
 
         return response([
             'clients' => $clients,
