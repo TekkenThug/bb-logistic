@@ -7,7 +7,7 @@
                     <div class="admin-create__form-inner">
                         <div class="admin-create__row">
                             <h4>Тип учетной записи:</h4>
-                            <label>Администратор <input type="radio" name="role" v-model="role" value="admin" checked required></label>
+                            <label>Администратор <input type="radio" name="role" v-model="role" value="admin" required></label>
                             <label>Клиент <input type="radio" name="role" v-model="role" value="client" required></label>
                             <label>Курьер <input type="radio" name="role" v-model="role" value="courier" required></label>
                         </div>

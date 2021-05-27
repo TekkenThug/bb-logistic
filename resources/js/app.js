@@ -21,6 +21,7 @@ window.Vue = require('vue').default;
 
 
 Vue.component('v-footer', require('./components/Footer.vue').default);
+Vue.component('preloader', require('./components/Preloader.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -39,5 +40,6 @@ router.beforeEach((to, from, next) => {
 const app = new Vue({
     el: '#app',
     router,
-    auth
+    auth,
+    preloader
 });

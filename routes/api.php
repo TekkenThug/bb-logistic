@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use \App\Http\Controllers\Admin\ClientsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,5 +22,12 @@ Route::group(['middleware' => ['api', 'cors'], 'prefix' => 'auth'], function($ro
     Route::post('login', [AuthController::class, 'login']);
     Route::post('register', [AuthController::class, 'register']);
 });
+
+Route::group(['prefix' => 'api'], function() {
+    Route::get('clients', [ClientsController::class, 'index']);
+});
+
+
+
 
 

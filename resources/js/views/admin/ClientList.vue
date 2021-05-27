@@ -6,7 +6,11 @@
                 <SearchInput style="margin-bottom: 20px" placeholder="Поиск по клиентам..."/>
 
                 <div class="admin__client-list">
-                    <UserRow />
+                    <UserRow v-for="client in clients"
+                             :key="client.id"
+                             :name="client.name"
+                             :email="client.email"
+                             :address="client.delivery_address"/>
                 </div>
             </div>
         </div>
@@ -19,8 +23,21 @@ import UserRow from "../../components/UserRow";
 
 export default {
     name: "ClientList",
-    components: { SearchInput, UserRow }
+    components: {SearchInput, UserRow},
+    data() {
+        return {
+            clients: [],
+        }
+    },
+    mounted() {
+        axios.get('/api/clients').then(res => {
+            console.log(res.data.clients);
+            this.clients = res.data.clients
+        })
+    }
 }
+
+
 </script>
 
 <style scoped>

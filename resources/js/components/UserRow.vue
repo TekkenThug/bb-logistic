@@ -1,13 +1,27 @@
 <template>
     <a class="admin-client-list__item" href="">
-        <!--                    <h4>{{ $client->name }} <span>{{ $client->email }}</span></h4>-->
-        <!--                    <span>Aдрес забора: {{ $client->delivery_address }}</span>-->
+        <h4>{{ name }} <span>{{ email }}</span></h4>
+        <span>Aдрес забора: {{ address }}</span>
     </a>
 </template>
 
 <script>
 export default {
-    name: "UserRow"
+    name: "UserRow",
+    props: {
+        name: {
+            type: String,
+            default: "User",
+        },
+        email: {
+            type: String,
+            default: "mail@mail.ru"
+        },
+        address: {
+            type: String,
+            default: "г. Москва"
+        }
+    }
 }
 </script>
 
