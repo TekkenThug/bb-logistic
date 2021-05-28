@@ -282,6 +282,22 @@ export default {
         addProduct() {
             this.productFields.push(1);
         },
+        clearForm() {
+          return {
+              phoneFields: [1],
+              productFields: [1],
+              deliveryType: "Стандарт",
+              date: null,
+              time: "В любое время",
+              address: null,
+              fullname: null,
+              contacts: [],
+              products: [],
+              clientPay: false,
+              clientPayCost: null,
+              comment: "",
+          }
+        },
         serializeForm() {
             // Валидация здесь должна быть
 
@@ -312,20 +328,7 @@ export default {
         }
     },
     data() {
-        return {
-            phoneFields: [1],
-            productFields: [1],
-            deliveryType: "Стандарт",
-            date: null,
-            time: "В любое время",
-            address: null,
-            fullname: null,
-            contacts: [],
-            products: [],
-            clientPay: false,
-            clientPayCost: null,
-            comment: "",
-        }
+        return this.clearForm();
     }
 }
 </script>

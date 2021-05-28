@@ -3324,6 +3324,22 @@ __webpack_require__.r(__webpack_exports__);
     addProduct: function addProduct() {
       this.productFields.push(1);
     },
+    clearForm: function clearForm() {
+      return {
+        phoneFields: [1],
+        productFields: [1],
+        deliveryType: "Стандарт",
+        date: null,
+        time: "В любое время",
+        address: null,
+        fullname: null,
+        contacts: [],
+        products: [],
+        clientPay: false,
+        clientPayCost: null,
+        comment: ""
+      };
+    },
     serializeForm: function serializeForm() {
       // Валидация здесь должна быть
       this.$emit('serializeForm', {
@@ -3353,20 +3369,7 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   data: function data() {
-    return {
-      phoneFields: [1],
-      productFields: [1],
-      deliveryType: "Стандарт",
-      date: null,
-      time: "В любое время",
-      address: null,
-      fullname: null,
-      contacts: [],
-      products: [],
-      clientPay: false,
-      clientPayCost: null,
-      comment: ""
-    };
+    return this.clearForm();
   }
 });
 
@@ -4253,13 +4256,17 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      preloader: false
+      clean: false
     };
   },
   methods: {
     createOrder: function createOrder(obj) {
+      var _this = this;
+
       axios.post('/orders', obj).then(function (res) {
-        return console.log(res.data);
+        if (res.data.status === "success") {
+          _this.$router.push('/client/list');
+        }
       });
     }
   }

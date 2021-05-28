@@ -14,13 +14,17 @@ export default {
     components: { CreateForm },
     data() {
         return {
-            preloader: false,
+            clean: false,
         }
     },
     methods: {
         createOrder(obj) {
             axios.post('/orders', obj)
-                .then(res => console.log(res.data))
+                .then(res => {
+                    if (res.data.status === "success") {
+                        this.$router.push('/client/list');
+                    }
+                })
         }
     }
 }
