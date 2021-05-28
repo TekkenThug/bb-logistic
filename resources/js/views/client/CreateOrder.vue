@@ -1,7 +1,6 @@
 <template>
     <div class="row">
         <div class="col-lg-8 offset-lg-2">
-            <preloader v-if="preloader" />
             <CreateForm @serializeForm="createOrder" newOrder />
         </div>
     </div>
@@ -20,8 +19,8 @@ export default {
     },
     methods: {
         createOrder(obj) {
-            this.preloader = true;
-            console.log(obj);
+            axios.post('/orders', obj)
+                .then(res => console.log(res.data))
         }
     }
 }

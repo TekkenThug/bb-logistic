@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use \App\Http\Controllers\Admin\ClientController;
 use \App\Http\Controllers\Admin\CourierController;
+use \App\Http\Controllers\Admin\OrderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,5 +27,6 @@ Route::group(['middleware' => ['api', 'cors'], 'prefix' => 'auth'], function($ro
 
 Route::apiResource('clients', ClientController::class);
 Route::apiResource('couriers', CourierController::class);
+Route::apiResource('orders', OrderController::class);
 
 

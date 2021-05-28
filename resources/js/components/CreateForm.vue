@@ -283,12 +283,14 @@ export default {
             this.productFields.push(1);
         },
         serializeForm() {
-            this.$emit('createOrder', {
+            // Валидация здесь должна быть
+
+            this.$emit('serializeForm', {
                 deliveryType: this.deliveryType,
                 date: this.date,
                 time: this.time,
                 address: this.address,
-                fullame: this.fullname,
+                fullname: this.fullname,
                 phones: this.contacts,
                 products: this.products,
                 clientPay: this.clientPayCost,

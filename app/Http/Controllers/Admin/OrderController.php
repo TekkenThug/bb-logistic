@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Order;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class OrderController extends Controller
 {
@@ -25,7 +28,28 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $cost = 0;
+        foreach ($request['products'] as $price) {
+            $cost += $price['cost'] * $price['count'];
+        }
+
+        $order = Order::create([
+            'client_id' => auth()->id(),
+            'delivery_type' => $request['deliveryType'],
+            'delivery_date' => $request['date'],
+            'delivery_time' => $request['time'],
+            'delivery_address' => $request['address'],
+            'delivery_fio' => $request['fullname'],
+            'delivery_phones' => implode("\n", $request['phones']),
+            'delivery_comment' => $request['comment'],
+            'delivery_cost' => $cost,
+            'delivery_pay' => $request['clientPay'],
+        ]);
+
+        if ($order)
+            return response(['status' => 'success'], 200);
+
+        return response([], 500);
     }
 
     /**

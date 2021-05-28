@@ -3325,12 +3325,13 @@ __webpack_require__.r(__webpack_exports__);
       this.productFields.push(1);
     },
     serializeForm: function serializeForm() {
-      this.$emit('createOrder', {
+      // Валидация здесь должна быть
+      this.$emit('serializeForm', {
         deliveryType: this.deliveryType,
         date: this.date,
         time: this.time,
         address: this.address,
-        fullame: this.fullname,
+        fullname: this.fullname,
         phones: this.contacts,
         products: this.products,
         clientPay: this.clientPayCost,
@@ -4244,7 +4245,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "CreateOrder",
@@ -4258,8 +4258,9 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     createOrder: function createOrder(obj) {
-      this.preloader = true;
-      console.log(obj);
+      axios.post('/orders', obj).then(function (res) {
+        return console.log(res.data);
+      });
     }
   }
 });
@@ -43705,8 +43706,6 @@ var render = function() {
       "div",
       { staticClass: "col-lg-8 offset-lg-2" },
       [
-        _vm.preloader ? _c("preloader") : _vm._e(),
-        _vm._v(" "),
         _c("CreateForm", {
           attrs: { newOrder: "" },
           on: { serializeForm: _vm.createOrder }
