@@ -3037,6 +3037,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var _form_PhoneInput__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./form/PhoneInput */ "./resources/js/components/form/PhoneInput.vue");
+/* harmony import */ var _form_ProductRow__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./form/ProductRow */ "./resources/js/components/form/ProductRow.vue");
 //
 //
 //
@@ -3301,145 +3303,70 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  name: "CreateForm"
+  name: "CreateForm",
+  components: {
+    PhoneInput: _form_PhoneInput__WEBPACK_IMPORTED_MODULE_0__.default,
+    ProductRow: _form_ProductRow__WEBPACK_IMPORTED_MODULE_1__.default
+  },
+  props: {
+    newOrder: {
+      type: Boolean,
+      "default": false
+    }
+  },
+  methods: {
+    addPhone: function addPhone() {
+      this.phoneFields.push(1);
+    },
+    addProduct: function addProduct() {
+      this.productFields.push(1);
+    },
+    serializeForm: function serializeForm() {
+      this.$emit('createOrder', {
+        deliveryType: this.deliveryType,
+        date: this.date,
+        time: this.time,
+        address: this.address,
+        fullame: this.fullname,
+        phones: this.contacts,
+        products: this.products,
+        clientPay: this.clientPayCost,
+        comment: this.comment
+      });
+    }
+  },
+  computed: {
+    getTodayDate: function getTodayDate() {
+      var date = new Date();
+      var dd = String(date.getDate()).padStart(2, '0');
+      var mm = String(date.getMonth() + 1).padStart(2, '0');
+      var yyyy = date.getFullYear();
+      return "".concat(yyyy, "-").concat(mm, "-").concat(dd);
+    },
+    clientPayCount: function clientPayCount() {
+      if (!this.clientPay) return this.clientPayCost = null;
+      return this.clientPayCost;
+    }
+  },
+  data: function data() {
+    return {
+      phoneFields: [1],
+      productFields: [1],
+      deliveryType: "Стандарт",
+      date: null,
+      time: "В любое время",
+      address: null,
+      fullname: null,
+      contacts: [],
+      products: [],
+      clientPay: false,
+      clientPayCost: null,
+      comment: ""
+    };
+  }
 });
 
 /***/ }),
@@ -3732,6 +3659,90 @@ __webpack_require__.r(__webpack_exports__);
     role: {
       type: String,
       "default": ""
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/form/PhoneInput.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/form/PhoneInput.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  name: "PhoneInput",
+  props: {
+    value: ""
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/form/ProductRow.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/form/ProductRow.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  name: "ProductRow",
+  props: {
+    info: {
+      type: Object,
+      "default": function _default() {
+        return {
+          name: "",
+          count: 0,
+          cost: 0
+        };
+      }
+    }
+  },
+  methods: {
+    send: function send(e, key) {
+      this.info[key] = e.target.value;
+      this.$emit('input', this.info);
     }
   }
 });
@@ -4233,11 +4244,23 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "CreateOrder",
   components: {
     CreateForm: _components_CreateForm__WEBPACK_IMPORTED_MODULE_0__.default
+  },
+  data: function data() {
+    return {
+      preloader: false
+    };
+  },
+  methods: {
+    createOrder: function createOrder(obj) {
+      this.preloader = true;
+      console.log(obj);
+    }
   }
 });
 
@@ -40448,6 +40471,84 @@ component.options.__file = "resources/js/components/UserRow.vue"
 
 /***/ }),
 
+/***/ "./resources/js/components/form/PhoneInput.vue":
+/*!*****************************************************!*\
+  !*** ./resources/js/components/form/PhoneInput.vue ***!
+  \*****************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _PhoneInput_vue_vue_type_template_id_10ec664c_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./PhoneInput.vue?vue&type=template&id=10ec664c&scoped=true& */ "./resources/js/components/form/PhoneInput.vue?vue&type=template&id=10ec664c&scoped=true&");
+/* harmony import */ var _PhoneInput_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./PhoneInput.vue?vue&type=script&lang=js& */ "./resources/js/components/form/PhoneInput.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__.default)(
+  _PhoneInput_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__.default,
+  _PhoneInput_vue_vue_type_template_id_10ec664c_scoped_true___WEBPACK_IMPORTED_MODULE_0__.render,
+  _PhoneInput_vue_vue_type_template_id_10ec664c_scoped_true___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  "10ec664c",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/form/PhoneInput.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/form/ProductRow.vue":
+/*!*****************************************************!*\
+  !*** ./resources/js/components/form/ProductRow.vue ***!
+  \*****************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _ProductRow_vue_vue_type_template_id_16df523b_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ProductRow.vue?vue&type=template&id=16df523b&scoped=true& */ "./resources/js/components/form/ProductRow.vue?vue&type=template&id=16df523b&scoped=true&");
+/* harmony import */ var _ProductRow_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ProductRow.vue?vue&type=script&lang=js& */ "./resources/js/components/form/ProductRow.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__.default)(
+  _ProductRow_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__.default,
+  _ProductRow_vue_vue_type_template_id_16df523b_scoped_true___WEBPACK_IMPORTED_MODULE_0__.render,
+  _ProductRow_vue_vue_type_template_id_16df523b_scoped_true___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  "16df523b",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/form/ProductRow.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
 /***/ "./resources/js/views/Auth.vue":
 /*!*************************************!*\
   !*** ./resources/js/views/Auth.vue ***!
@@ -41067,6 +41168,38 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/form/PhoneInput.vue?vue&type=script&lang=js&":
+/*!******************************************************************************!*\
+  !*** ./resources/js/components/form/PhoneInput.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_PhoneInput_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./PhoneInput.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/form/PhoneInput.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_PhoneInput_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__.default); 
+
+/***/ }),
+
+/***/ "./resources/js/components/form/ProductRow.vue?vue&type=script&lang=js&":
+/*!******************************************************************************!*\
+  !*** ./resources/js/components/form/ProductRow.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ProductRow_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./ProductRow.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/form/ProductRow.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ProductRow_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__.default); 
+
+/***/ }),
+
 /***/ "./resources/js/views/Auth.vue?vue&type=script&lang=js&":
 /*!**************************************************************!*\
   !*** ./resources/js/views/Auth.vue?vue&type=script&lang=js& ***!
@@ -41394,6 +41527,40 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/form/PhoneInput.vue?vue&type=template&id=10ec664c&scoped=true&":
+/*!************************************************************************************************!*\
+  !*** ./resources/js/components/form/PhoneInput.vue?vue&type=template&id=10ec664c&scoped=true& ***!
+  \************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PhoneInput_vue_vue_type_template_id_10ec664c_scoped_true___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PhoneInput_vue_vue_type_template_id_10ec664c_scoped_true___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PhoneInput_vue_vue_type_template_id_10ec664c_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./PhoneInput.vue?vue&type=template&id=10ec664c&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/form/PhoneInput.vue?vue&type=template&id=10ec664c&scoped=true&");
+
+
+/***/ }),
+
+/***/ "./resources/js/components/form/ProductRow.vue?vue&type=template&id=16df523b&scoped=true&":
+/*!************************************************************************************************!*\
+  !*** ./resources/js/components/form/ProductRow.vue?vue&type=template&id=16df523b&scoped=true& ***!
+  \************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ProductRow_vue_vue_type_template_id_16df523b_scoped_true___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ProductRow_vue_vue_type_template_id_16df523b_scoped_true___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ProductRow_vue_vue_type_template_id_16df523b_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./ProductRow.vue?vue&type=template&id=16df523b&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/form/ProductRow.vue?vue&type=template&id=16df523b&scoped=true&");
+
+
+/***/ }),
+
 /***/ "./resources/js/views/Auth.vue?vue&type=template&id=4072a947&scoped=true&":
 /*!********************************************************************************!*\
   !*** ./resources/js/views/Auth.vue?vue&type=template&id=4072a947&scoped=true& ***!
@@ -41648,305 +41815,469 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "client__order client-tab active" }, [
-      _c(
-        "form",
-        { staticClass: "client__order-form", attrs: { method: "POST" } },
-        [
-          _c("h4", { staticClass: "admin-create__form-title" }, [
-            _vm._v("Создание заявки")
-          ]),
-          _vm._v(" "),
-          _c("h4", { staticClass: "admin-create__form-title" }, [
-            _vm._v("Изменить заявку")
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "client__order-row" }, [
-            _c("h4", { staticClass: "client__order-subtitle" }, [
-              _vm._v("Тип доставки:")
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "client__order-field" }, [
-              _c("label", { attrs: { for: "delivery-type-1" } }, [
-                _vm._v("Стандарт")
-              ]),
-              _vm._v(" "),
-              _c("input", {
-                attrs: {
-                  required: "",
-                  type: "radio",
-                  name: "delivery-type",
-                  id: "delivery-type-1",
-                  value: "Стандарт",
-                  checked: ""
-                }
-              })
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "client__order-field" }, [
-              _c("label", { attrs: { for: "delivery-type-2" } }, [
-                _vm._v("ДВД")
-              ]),
-              _vm._v(" "),
-              _c("input", {
-                attrs: {
-                  required: "",
-                  type: "radio",
-                  name: "delivery-type",
-                  id: "delivery-type-2",
-                  value: "ДВД"
-                }
-              })
+  return _c("div", { staticClass: "client__order client-tab active" }, [
+    _c(
+      "form",
+      { staticClass: "client__order-form", attrs: { method: "POST" } },
+      [
+        _vm.newOrder
+          ? _c("h4", { staticClass: "admin-create__form-title" }, [
+              _vm._v("Создание заявки")
             ])
+          : _c("h4", { staticClass: "admin-create__form-title" }, [
+              _vm._v("Изменить заявку")
+            ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "client__order-row" }, [
+          _c("h4", { staticClass: "client__order-subtitle" }, [
+            _vm._v("Тип доставки:")
           ]),
           _vm._v(" "),
-          _c("div", { staticClass: "client__order-row" }, [
-            _c("h4", { staticClass: "client__order-subtitle" }, [
-              _vm._v("Дата доставки:")
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "required" })
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "client__order-row" }, [
-            _c("h4", { staticClass: "client__order-subtitle" }, [
-              _vm._v("Время доставки:")
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "required" }, [
-              _c(
-                "select",
-                {
-                  staticClass: "form-control",
-                  attrs: { required: "", name: "delivery-interval" }
-                },
-                [
-                  _c(
-                    "option",
-                    { attrs: { value: "В любое время", selected: "" } },
-                    [_vm._v("В любое время")]
-                  ),
-                  _vm._v(" "),
-                  _c("option", { attrs: { value: "10.00 - 14.00" } }, [
-                    _vm._v("10.00 - 14.00")
-                  ]),
-                  _vm._v(" "),
-                  _c("option", { attrs: { value: "14.00 - 18.00" } }, [
-                    _vm._v("14.00 - 18.00")
-                  ]),
-                  _vm._v(" "),
-                  _c("option", { attrs: { value: "18.00 - 22.00" } }, [
-                    _vm._v("18.00 - 22.00")
-                  ])
-                ]
-              )
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "client__order-row" }, [
-            _c("h4", { staticClass: "client__order-subtitle" }, [
-              _vm._v("Адрес доставки:")
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "required" }, [
-              _c("input", {
-                staticClass: "form-control",
-                attrs: {
-                  required: "",
-                  type: "text",
-                  name: "delivery-address",
-                  placeholder: "Адрес доставки"
-                }
-              })
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "client__order-row" }, [
-            _c("h4", { staticClass: "client__order-subtitle" }, [
-              _vm._v("ФИО:")
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "required" }, [
-              _c("input", {
-                staticClass: "form-control",
-                attrs: {
-                  required: "",
-                  type: "text",
-                  name: "delivery-fullname",
-                  placeholder: "Введите ФИО клиента"
-                }
-              })
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "client__order-row" }, [
-            _c("h4", { staticClass: "client__order-subtitle" }, [
-              _vm._v("Контакты:")
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "fields-list required" }, [
-              _c("input", {
-                staticClass: "form-control",
-                attrs: {
-                  required: "",
-                  type: "text",
-                  name: "delivery-phone[]",
-                  placeholder: "+7 (999) 999-99-99"
-                }
-              })
-            ]),
-            _vm._v(" "),
-            _c(
-              "button",
-              { staticClass: "btn btn-primary client__order-add-number mt-3" },
-              [
-                _c("i", { staticClass: "fas fa-plus" }),
-                _vm._v(" Добавить номер\n                ")
-              ]
-            )
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "client__order-row width" }, [
-            _c("h4", { staticClass: "client__order-subtitle" }, [
-              _vm._v("Товары к доставке:")
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "client__order-list-wrap" }, [
-              _c("table", { staticClass: "client__order-list" }, [
-                _c("tr", [
-                  _c("td", { staticClass: "client__order-item-name" }, [
-                    _c("input", {
-                      staticClass: "form-control",
-                      attrs: {
-                        required: "",
-                        name: "delivery-info[0][]",
-                        type: "text",
-                        placeholder: "Наименование товара"
-                      }
-                    })
-                  ]),
-                  _vm._v(" "),
-                  _c("td", { staticClass: "client__order-item-cost" }, [
-                    _c("input", {
-                      staticClass: "form-control",
-                      attrs: {
-                        required: "",
-                        name: "delivery-info[0][]",
-                        type: "text",
-                        placeholder: "Стоимость шт."
-                      }
-                    })
-                  ]),
-                  _vm._v(" "),
-                  _c("td", { staticClass: "client__order-item-count" }, [
-                    _c("input", {
-                      staticClass: "form-control",
-                      attrs: {
-                        required: "",
-                        name: "delivery-info[0][]",
-                        type: "number",
-                        min: "1",
-                        placeholder: "Кол-во"
-                      }
-                    })
-                  ])
-                ])
-              ]),
-              _vm._v(" "),
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-primary client__order-add-product mt-3",
-                  attrs: { type: "button" }
-                },
-                [
-                  _c("i", { staticClass: "fas fa-plus" }),
-                  _vm._v(
-                    "\n                        Добавить товар\n                    "
-                  )
-                ]
-              )
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "client__order-row" }, [
-            _c("h4", { staticClass: "client__order-subtitle" }, [
-              _vm._v("Оплата с клиента:")
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "client__order-field" }, [
-              _c("label", { attrs: { for: "delivery-pay-yes" } }, [
-                _vm._v("Да")
-              ]),
-              _vm._v(" "),
-              _c("input", {
-                attrs: {
-                  id: "delivery-pay-yes",
-                  type: "radio",
-                  name: "delivery-pay",
-                  value: "yes"
-                }
-              })
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "client__order-field" }, [
-              _c("label", { attrs: { for: "delivery-pay-no" } }, [
-                _vm._v("Нет")
-              ]),
-              _vm._v(" "),
-              _c("input", {
-                attrs: {
-                  id: "delivery-pay-no",
-                  type: "radio",
-                  name: "delivery-pay",
-                  value: "no",
-                  checked: ""
-                }
-              })
+          _c("div", { staticClass: "client__order-field" }, [
+            _c("label", { attrs: { for: "delivery-type-1" } }, [
+              _vm._v("Стандарт")
             ]),
             _vm._v(" "),
             _c("input", {
-              staticClass: "form-control",
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.deliveryType,
+                  expression: "deliveryType"
+                }
+              ],
               attrs: {
-                name: "delivery-pay-count",
-                type: "text",
-                placeholder: "Какую сумму взять c клиента",
-                disabled: ""
+                required: "",
+                type: "radio",
+                name: "delivery-type",
+                id: "delivery-type-1",
+                value: "Стандарт",
+                checked: ""
+              },
+              domProps: { checked: _vm._q(_vm.deliveryType, "Стандарт") },
+              on: {
+                change: function($event) {
+                  _vm.deliveryType = "Стандарт"
+                }
               }
             })
           ]),
           _vm._v(" "),
-          _c("div", { staticClass: "client__order-row" }, [
-            _c("h4", { staticClass: "client__order-subtitle" }, [
-              _vm._v("Комментарий:")
-            ]),
+          _c("div", { staticClass: "client__order-field" }, [
+            _c("label", { attrs: { for: "delivery-type-2" } }, [_vm._v("ДВД")]),
             _vm._v(" "),
-            _c("textarea", {
-              staticClass: "form-control",
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.deliveryType,
+                  expression: "deliveryType"
+                }
+              ],
               attrs: {
-                name: "delivery-comment",
-                placeholder: "Комментарий к заказу"
+                required: "",
+                type: "radio",
+                name: "delivery-type",
+                id: "delivery-type-2",
+                value: "ДВД"
+              },
+              domProps: { checked: _vm._q(_vm.deliveryType, "ДВД") },
+              on: {
+                change: function($event) {
+                  _vm.deliveryType = "ДВД"
+                }
               }
             })
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "client__order-row" }, [
+          _c("h4", { staticClass: "client__order-subtitle" }, [
+            _vm._v("Дата доставки:")
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "required" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.date,
+                  expression: "date"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: {
+                required: "",
+                name: "delivery-date",
+                type: "date",
+                min: _vm.getTodayDate
+              },
+              domProps: { value: _vm.date },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.date = $event.target.value
+                }
+              }
+            })
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "client__order-row" }, [
+          _c("h4", { staticClass: "client__order-subtitle" }, [
+            _vm._v("Время доставки:")
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "required" }, [
+            _c(
+              "select",
+              {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.time,
+                    expression: "time"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: { required: "", name: "delivery-interval" },
+                on: {
+                  change: function($event) {
+                    var $$selectedVal = Array.prototype.filter
+                      .call($event.target.options, function(o) {
+                        return o.selected
+                      })
+                      .map(function(o) {
+                        var val = "_value" in o ? o._value : o.value
+                        return val
+                      })
+                    _vm.time = $event.target.multiple
+                      ? $$selectedVal
+                      : $$selectedVal[0]
+                  }
+                }
+              },
+              [
+                _c(
+                  "option",
+                  { attrs: { value: "В любое время", selected: "" } },
+                  [_vm._v("В любое время")]
+                ),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "10.00 - 14.00" } }, [
+                  _vm._v("10.00 - 14.00")
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "14.00 - 18.00" } }, [
+                  _vm._v("14.00 - 18.00")
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "18.00 - 22.00" } }, [
+                  _vm._v("18.00 - 22.00")
+                ])
+              ]
+            )
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "client__order-row" }, [
+          _c("h4", { staticClass: "client__order-subtitle" }, [
+            _vm._v("Адрес доставки:")
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "required" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.address,
+                  expression: "address"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: {
+                required: "",
+                type: "text",
+                name: "delivery-address",
+                placeholder: "Адрес доставки"
+              },
+              domProps: { value: _vm.address },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.address = $event.target.value
+                }
+              }
+            })
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "client__order-row" }, [
+          _c("h4", { staticClass: "client__order-subtitle" }, [_vm._v("ФИО:")]),
+          _vm._v(" "),
+          _c("div", { staticClass: "required" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.fullname,
+                  expression: "fullname"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: {
+                required: "",
+                type: "text",
+                name: "delivery-fullname",
+                placeholder: "Введите ФИО клиента"
+              },
+              domProps: { value: _vm.fullname },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.fullname = $event.target.value
+                }
+              }
+            })
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "client__order-row" }, [
+          _c("h4", { staticClass: "client__order-subtitle" }, [
+            _vm._v("Контакты:")
           ]),
           _vm._v(" "),
           _c(
+            "div",
+            { staticClass: "fields-list required" },
+            _vm._l(_vm.phoneFields, function(input, index) {
+              return _c("PhoneInput", {
+                key: index,
+                model: {
+                  value: _vm.contacts[index],
+                  callback: function($$v) {
+                    _vm.$set(_vm.contacts, index, $$v)
+                  },
+                  expression: "contacts[index]"
+                }
+              })
+            }),
+            1
+          ),
+          _vm._v(" "),
+          _c(
             "button",
-            { staticClass: "btn btn-primary", attrs: { type: "submit" } },
-            [_vm._v("Оформить доставку")]
+            {
+              staticClass: "btn btn-primary client__order-add-number mt-3",
+              attrs: { disabled: _vm.phoneFields.length === 3 },
+              on: {
+                click: function($event) {
+                  $event.preventDefault()
+                  return _vm.addPhone($event)
+                }
+              }
+            },
+            [
+              _c("i", { staticClass: "fas fa-plus" }),
+              _vm._v(" Добавить номер\n                ")
+            ]
           )
-        ]
-      )
-    ])
-  }
-]
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "client__order-row width" }, [
+          _c("h4", { staticClass: "client__order-subtitle" }, [
+            _vm._v("Товары к доставке:")
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "client__order-list-wrap" }, [
+            _c(
+              "table",
+              { staticClass: "client__order-list" },
+              _vm._l(_vm.productFields, function(input, index) {
+                return _c("ProductRow", {
+                  key: index,
+                  model: {
+                    value: _vm.products[index],
+                    callback: function($$v) {
+                      _vm.$set(_vm.products, index, $$v)
+                    },
+                    expression: "products[index]"
+                  }
+                })
+              }),
+              1
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-primary client__order-add-product mt-3",
+                attrs: { type: "button" },
+                on: {
+                  click: function($event) {
+                    $event.preventDefault()
+                    return _vm.addProduct($event)
+                  }
+                }
+              },
+              [
+                _c("i", { staticClass: "fas fa-plus" }),
+                _vm._v(
+                  "\n                        Добавить товар\n                    "
+                )
+              ]
+            )
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "client__order-row" }, [
+          _c("h4", { staticClass: "client__order-subtitle" }, [
+            _vm._v("Оплата с клиента:")
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "client__order-field" }, [
+            _c("label", { attrs: { for: "delivery-pay-yes" } }, [_vm._v("Да")]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.clientPay,
+                  expression: "clientPay"
+                }
+              ],
+              attrs: {
+                id: "delivery-pay-yes",
+                type: "radio",
+                name: "delivery-pay"
+              },
+              domProps: { value: true, checked: _vm._q(_vm.clientPay, true) },
+              on: {
+                change: function($event) {
+                  _vm.clientPay = true
+                }
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "client__order-field" }, [
+            _c("label", { attrs: { for: "delivery-pay-no" } }, [_vm._v("Нет")]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.clientPay,
+                  expression: "clientPay"
+                }
+              ],
+              attrs: {
+                id: "delivery-pay-no",
+                type: "radio",
+                name: "delivery-pay",
+                checked: ""
+              },
+              domProps: { value: false, checked: _vm._q(_vm.clientPay, false) },
+              on: {
+                change: function($event) {
+                  _vm.clientPay = false
+                }
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.clientPayCost,
+                expression: "clientPayCost"
+              }
+            ],
+            staticClass: "form-control",
+            attrs: {
+              name: "delivery-pay-count",
+              type: "text",
+              placeholder: "Какую сумму взять c клиента",
+              disabled: !_vm.clientPay
+            },
+            domProps: { value: _vm.clientPayCost },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.clientPayCost = $event.target.value
+              }
+            }
+          })
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "client__order-row" }, [
+          _c("h4", { staticClass: "client__order-subtitle" }, [
+            _vm._v("Комментарий:")
+          ]),
+          _vm._v(" "),
+          _c("textarea", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.comment,
+                expression: "comment"
+              }
+            ],
+            staticClass: "form-control",
+            attrs: {
+              name: "delivery-comment",
+              placeholder: "Комментарий к заказу"
+            },
+            domProps: { value: _vm.comment },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.comment = $event.target.value
+              }
+            }
+          })
+        ]),
+        _vm._v(" "),
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-primary",
+            attrs: { type: "submit" },
+            on: {
+              click: function($event) {
+                $event.preventDefault()
+                return _vm.serializeForm($event)
+              }
+            }
+          },
+          [_vm._v("Оформить доставку")]
+        )
+      ]
+    )
+  ])
+}
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -42426,6 +42757,124 @@ var render = function() {
         _c("span", [_vm._v(_vm._s(_vm.email) + " " + _vm._s(_vm.phone))])
       ])
     : _vm._e()
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/form/PhoneInput.vue?vue&type=template&id=10ec664c&scoped=true&":
+/*!***************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/form/PhoneInput.vue?vue&type=template&id=10ec664c&scoped=true& ***!
+  \***************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c("input", {
+      staticClass: "form-control",
+      attrs: {
+        required: "",
+        type: "text",
+        name: "delivery-phone",
+        placeholder: "+7 (999) 999-99-99"
+      },
+      domProps: { value: _vm.value },
+      on: {
+        input: function($event) {
+          return _vm.$emit("input", $event.target.value)
+        }
+      }
+    })
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/form/ProductRow.vue?vue&type=template&id=16df523b&scoped=true&":
+/*!***************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/form/ProductRow.vue?vue&type=template&id=16df523b&scoped=true& ***!
+  \***************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("tr", [
+    _c("td", { staticClass: "client__order-item-name" }, [
+      _c("input", {
+        staticClass: "form-control",
+        attrs: {
+          required: "",
+          name: "delivery-info",
+          type: "text",
+          placeholder: "Наименование товара"
+        },
+        on: {
+          input: function($event) {
+            return _vm.send($event, "name")
+          }
+        }
+      })
+    ]),
+    _vm._v(" "),
+    _c("td", { staticClass: "client__order-item-cost" }, [
+      _c("input", {
+        staticClass: "form-control",
+        attrs: {
+          required: "",
+          name: "delivery-info",
+          type: "text",
+          placeholder: "Стоимость шт."
+        },
+        on: {
+          input: function($event) {
+            return _vm.send($event, "count")
+          }
+        }
+      })
+    ]),
+    _vm._v(" "),
+    _c("td", { staticClass: "client__order-item-count" }, [
+      _c("input", {
+        staticClass: "form-control",
+        attrs: {
+          required: "",
+          name: "delivery-info",
+          type: "number",
+          min: "1",
+          placeholder: "Кол-во"
+        },
+        on: {
+          input: function($event) {
+            return _vm.send($event, "cost")
+          }
+        }
+      })
+    ])
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -43252,7 +43701,19 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "row" }, [
-    _c("div", { staticClass: "col-lg-8 offset-lg-2" }, [_c("CreateForm")], 1)
+    _c(
+      "div",
+      { staticClass: "col-lg-8 offset-lg-2" },
+      [
+        _vm.preloader ? _c("preloader") : _vm._e(),
+        _vm._v(" "),
+        _c("CreateForm", {
+          attrs: { newOrder: "" },
+          on: { serializeForm: _vm.createOrder }
+        })
+      ],
+      1
+    )
   ])
 }
 var staticRenderFns = []

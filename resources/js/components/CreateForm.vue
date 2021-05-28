@@ -2,8 +2,8 @@
     <div class="client__order client-tab active">
         <form method="POST"  class="client__order-form">
 
-            <h4 class="admin-create__form-title">Создание заявки</h4>
-            <h4 class="admin-create__form-title">Изменить заявку</h4>
+            <h4 v-if="newOrder" class="admin-create__form-title">Создание заявки</h4>
+            <h4 v-else class="admin-create__form-title">Изменить заявку</h4>
 
 
 <!--            <h3 class="w-100">Заявка №{{ id }}</h3>-->
@@ -49,11 +49,11 @@
                 <h4 class="client__order-subtitle">Тип доставки:</h4>
                 <div class="client__order-field">
                     <label for="delivery-type-1">Стандарт</label>
-                    <input required type="radio" name="delivery-type" id="delivery-type-1" value="Стандарт" checked>
+                    <input v-model="deliveryType" required type="radio" name="delivery-type" id="delivery-type-1" value="Стандарт" checked>
                 </div>
                 <div class="client__order-field">
                     <label for="delivery-type-2">ДВД</label>
-                    <input required type="radio" name="delivery-type" id="delivery-type-2" value="ДВД">
+                    <input v-model="deliveryType" required type="radio" name="delivery-type" id="delivery-type-2" value="ДВД">
                 </div>
 
             </div>
@@ -73,14 +73,14 @@
             <div class="client__order-row">
                 <h4 class="client__order-subtitle">Дата доставки:</h4>
                 <div class="required">
-<!--                    <input required class="form-control" name="delivery-date" type="date" min="{{ date('Y-m-d') }}">-->
+                    <input v-model="date" required class="form-control" name="delivery-date" type="date" :min="getTodayDate">
                 </div>
             </div>
 
             <div class="client__order-row">
                 <h4 class="client__order-subtitle">Время доставки:</h4>
                 <div class="required">
-                    <select required class="form-control" name="delivery-interval">
+                    <select v-model="time" required class="form-control" name="delivery-interval">
                         <option value="В любое время" selected>В любое время</option>
                         <option value="10.00 - 14.00">10.00 - 14.00</option>
                         <option value="14.00 - 18.00">14.00 - 18.00</option>
@@ -92,7 +92,7 @@
             <div class="client__order-row">
                 <h4 class="client__order-subtitle">Адрес доставки:</h4>
                 <div class="required">
-                    <input required class="form-control" type="text" name="delivery-address"
+                    <input v-model="address" required class="form-control" type="text" name="delivery-address"
                            placeholder="Адрес доставки">
                 </div>
             </div>
@@ -100,7 +100,7 @@
             <div class="client__order-row">
                 <h4 class="client__order-subtitle">ФИО:</h4>
                 <div class="required">
-                    <input required class="form-control" type="text" name="delivery-fullname"
+                    <input v-model="fullname" required class="form-control" type="text" name="delivery-fullname"
                            placeholder="Введите ФИО клиента">
                 </div>
             </div>
@@ -108,10 +108,10 @@
             <div class="client__order-row">
                 <h4 class="client__order-subtitle">Контакты:</h4>
                 <div class="fields-list required">
-                    <input required class="form-control" type="text" name="delivery-phone[]"
-                           placeholder="+7 (999) 999-99-99">
+                    <PhoneInput v-model="contacts[index]" :key="index" v-for="(input, index) in phoneFields" />
                 </div>
-                <button class="btn btn-primary client__order-add-number mt-3"><i class="fas fa-plus"></i> Добавить номер
+                <button @click.prevent="addPhone" :disabled="phoneFields.length === 3" class="btn btn-primary client__order-add-number mt-3">
+                    <i class="fas fa-plus"></i> Добавить номер
                 </button>
             </div>
 
@@ -119,22 +119,9 @@
                 <h4 class="client__order-subtitle">Товары к доставке:</h4>
                 <div class="client__order-list-wrap">
                     <table class="client__order-list">
-                        <tr>
-                            <td class="client__order-item-name">
-                                <input class="form-control" required name="delivery-info[0][]" type="text"
-                                       placeholder="Наименование товара">
-                            </td>
-                            <td class="client__order-item-cost">
-                                <input class="form-control" required name="delivery-info[0][]" type="text"
-                                       placeholder="Стоимость шт.">
-                            </td>
-                            <td class="client__order-item-count">
-                                <input required class="form-control" name="delivery-info[0][]" type="number" min="1"
-                                       placeholder="Кол-во">
-                            </td>
-                        </tr>
+                        <ProductRow v-model="products[index]" :key="index" v-for="(input, index) in productFields" />
                     </table>
-                    <button type="button" class="btn btn-primary client__order-add-product mt-3"><i
+                    <button @click.prevent="addProduct" type="button" class="btn btn-primary client__order-add-product mt-3"><i
                         class="fas fa-plus"></i>
                         Добавить товар
                     </button>
@@ -145,19 +132,19 @@
                 <h4 class="client__order-subtitle">Оплата с клиента:</h4>
                 <div class="client__order-field">
                     <label for="delivery-pay-yes">Да</label>
-                    <input id="delivery-pay-yes" type="radio" name="delivery-pay" value="yes">
+                    <input v-model="clientPay" id="delivery-pay-yes" type="radio" name="delivery-pay" :value="true">
                 </div>
                 <div class="client__order-field">
                     <label for="delivery-pay-no">Нет</label>
-                    <input id="delivery-pay-no" type="radio" name="delivery-pay" value="no" checked>
+                    <input v-model="clientPay" id="delivery-pay-no" type="radio" name="delivery-pay" :value="false" checked>
                 </div>
-                <input class="form-control" name="delivery-pay-count" type="text"
-                       placeholder="Какую сумму взять c клиента" disabled>
+                <input  v-model="clientPayCost" class="form-control" name="delivery-pay-count" type="text"
+                       placeholder="Какую сумму взять c клиента" :disabled="!clientPay">
             </div>
 
             <div class="client__order-row">
                 <h4 class="client__order-subtitle">Комментарий:</h4>
-                <textarea class="form-control" name="delivery-comment"
+                <textarea v-model="comment" class="form-control" name="delivery-comment"
                           placeholder="Комментарий к заказу"></textarea>
             </div>
 
@@ -205,19 +192,6 @@
 <!--                </div>-->
 <!--            </div>-->
 
-<!--            <div class="client__order-row">-->
-<!--                <h4 class="client__order-subtitle">Тип доставки:</h4>-->
-<!--                <div class="client__order-field">-->
-<!--                    <label for="delivery-type-1">Стандарт</label>-->
-<!--                    <input @if($type === "Стандарт") checked @endif type="radio"-->
-<!--                    name="delivery-type" id="delivery-type-1" value="Стандарт" required>-->
-<!--                </div>-->
-<!--                <div class="client__order-field">-->
-<!--                    <label for="delivery-type-2">ДВД</label>-->
-<!--                    <input @if($type === "ДВД") checked @endif type="radio" name="delivery-type"-->
-<!--                    id="delivery-type-2" required value="ДВД">-->
-<!--                </div>-->
-<!--            </div>-->
 
 <!--            <div class="client__order-row">-->
 <!--                <h4 class="client__order-subtitle">Тип заявки:</h4>-->
@@ -231,119 +205,8 @@
 <!--                </div>-->
 <!--            </div>-->
 
-<!--            <div class="client__order-row">-->
-<!--                <h4 class="client__order-subtitle">Дата доставки:</h4>-->
-<!--                <div class="required">-->
-<!--                    <input required value="{{ $date }}" class="form-control" name="delivery-date" type="date"-->
-<!--                           min="{{ date('Y-m-d') }}">-->
-<!--                </div>-->
-<!--            </div>-->
 
-<!--            <div class="client__order-row">-->
-<!--                <h4 class="client__order-subtitle">Время доставки:</h4>-->
-<!--                <div class="required">-->
-<!--                    <select required class="form-control" name="delivery-interval">-->
-<!--                        <option @if($time == "В любое  время") selected-->
-<!--                        @endif value="В любое время">В любое время-->
-<!--                        </option>-->
-<!--                        <option @if($time == "10.00 - 14.00") selected @endif value="10.00 - 14.00">-->
-<!--                        10.00 - 14.00-->
-<!--                        </option>-->
-<!--                        <option @if($time == "14.00 - 18.00") selected @endif value="14.00 - 18.00">-->
-<!--                        14.00 - 18.00-->
-<!--                        </option>-->
-<!--                        <option @if($time == "18.00 - 22.00") selected @endif value="18.00 - 22.00">-->
-<!--                        18.00 - 22.00-->
-<!--                        </option>-->
-<!--                    </select>-->
-<!--                </div>-->
-<!--            </div>-->
 
-<!--            <div class="client__order-row">-->
-<!--                <h4 class="client__order-subtitle">Адрес доставки:</h4>-->
-<!--                <div class="required">-->
-<!--                    <input required value="{{ $address }}" class="form-control" type="text" name="delivery-address"-->
-<!--                           placeholder="Адрес доставки">-->
-<!--                </div>-->
-<!--            </div>-->
-
-<!--            <div class="client__order-row">-->
-<!--                <h4 class="client__order-subtitle">ФИО:</h4>-->
-<!--                <div class="required">-->
-<!--                    <input required value="{{ $fullname }}" class="form-control" type="text" name="delivery-fullname"-->
-<!--                           placeholder="Введите ФИО клиента">-->
-<!--                </div>-->
-<!--            </div>-->
-
-<!--            <div class="client__order-row">-->
-<!--                <h4 class="client__order-subtitle">Контакты:</h4>-->
-<!--                <div class="fields-list">-->
-
-<!--                    @for($i = 0 ; $i < count($contacts) - 1; $i++)-->
-<!--                    <div class="required">-->
-<!--                        <input value="{{$contacts[$i]}}" class="form-control" type="text" name="delivery-phone[]"-->
-<!--                               required-->
-<!--                               placeholder="+7 (999) 999-99-99">-->
-<!--                    </div>-->
-<!--                    @endfor-->
-<!--                </div>-->
-<!--                <button class="btn btn-primary client__order-add-number mt-3"><i class="fas fa-plus"></i> Добавить номер-->
-<!--                </button>-->
-<!--            </div>-->
-
-<!--            <div class="client__order-row width">-->
-<!--                <h4 class="client__order-subtitle">Товары к доставке:</h4>-->
-<!--                <div class="client__order-list-wrap">-->
-<!--                    <table class="client__order-list">-->
-<!--                        @foreach($products as $index => $product)-->
-<!--                        <tr>-->
-<!--                            <td class="client__order-item-name">-->
-<!--                                <input value="{{ $product->name }}" class="form-control" required-->
-<!--                                       name="delivery-info[{{$index}}][]" type="text"-->
-<!--                                       placeholder="Наименование товара">-->
-<!--                            </td>-->
-<!--                            <td class="client__order-item-cost">-->
-<!--                                <input value="{{ $product->cost }}" class="form-control" required-->
-<!--                                       name="delivery-info[{{$index}}][]" type="text"-->
-<!--                                       placeholder="Стоимость шт.">-->
-<!--                            </td>-->
-<!--                            <td class="client__order-item-count">-->
-<!--                                <input value="{{ $product->count }}" class="form-control" required-->
-<!--                                       name="delivery-info[{{$index}}][]" type="number" min="1"-->
-<!--                                       placeholder="Кол-во">-->
-<!--                            </td>-->
-<!--                        </tr>-->
-<!--                        @endforeach-->
-<!--                    </table>-->
-<!--                    <button type="button" class="btn btn-primary client__order-add-product mt-3"><i-->
-<!--                        class="fas fa-plus"></i>-->
-<!--                        Добавить товар-->
-<!--                    </button>-->
-<!--                </div>-->
-<!--            </div>-->
-
-<!--            <div class="client__order-row">-->
-<!--                <h4 class="client__order-subtitle">Оплата с клиента:</h4>-->
-<!--                <div class="client__order-field">-->
-<!--                    <label for="delivery-pay-yes">Да</label>-->
-<!--                    <input @if(!$order->delivery_pay == null) checked @endif id="delivery-pay-yes" type="radio"-->
-<!--                    name="delivery-pay" value="yes">-->
-<!--                </div>-->
-<!--                <div class="client__order-field">-->
-<!--                    <label for="delivery-pay-no">Нет</label>-->
-<!--                    <input @if($order->delivery_pay == null) checked @endif id="delivery-pay-no" type="radio"-->
-<!--                    name="delivery-pay" value="no">-->
-<!--                </div>-->
-<!--                <input class="form-control" type="text" name="delivery-pay-count"-->
-<!--                       placeholder="Какую сумму взять c клиента" @if($order->delivery_pay == null) disabled-->
-<!--                @else value="{{$order->delivery_pay}}" @endif>-->
-<!--            </div>-->
-
-<!--            <div class="client__order-row">-->
-<!--                <h4 class="client__order-subtitle">Комментарий:</h4>-->
-<!--                <textarea class="form-control" name="delivery-comment"-->
-<!--                          placeholder="Комментарий к заказу">{{ $order->delivery_comment }}</textarea>-->
-<!--            </div>-->
 <!--            -->
 <!--            <div class="client__item-info d-block">-->
 <!--                <div class="info">-->
@@ -391,7 +254,7 @@
 
 
 
-            <button type="submit" class="btn btn-primary">Оформить доставку</button>
+            <button @click.prevent="serializeForm" type="submit" class="btn btn-primary">Оформить доставку</button>
 
 <!--            <button type="submit" class="btn btn-primary"> Сохранить изменения</button>-->
 
@@ -400,8 +263,68 @@
 </template>
 
 <script>
+import PhoneInput from "./form/PhoneInput";
+import ProductRow from "./form/ProductRow";
+
 export default {
-    name: "CreateForm"
+    name: "CreateForm",
+    components: { PhoneInput, ProductRow },
+    props: {
+        newOrder: {
+            type: Boolean,
+            default: false,
+        }
+    },
+    methods: {
+        addPhone() {
+            this.phoneFields.push(1);
+        },
+        addProduct() {
+            this.productFields.push(1);
+        },
+        serializeForm() {
+            this.$emit('createOrder', {
+                deliveryType: this.deliveryType,
+                date: this.date,
+                time: this.time,
+                address: this.address,
+                fullame: this.fullname,
+                phones: this.contacts,
+                products: this.products,
+                clientPay: this.clientPayCost,
+                comment: this.comment
+            })
+        }
+    },
+    computed: {
+      getTodayDate() {
+          const date = new Date();
+          const dd = String(date.getDate()).padStart(2, '0');
+          const mm = String(date.getMonth() + 1).padStart(2, '0');
+          const yyyy = date.getFullYear();
+          return `${yyyy}-${mm}-${dd}`
+      },
+        clientPayCount() {
+          if (!this.clientPay) return this.clientPayCost = null
+            return this.clientPayCost
+        }
+    },
+    data() {
+        return {
+            phoneFields: [1],
+            productFields: [1],
+            deliveryType: "Стандарт",
+            date: null,
+            time: "В любое время",
+            address: null,
+            fullname: null,
+            contacts: [],
+            products: [],
+            clientPay: false,
+            clientPayCost: null,
+            comment: "",
+        }
+    }
 }
 </script>
 
