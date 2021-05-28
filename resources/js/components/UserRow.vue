@@ -1,7 +1,12 @@
 <template>
-    <a class="admin-client-list__item" href="">
+    <a v-if="role === 'client'" class="admin-client-list__item" href="">
         <h4>{{ name }} <span>{{ email }}</span></h4>
         <span>Aдрес забора: {{ address }}</span>
+    </a>
+
+    <a v-else-if="role === 'courier'" class="admin-client-list__item" href="">
+        <h4>{{ name }} <span>{{ comment }}</span></h4>
+        <span>{{ email }} {{ phone }}</span>
     </a>
 </template>
 
@@ -20,6 +25,18 @@ export default {
         address: {
             type: String,
             default: "г. Москва"
+        },
+        phone: {
+            type: String,
+            default: ""
+        },
+        comment: {
+            type: String,
+            default: "",
+        },
+        role: {
+            type: String,
+            default: ""
         }
     }
 }

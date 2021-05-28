@@ -3142,6 +3142,302 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "CreateForm"
 });
@@ -3405,6 +3701,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "UserRow",
   props: {
@@ -3419,6 +3720,18 @@ __webpack_require__.r(__webpack_exports__);
     address: {
       type: String,
       "default": "г. Москва"
+    },
+    phone: {
+      type: String,
+      "default": ""
+    },
+    comment: {
+      type: String,
+      "default": ""
+    },
+    role: {
+      type: String,
+      "default": ""
     }
   }
 });
@@ -3548,6 +3861,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -3572,7 +3886,7 @@ __webpack_require__.r(__webpack_exports__);
         this.stopSearch = true;
         this.clients = [];
         this.preloader = true;
-        axios.get("/api/clients?name=".concat(this.searchText)).then(function (res) {
+        axios.get("/clients?name=".concat(this.searchText)).then(function (res) {
           console.log(res.data);
           _this.clients = res.data.clients;
           _this.preloader = false;
@@ -3589,7 +3903,7 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {
     var _this2 = this;
 
-    axios.get('/api/clients').then(function (res) {
+    axios.get('/clients').then(function (res) {
       _this2.clients = res.data.clients;
       _this2.preloader = false;
     });
@@ -3626,6 +3940,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -3633,6 +3953,44 @@ __webpack_require__.r(__webpack_exports__);
   components: {
     SearchInput: _components_SearchInput__WEBPACK_IMPORTED_MODULE_0__.default,
     UserRow: _components_UserRow__WEBPACK_IMPORTED_MODULE_1__.default
+  },
+  data: function data() {
+    return {
+      couriers: [],
+      preloader: true,
+      searchText: "",
+      stopSearch: false
+    };
+  },
+  methods: {
+    getOrderNumber: function getOrderNumber() {
+      var _this = this;
+
+      if (!this.stopSearch) {
+        this.stopSearch = true;
+        this.couriers = [];
+        this.preloader = true;
+        axios.get("/couriers?name=".concat(this.searchText)).then(function (res) {
+          console.log(res.data);
+          _this.couriers = res.data.couriers;
+          _this.preloader = false;
+          _this.stopSearch = false;
+        });
+      }
+    }
+  },
+  watch: {
+    searchText: function searchText() {
+      this.getOrderNumber();
+    }
+  },
+  mounted: function mounted() {
+    var _this2 = this;
+
+    axios.get('/couriers').then(function (res) {
+      _this2.couriers = res.data.couriers;
+      _this2.preloader = false;
+    });
   }
 });
 
@@ -3727,13 +4085,43 @@ __webpack_require__.r(__webpack_exports__);
           redirect: null
         }).then(function (res) {
           if (res.data.status === "success") {
-            _this.name = _this.email = _this.password = _this.passwordDuplicate = '';
+            _this.name = _this.email = _this.password = _this.passwordDuplicate = _this.phone = _this.deliveryAddress = '';
           } else {
             console.log("Ошибка!");
           }
         });
       }
     }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/admin/EditOrder.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/admin/EditOrder.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _components_CreateForm__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../components/CreateForm */ "./resources/js/components/CreateForm.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  name: "EditOrder",
+  components: {
+    CreateForm: _components_CreateForm__WEBPACK_IMPORTED_MODULE_0__.default
   }
 });
 
@@ -4174,9 +4562,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _views_admin_ClientList__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./views/admin/ClientList */ "./resources/js/views/admin/ClientList.vue");
 /* harmony import */ var _views_admin_CourierList__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./views/admin/CourierList */ "./resources/js/views/admin/CourierList.vue");
 /* harmony import */ var _views_admin_OrderList__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./views/admin/OrderList */ "./resources/js/views/admin/OrderList.vue");
+/* harmony import */ var _views_admin_EditOrder__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./views/admin/EditOrder */ "./resources/js/views/admin/EditOrder.vue");
 
 
 vue__WEBPACK_IMPORTED_MODULE_0__.default.use(vue_router__WEBPACK_IMPORTED_MODULE_1__.default);
+
 
 
 
@@ -4272,6 +4662,12 @@ var routes = [{
       title: postfix("Список заявок")
     },
     component: _views_admin_OrderList__WEBPACK_IMPORTED_MODULE_13__.default
+  }, {
+    path: "new-order",
+    meta: {
+      title: postfix("Создать заявку")
+    },
+    component: _views_admin_EditOrder__WEBPACK_IMPORTED_MODULE_14__.default
   }]
 }];
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (new vue_router__WEBPACK_IMPORTED_MODULE_1__.default({
@@ -40247,6 +40643,45 @@ component.options.__file = "resources/js/views/admin/CreateUser.vue"
 
 /***/ }),
 
+/***/ "./resources/js/views/admin/EditOrder.vue":
+/*!************************************************!*\
+  !*** ./resources/js/views/admin/EditOrder.vue ***!
+  \************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _EditOrder_vue_vue_type_template_id_567af1d5_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./EditOrder.vue?vue&type=template&id=567af1d5&scoped=true& */ "./resources/js/views/admin/EditOrder.vue?vue&type=template&id=567af1d5&scoped=true&");
+/* harmony import */ var _EditOrder_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./EditOrder.vue?vue&type=script&lang=js& */ "./resources/js/views/admin/EditOrder.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__.default)(
+  _EditOrder_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__.default,
+  _EditOrder_vue_vue_type_template_id_567af1d5_scoped_true___WEBPACK_IMPORTED_MODULE_0__.render,
+  _EditOrder_vue_vue_type_template_id_567af1d5_scoped_true___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  "567af1d5",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/views/admin/EditOrder.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
 /***/ "./resources/js/views/admin/OrderList.vue":
 /*!************************************************!*\
   !*** ./resources/js/views/admin/OrderList.vue ***!
@@ -40712,6 +41147,22 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/views/admin/EditOrder.vue?vue&type=script&lang=js&":
+/*!*************************************************************************!*\
+  !*** ./resources/js/views/admin/EditOrder.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_EditOrder_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./EditOrder.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/admin/EditOrder.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_EditOrder_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__.default); 
+
+/***/ }),
+
 /***/ "./resources/js/views/admin/OrderList.vue?vue&type=script&lang=js&":
 /*!*************************************************************************!*\
   !*** ./resources/js/views/admin/OrderList.vue?vue&type=script&lang=js& ***!
@@ -41028,6 +41479,23 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/views/admin/EditOrder.vue?vue&type=template&id=567af1d5&scoped=true&":
+/*!*******************************************************************************************!*\
+  !*** ./resources/js/views/admin/EditOrder.vue?vue&type=template&id=567af1d5&scoped=true& ***!
+  \*******************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_EditOrder_vue_vue_type_template_id_567af1d5_scoped_true___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_EditOrder_vue_vue_type_template_id_567af1d5_scoped_true___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_EditOrder_vue_vue_type_template_id_567af1d5_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./EditOrder.vue?vue&type=template&id=567af1d5&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/admin/EditOrder.vue?vue&type=template&id=567af1d5&scoped=true&");
+
+
+/***/ }),
+
 /***/ "./resources/js/views/admin/OrderList.vue?vue&type=template&id=560e5906&scoped=true&":
 /*!*******************************************************************************************!*\
   !*** ./resources/js/views/admin/OrderList.vue?vue&type=template&id=560e5906&scoped=true& ***!
@@ -41187,85 +41655,77 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      {
-        staticClass: "client__order client-tab active",
-        attrs: { id: "order" }
-      },
-      [
-        _c(
-          "form",
-          {
-            staticClass: "client__order-form",
-            attrs: { id: "client-create-order", method: "POST" }
-          },
-          [
-            _c("div", { staticClass: "client__order-row" }, [
-              _c("h4", { staticClass: "client__order-subtitle" }, [
-                _vm._v("Тип доставки:")
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "client__order-field" }, [
-                _c("label", { attrs: { for: "delivery-type-1" } }, [
-                  _vm._v("Стандарт")
-                ]),
-                _vm._v(" "),
-                _c("input", {
-                  attrs: {
-                    type: "radio",
-                    name: "delivery-type",
-                    id: "delivery-type-1",
-                    value: "Стандарт",
-                    required: "",
-                    checked: ""
-                  }
-                })
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "client__order-field" }, [
-                _c("label", { attrs: { for: "delivery-type-2" } }, [
-                  _vm._v("ДВД")
-                ]),
-                _vm._v(" "),
-                _c("input", {
-                  attrs: {
-                    type: "radio",
-                    name: "delivery-type",
-                    id: "delivery-type-2",
-                    required: "",
-                    value: "ДВД"
-                  }
-                })
-              ])
+    return _c("div", { staticClass: "client__order client-tab active" }, [
+      _c(
+        "form",
+        { staticClass: "client__order-form", attrs: { method: "POST" } },
+        [
+          _c("h4", { staticClass: "admin-create__form-title" }, [
+            _vm._v("Создание заявки")
+          ]),
+          _vm._v(" "),
+          _c("h4", { staticClass: "admin-create__form-title" }, [
+            _vm._v("Изменить заявку")
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "client__order-row" }, [
+            _c("h4", { staticClass: "client__order-subtitle" }, [
+              _vm._v("Тип доставки:")
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "client__order-row" }, [
-              _c("h4", { staticClass: "client__order-subtitle" }, [
-                _vm._v("Дата доставки:")
+            _c("div", { staticClass: "client__order-field" }, [
+              _c("label", { attrs: { for: "delivery-type-1" } }, [
+                _vm._v("Стандарт")
               ]),
               _vm._v(" "),
               _c("input", {
-                staticClass: "form-control",
                 attrs: {
-                  name: "delivery-date",
-                  type: "date",
-                  min: "",
-                  required: ""
+                  required: "",
+                  type: "radio",
+                  name: "delivery-type",
+                  id: "delivery-type-1",
+                  value: "Стандарт",
+                  checked: ""
                 }
               })
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "client__order-row" }, [
-              _c("h4", { staticClass: "client__order-subtitle" }, [
-                _vm._v("Время доставки:")
+            _c("div", { staticClass: "client__order-field" }, [
+              _c("label", { attrs: { for: "delivery-type-2" } }, [
+                _vm._v("ДВД")
               ]),
               _vm._v(" "),
+              _c("input", {
+                attrs: {
+                  required: "",
+                  type: "radio",
+                  name: "delivery-type",
+                  id: "delivery-type-2",
+                  value: "ДВД"
+                }
+              })
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "client__order-row" }, [
+            _c("h4", { staticClass: "client__order-subtitle" }, [
+              _vm._v("Дата доставки:")
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "required" })
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "client__order-row" }, [
+            _c("h4", { staticClass: "client__order-subtitle" }, [
+              _vm._v("Время доставки:")
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "required" }, [
               _c(
                 "select",
                 {
                   staticClass: "form-control",
-                  attrs: { name: "delivery-interval", required: "" }
+                  attrs: { required: "", name: "delivery-interval" }
                 },
                 [
                   _c(
@@ -41287,201 +41747,204 @@ var staticRenderFns = [
                   ])
                 ]
               )
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "client__order-row" }, [
+            _c("h4", { staticClass: "client__order-subtitle" }, [
+              _vm._v("Адрес доставки:")
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "client__order-row" }, [
-              _c("h4", { staticClass: "client__order-subtitle" }, [
-                _vm._v("Адрес доставки:")
-              ]),
-              _vm._v(" "),
+            _c("div", { staticClass: "required" }, [
               _c("input", {
                 staticClass: "form-control",
                 attrs: {
+                  required: "",
                   type: "text",
                   name: "delivery-address",
-                  required: "",
                   placeholder: "Адрес доставки"
                 }
               })
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "client__order-row" }, [
+            _c("h4", { staticClass: "client__order-subtitle" }, [
+              _vm._v("ФИО:")
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "client__order-row" }, [
-              _c("h4", { staticClass: "client__order-subtitle" }, [
-                _vm._v("ФИО:")
-              ]),
-              _vm._v(" "),
+            _c("div", { staticClass: "required" }, [
               _c("input", {
                 staticClass: "form-control",
                 attrs: {
+                  required: "",
                   type: "text",
                   name: "delivery-fullname",
-                  required: "",
                   placeholder: "Введите ФИО клиента"
                 }
               })
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "client__order-row" }, [
+            _c("h4", { staticClass: "client__order-subtitle" }, [
+              _vm._v("Контакты:")
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "client__order-row" }, [
-              _c("h4", { staticClass: "client__order-subtitle" }, [
-                _vm._v("Контакты:")
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "fields-list" }, [
-                _c("input", {
-                  staticClass: "form-control",
-                  attrs: {
-                    type: "text",
-                    name: "delivery-phone[]",
-                    required: "",
-                    placeholder: "+7 (999) 999-99-99"
-                  }
-                })
-              ]),
-              _vm._v(" "),
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-primary client__order-add-number mt-3"
-                },
-                [
-                  _c("i", { staticClass: "fas fa-plus" }),
-                  _vm._v("\n                Добавить номер\n            ")
-                ]
-              )
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "client__order-row width" }, [
-              _c("h4", { staticClass: "client__order-subtitle" }, [
-                _vm._v("Товары к доставке:")
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "client__order-list-wrap" }, [
-                _c("table", { staticClass: "client__order-list" }, [
-                  _c("tr", [
-                    _c("td", { staticClass: "client__order-item-name" }, [
-                      _c("input", {
-                        staticClass: "form-control",
-                        attrs: {
-                          required: "",
-                          name: "delivery-info[0][]",
-                          type: "text",
-                          placeholder: "Наименование товара"
-                        }
-                      })
-                    ]),
-                    _vm._v(" "),
-                    _c("td", { staticClass: "client__order-item-cost" }, [
-                      _c("input", {
-                        staticClass: "form-control",
-                        attrs: {
-                          required: "",
-                          name: "delivery-info[0][]",
-                          type: "text",
-                          placeholder: "Стоимость шт."
-                        }
-                      })
-                    ]),
-                    _vm._v(" "),
-                    _c("td", { staticClass: "client__order-item-count" }, [
-                      _c("input", {
-                        staticClass: "form-control",
-                        attrs: {
-                          required: "",
-                          name: "delivery-info[0][]",
-                          type: "number",
-                          min: "1",
-                          placeholder: "Кол-во"
-                        }
-                      })
-                    ])
-                  ])
-                ]),
-                _vm._v(" "),
-                _c(
-                  "button",
-                  {
-                    staticClass:
-                      "btn btn-primary client__order-add-product mt-3",
-                    attrs: { type: "button" }
-                  },
-                  [
-                    _c("i", { staticClass: "fas fa-plus" }),
-                    _vm._v(" Добавить товар\n                ")
-                  ]
-                )
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "client__order-row" }, [
-              _c("h4", { staticClass: "client__order-subtitle" }, [
-                _vm._v("Оплата с клиента:")
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "client__order-field" }, [
-                _c("label", { attrs: { for: "delivery-pay-yes" } }, [
-                  _vm._v("Да")
-                ]),
-                _vm._v(" "),
-                _c("input", {
-                  attrs: {
-                    id: "delivery-pay-yes",
-                    type: "radio",
-                    name: "delivery-pay",
-                    value: "yes"
-                  }
-                })
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "client__order-field" }, [
-                _c("label", { attrs: { for: "delivery-pay-no" } }, [
-                  _vm._v("Нет")
-                ]),
-                _vm._v(" "),
-                _c("input", {
-                  attrs: {
-                    id: "delivery-pay-no",
-                    type: "radio",
-                    name: "delivery-pay",
-                    value: "no",
-                    checked: ""
-                  }
-                })
-              ]),
-              _vm._v(" "),
+            _c("div", { staticClass: "fields-list required" }, [
               _c("input", {
                 staticClass: "form-control",
                 attrs: {
+                  required: "",
                   type: "text",
-                  name: "delivery-pay-count",
-                  placeholder: "Какую сумму взять c клиента",
-                  disabled: ""
-                }
-              })
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "client__order-row " }, [
-              _c("h4", { staticClass: "client__order-subtitle" }, [
-                _vm._v("Комментарий:")
-              ]),
-              _vm._v(" "),
-              _c("textarea", {
-                staticClass: "form-control",
-                attrs: {
-                  name: "delivery-comment",
-                  placeholder: "Комментарий к заказу"
+                  name: "delivery-phone[]",
+                  placeholder: "+7 (999) 999-99-99"
                 }
               })
             ]),
             _vm._v(" "),
             _c(
               "button",
-              { staticClass: "btn btn-primary", attrs: { type: "submit" } },
-              [_vm._v("Оформить доставку")]
+              { staticClass: "btn btn-primary client__order-add-number mt-3" },
+              [
+                _c("i", { staticClass: "fas fa-plus" }),
+                _vm._v(" Добавить номер\n                ")
+              ]
             )
-          ]
-        )
-      ]
-    )
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "client__order-row width" }, [
+            _c("h4", { staticClass: "client__order-subtitle" }, [
+              _vm._v("Товары к доставке:")
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "client__order-list-wrap" }, [
+              _c("table", { staticClass: "client__order-list" }, [
+                _c("tr", [
+                  _c("td", { staticClass: "client__order-item-name" }, [
+                    _c("input", {
+                      staticClass: "form-control",
+                      attrs: {
+                        required: "",
+                        name: "delivery-info[0][]",
+                        type: "text",
+                        placeholder: "Наименование товара"
+                      }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("td", { staticClass: "client__order-item-cost" }, [
+                    _c("input", {
+                      staticClass: "form-control",
+                      attrs: {
+                        required: "",
+                        name: "delivery-info[0][]",
+                        type: "text",
+                        placeholder: "Стоимость шт."
+                      }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("td", { staticClass: "client__order-item-count" }, [
+                    _c("input", {
+                      staticClass: "form-control",
+                      attrs: {
+                        required: "",
+                        name: "delivery-info[0][]",
+                        type: "number",
+                        min: "1",
+                        placeholder: "Кол-во"
+                      }
+                    })
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-primary client__order-add-product mt-3",
+                  attrs: { type: "button" }
+                },
+                [
+                  _c("i", { staticClass: "fas fa-plus" }),
+                  _vm._v(
+                    "\n                        Добавить товар\n                    "
+                  )
+                ]
+              )
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "client__order-row" }, [
+            _c("h4", { staticClass: "client__order-subtitle" }, [
+              _vm._v("Оплата с клиента:")
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "client__order-field" }, [
+              _c("label", { attrs: { for: "delivery-pay-yes" } }, [
+                _vm._v("Да")
+              ]),
+              _vm._v(" "),
+              _c("input", {
+                attrs: {
+                  id: "delivery-pay-yes",
+                  type: "radio",
+                  name: "delivery-pay",
+                  value: "yes"
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "client__order-field" }, [
+              _c("label", { attrs: { for: "delivery-pay-no" } }, [
+                _vm._v("Нет")
+              ]),
+              _vm._v(" "),
+              _c("input", {
+                attrs: {
+                  id: "delivery-pay-no",
+                  type: "radio",
+                  name: "delivery-pay",
+                  value: "no",
+                  checked: ""
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _c("input", {
+              staticClass: "form-control",
+              attrs: {
+                name: "delivery-pay-count",
+                type: "text",
+                placeholder: "Какую сумму взять c клиента",
+                disabled: ""
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "client__order-row" }, [
+            _c("h4", { staticClass: "client__order-subtitle" }, [
+              _vm._v("Комментарий:")
+            ]),
+            _vm._v(" "),
+            _c("textarea", {
+              staticClass: "form-control",
+              attrs: {
+                name: "delivery-comment",
+                placeholder: "Комментарий к заказу"
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _c(
+            "button",
+            { staticClass: "btn btn-primary", attrs: { type: "submit" } },
+            [_vm._v("Оформить доставку")]
+          )
+        ]
+      )
+    ])
   }
 ]
 render._withStripped = true
@@ -41718,7 +42181,6 @@ var render = function() {
               "a",
               {
                 staticClass: "header__logout",
-                attrs: { href: "#" },
                 on: {
                   click: function($event) {
                     $event.preventDefault()
@@ -41945,18 +42407,25 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "a",
-    { staticClass: "admin-client-list__item", attrs: { href: "" } },
-    [
-      _c("h4", [
-        _vm._v(_vm._s(_vm.name) + " "),
-        _c("span", [_vm._v(_vm._s(_vm.email))])
-      ]),
-      _vm._v(" "),
-      _c("span", [_vm._v("Aдрес забора: " + _vm._s(_vm.address))])
-    ]
-  )
+  return _vm.role === "client"
+    ? _c("a", { staticClass: "admin-client-list__item", attrs: { href: "" } }, [
+        _c("h4", [
+          _vm._v(_vm._s(_vm.name) + " "),
+          _c("span", [_vm._v(_vm._s(_vm.email))])
+        ]),
+        _vm._v(" "),
+        _c("span", [_vm._v("Aдрес забора: " + _vm._s(_vm.address))])
+      ])
+    : _vm.role === "courier"
+    ? _c("a", { staticClass: "admin-client-list__item", attrs: { href: "" } }, [
+        _c("h4", [
+          _vm._v(_vm._s(_vm.name) + " "),
+          _c("span", [_vm._v(_vm._s(_vm.comment))])
+        ]),
+        _vm._v(" "),
+        _c("span", [_vm._v(_vm._s(_vm.email) + " " + _vm._s(_vm.phone))])
+      ])
+    : _vm._e()
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -42166,6 +42635,7 @@ var render = function() {
                 return _c("UserRow", {
                   key: client.id,
                   attrs: {
+                    role: "client",
                     name: client.name,
                     email: client.email,
                     address: client.delivery_address
@@ -42214,10 +42684,37 @@ var render = function() {
           _vm._v(" "),
           _c("SearchInput", {
             staticStyle: { "margin-bottom": "20px" },
-            attrs: { placeholder: "Поиск по курьерам..." }
+            attrs: { placeholder: "Поиск по курьерам..." },
+            model: {
+              value: _vm.searchText,
+              callback: function($$v) {
+                _vm.searchText = $$v
+              },
+              expression: "searchText"
+            }
           }),
           _vm._v(" "),
-          _c("div", { staticClass: "admin__client-list" }, [_c("UserRow")], 1)
+          _c(
+            "div",
+            { staticClass: "admin__client-list" },
+            [
+              _vm.preloader ? _c("preloader") : _vm._e(),
+              _vm._v(" "),
+              _vm._l(_vm.couriers, function(courier) {
+                return _c("UserRow", {
+                  key: courier.id,
+                  attrs: {
+                    role: "courier",
+                    name: courier.name,
+                    email: courier.email,
+                    comment: courier.courier_comment,
+                    phone: courier.phone_number
+                  }
+                })
+              })
+            ],
+            2
+          )
         ],
         1
       )
@@ -42562,6 +43059,33 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/admin/EditOrder.vue?vue&type=template&id=567af1d5&scoped=true&":
+/*!**********************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/admin/EditOrder.vue?vue&type=template&id=567af1d5&scoped=true& ***!
+  \**********************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "row" }, [
+    _c("div", { staticClass: "col-lg-8 offset-lg-2" }, [_c("CreateForm")], 1)
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/admin/OrderList.vue?vue&type=template&id=560e5906&scoped=true&":
 /*!**********************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/views/admin/OrderList.vue?vue&type=template&id=560e5906&scoped=true& ***!
@@ -42594,11 +43118,11 @@ var render = function() {
             }),
             _vm._v(" "),
             _c(
-              "a",
+              "router-link",
               {
                 staticClass: "flex-shrink-0 btn btn-primary",
                 staticStyle: { width: "200px" },
-                attrs: { href: "" }
+                attrs: { to: "/admin/new-order" }
               },
               [_vm._v("Создать\n                        новую заявку")]
             )

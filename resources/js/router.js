@@ -18,6 +18,7 @@ import AdminCreateUser from "./views/admin/CreateUser";
 import AdminClientList from "./views/admin/ClientList";
 import AdminCourierList from "./views/admin/CourierList";
 import AdminOrderList from "./views/admin/OrderList";
+import AdminCreateOrder from "./views/admin/EditOrder";
 
 const postfix = (str) => `${str} - B&B Logistic`;
 
@@ -88,6 +89,11 @@ const routes = [
                 path: "orders",
                 meta: { title: postfix("Список заявок")},
                 component: AdminOrderList
+            },
+            {
+                path: "new-order",
+                meta: { title: postfix("Создать заявку")},
+                component: AdminCreateOrder
             },
         ]
     }

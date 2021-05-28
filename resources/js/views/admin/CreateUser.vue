@@ -75,7 +75,7 @@ export default {
                     redirect: null
                 }).then(res => {
                     if (res.data.status === "success") {
-                        this.name = this.email = this.password = this.passwordDuplicate = '';
+                        this.name = this.email = this.password = this.passwordDuplicate = this.phone = this.deliveryAddress = '';
                     } else {
                         console.log("Ошибка!")
                     }

@@ -7,6 +7,7 @@
                 <div class="admin__client-list">
                     <preloader v-if="preloader" />
                     <UserRow v-for="client in clients"
+                             :role="'client'"
                              :key="client.id"
                              :name="client.name"
                              :email="client.email"
@@ -38,7 +39,7 @@ export default {
                 this.stopSearch = true;
                 this.clients = [];
                 this.preloader = true;
-                axios.get(`/api/clients?name=${this.searchText}`).then(res => {
+                axios.get(`/clients?name=${this.searchText}`).then(res => {
                     console.log(res.data)
                     this.clients = res.data.clients;
                     this.preloader = false;
@@ -53,7 +54,7 @@ export default {
         }
     },
     mounted() {
-        axios.get('/api/clients').then(res => {
+        axios.get('/clients').then(res => {
             this.clients = res.data.clients;
             this.preloader = false;
         })

@@ -5,8 +5,8 @@
                 <h4>Список заявок:</h4>
                 <div class="d-flex justify-content-between align-items-center">
                     <SearchInput class="flex-grow-1" style="margin-right: 10px" placeholder="Поиск по номеру заявки..." />
-                    <a href="" style="width: 200px" class="flex-shrink-0 btn btn-primary">Создать
-                        новую заявку</a>
+                    <router-link to="/admin/new-order" style="width: 200px" class="flex-shrink-0 btn btn-primary">Создать
+                        новую заявку</router-link>
                 </div>
                 <div class="admin-client__filter">
                     <select class="form-select" id="order-filter">

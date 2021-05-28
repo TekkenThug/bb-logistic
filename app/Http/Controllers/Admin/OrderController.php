@@ -3,32 +3,18 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Role;
 use Illuminate\Http\Request;
 
-class ClientsController extends Controller
+class OrderController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-
-        if ($request->input('name')) {
-            $parametr = $request->input('name');
-            $clients = Role::where('name', 'client')
-                ->first()
-                ->users()
-                ->where('name', 'LIKE', "%{$parametr}%")
-                ->get();
-        } else
-            $clients = Role::where('name', 'client')->first()->users;
-
-        return response([
-            'clients' => $clients,
-        ]);
+        //
     }
 
     /**
