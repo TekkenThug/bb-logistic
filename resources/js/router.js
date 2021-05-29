@@ -26,23 +26,28 @@ const routes = [
     {
         path: "/login",
         component: Auth,
-        meta: { title: postfix("Вход"), auth: false}
+        meta: {title: postfix("Вход"), auth: false}
     },
     {
         path: "/client",
         component: Client,
         redirect: "/client/create",
-        meta: { auth: true },
+        meta: {
+            auth: {
+                roles: 2,
+                redirect: "/",
+            }
+        },
         children: [
             {
                 path: "create",
-                meta: { title: postfix("Создать заявку") },
+                meta: {title: postfix("Создать заявку")},
                 component: ClientCreateOrder
             },
             {
                 path: "list",
                 component: ClientOrderList,
-                meta: { title: postfix("Список заявок")},
+                meta: {title: postfix("Список заявок")},
             }
         ]
     },
@@ -50,17 +55,22 @@ const routes = [
         path: "/courier",
         component: Courier,
         redirect: "/courier/open",
-        meta: { auth: true },
+        meta: {
+            auth: {
+                roles: 3,
+                redirect: "/",
+            }
+        },
         children: [
             {
                 path: "open",
-                meta: { title: postfix("Доступные заявки")},
+                meta: {title: postfix("Доступные заявки")},
                 component: CourierOpenOrders
             },
             {
                 path: "close",
                 component: CourierClosingOrders,
-                meta: { title: postfix("Завершенные заявки")},
+                meta: {title: postfix("Завершенные заявки")},
             }
         ]
     },
@@ -68,31 +78,36 @@ const routes = [
         path: "/admin",
         component: Admin,
         redirect: "/admin/create-user",
-        meta: { auth: true },
+        meta: {
+            auth: {
+                roles: 1,
+                redirect: "/",
+            }
+        },
         children: [
             {
                 path: "create-user",
-                meta: { title: postfix("Создать пользователя")},
+                meta: {title: postfix("Создать пользователя")},
                 component: AdminCreateUser
             },
             {
                 path: "clients",
-                meta: { title: postfix("Список клиентов")},
+                meta: {title: postfix("Список клиентов")},
                 component: AdminClientList
             },
             {
                 path: "couriers",
-                meta: { title: postfix("Список курьеров")},
+                meta: {title: postfix("Список курьеров")},
                 component: AdminCourierList
             },
             {
                 path: "orders",
-                meta: { title: postfix("Список заявок")},
+                meta: {title: postfix("Список заявок")},
                 component: AdminOrderList
             },
             {
                 path: "new-order",
-                meta: { title: postfix("Создать заявку")},
+                meta: {title: postfix("Создать заявку")},
                 component: AdminCreateOrder
             },
         ]

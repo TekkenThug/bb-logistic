@@ -22,5 +22,8 @@ Vue.use(auth, {
         auth: driverAuthBearer,
         http: driverHttpAxios,
         router: driverRouterVueRouter,
+    },
+    options: {
+        rolesKey: 'role_id'
     }
 });

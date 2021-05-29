@@ -6,8 +6,8 @@
 <!--            <span  style="font-size: 16px" class="mt-2 d-block">Курьер: {{ $courier }}, {{ $courierPhone }}</span>-->
 
             <div class="buttons">
-                    <a class="btn edit-order" href="" title="Изменить"><i class="fas fa-pen"></i></a>
-                    <button class="btn delete-order" title="Отменить"><i class="fas fa-times"></i></button>
+                    <button v-if="status === 'pending' || status === 'not-allocated'" class="btn edit-order" title="Изменить"><i class="fas fa-pen"></i></button>
+                    <button v-if="status === 'pending' || status === 'not-allocated'" class="btn delete-order" title="Отменить"><i class="fas fa-times"></i></button>
                     <button @click="showMore = !showMore" type="button" class="btn btn-more" title="Раскрыть">
                         <i class="fas fa-chevron-down" :class="{ active: showMore }"></i>
                     </button>
@@ -125,7 +125,6 @@ export default {
 <style scoped>
     .client__item-info {
         display: flex;
-        /*flex-direction: column;*/
         align-items: flex-start;
         flex-wrap: wrap;
     }

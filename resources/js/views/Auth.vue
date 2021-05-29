@@ -38,9 +38,13 @@ export default {
                     email: this.email,
                     password: this.password
                 },
-                redirect: '/admin',
                 rememberMe: true,
                 fetchUser: true,
+            }).then(() => {
+                const redirectPath = this.$auth.user().role_id === 1 ? '/admin' :
+                    this.$auth.user().role_id === 2 ? '/client' : '/courier'
+
+                this.$router.push(redirectPath);
             });
         },
     }

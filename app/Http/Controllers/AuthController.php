@@ -62,6 +62,15 @@ class AuthController extends Controller
             ->header('Authorization', $token);
     }
 
+    public function user(Request $request)
+    {
+        $user = User::find(auth()->id());
+        return response()->json([
+            'status' => 'success',
+            'data' => $user
+        ]);
+    }
+
     /**
      * Get the authenticated User.
      *

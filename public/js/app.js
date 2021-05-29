@@ -3877,14 +3877,19 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     login: function login() {
+      var _this = this;
+
       this.$auth.login({
         data: {
           email: this.email,
           password: this.password
         },
-        redirect: '/admin',
         rememberMe: true,
         fetchUser: true
+      }).then(function () {
+        var redirectPath = _this.$auth.user().role_id === 1 ? '/admin' : _this.$auth.user().role_id === 2 ? '/client' : '/courier';
+
+        _this.$router.push(redirectPath);
       });
     }
   }
@@ -4640,6 +4645,9 @@ vue__WEBPACK_IMPORTED_MODULE_7__.default.use((_websanova_vue_auth_dist_v2_vue_au
     auth: _websanova_vue_auth_dist_drivers_auth_bearer_esm_js__WEBPACK_IMPORTED_MODULE_4__.default,
     http: _websanova_vue_auth_dist_drivers_http_axios_1_x_esm_js__WEBPACK_IMPORTED_MODULE_5__.default,
     router: _websanova_vue_auth_dist_drivers_router_vue_router_2_x_esm_js__WEBPACK_IMPORTED_MODULE_6__.default
+  },
+  options: {
+    rolesKey: 'role_id'
   }
 });
 
@@ -4765,7 +4773,10 @@ var routes = [{
   component: _views_client_Client__WEBPACK_IMPORTED_MODULE_3__.default,
   redirect: "/client/create",
   meta: {
-    auth: true
+    auth: {
+      roles: 2,
+      redirect: "/"
+    }
   },
   children: [{
     path: "create",
@@ -4785,7 +4796,10 @@ var routes = [{
   component: _views_courier_Courier__WEBPACK_IMPORTED_MODULE_6__.default,
   redirect: "/courier/open",
   meta: {
-    auth: true
+    auth: {
+      roles: 3,
+      redirect: "/"
+    }
   },
   children: [{
     path: "open",
@@ -4805,7 +4819,10 @@ var routes = [{
   component: _views_admin_Admin__WEBPACK_IMPORTED_MODULE_9__.default,
   redirect: "/admin/create-user",
   meta: {
-    auth: true
+    auth: {
+      roles: 1,
+      redirect: "/"
+    }
   },
   children: [{
     path: "create-user",
@@ -9328,7 +9345,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.client__item-info[data-v-bc3da1d2] {\n    display: flex;\n    /*flex-direction: column;*/\n    align-items: flex-start;\n    flex-wrap: wrap;\n}\n.client__item-info .info[data-v-bc3da1d2] {\n    margin-top: 0;\n    margin-right: 40px;\n    margin-bottom: 20px;\n}\n.fa-chevron-down[data-v-bc3da1d2] {\n    transition: all 0.2s ease\n}\n.fa-chevron-down.active[data-v-bc3da1d2] {\n    transform: rotate(180deg);\n}\n\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.client__item-info[data-v-bc3da1d2] {\n    display: flex;\n    align-items: flex-start;\n    flex-wrap: wrap;\n}\n.client__item-info .info[data-v-bc3da1d2] {\n    margin-top: 0;\n    margin-right: 40px;\n    margin-bottom: 20px;\n}\n.fa-chevron-down[data-v-bc3da1d2] {\n    transition: all 0.2s ease\n}\n.fa-chevron-down.active[data-v-bc3da1d2] {\n    transform: rotate(180deg);\n}\n\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -42914,9 +42931,24 @@ var render = function() {
         ]),
         _vm._v(" "),
         _c("div", { staticClass: "buttons" }, [
-          _vm._m(0),
+          _vm.status === "pending" || _vm.status === "not-allocated"
+            ? _c(
+                "button",
+                { staticClass: "btn edit-order", attrs: { title: "Изменить" } },
+                [_c("i", { staticClass: "fas fa-pen" })]
+              )
+            : _vm._e(),
           _vm._v(" "),
-          _vm._m(1),
+          _vm.status === "pending" || _vm.status === "not-allocated"
+            ? _c(
+                "button",
+                {
+                  staticClass: "btn delete-order",
+                  attrs: { title: "Отменить" }
+                },
+                [_c("i", { staticClass: "fas fa-times" })]
+              )
+            : _vm._e(),
           _vm._v(" "),
           _c(
             "button",
@@ -43005,28 +43037,7 @@ var render = function() {
     1
   )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "a",
-      { staticClass: "btn edit-order", attrs: { href: "", title: "Изменить" } },
-      [_c("i", { staticClass: "fas fa-pen" })]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "button",
-      { staticClass: "btn delete-order", attrs: { title: "Отменить" } },
-      [_c("i", { staticClass: "fas fa-times" })]
-    )
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 

@@ -19,6 +19,7 @@ use \App\Http\Controllers\Admin\OrderController;
 */
 
 Route::group(['middleware' => ['api', 'cors'], 'prefix' => 'auth'], function($router){
+    Route::get('user', [AuthController::class, 'user']);
     Route::post('refresh', [AuthController::class, 'refresh']);
     Route::post('logout', [AuthController::class, 'logout']);
     Route::post('login', [AuthController::class, 'login']);
