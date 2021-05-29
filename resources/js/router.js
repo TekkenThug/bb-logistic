@@ -27,6 +27,9 @@ const routes = [
     {
         path: "*",
         component: NotFound,
+        meta: {
+            title: postfix("404")
+        }
     },
     {
         path: "/login",

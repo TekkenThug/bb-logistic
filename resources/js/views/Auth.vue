@@ -1,5 +1,6 @@
 <template>
-    <div class="container">
+    <div>
+        <div class="container">
         <div class="row">
             <div class="col-lg-4 offset-lg-4">
                 <div class="login-form-wrapper">
@@ -19,6 +20,9 @@
             </div>
         </div>
     </div>
+        <v-footer></v-footer>
+    </div>
+
 </template>
 
 <script>

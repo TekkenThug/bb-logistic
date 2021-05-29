@@ -21,4 +21,8 @@ export default {
     .container {
         height: 100vh;
     }
+    .row {
+        align-items: center;
+        height: 100%;
+    }
 </style>
