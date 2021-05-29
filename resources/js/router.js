@@ -4,6 +4,7 @@ import VueRouter from 'vue-router'
 Vue.use(VueRouter);
 
 import Auth from "./views/Auth";
+import NotFound from "./views/NotFound";
 
 import Client from "./views/client/Client";
 import ClientOrderList from "./views/client/OrderList";
@@ -24,9 +25,18 @@ const postfix = (str) => `${str} - B&B Logistic`;
 
 const routes = [
     {
+        path: "*",
+        component: NotFound,
+    },
+    {
         path: "/login",
         component: Auth,
-        meta: {title: postfix("Вход"), auth: false}
+        meta: {
+            title: postfix("Вход"),
+            notFoundRedirect: '/',
+            forbiddenRedirect: '/',
+            auth: false
+        }
     },
     {
         path: "/client",

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\SendMailController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,10 +14,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/', function () {
+    return view('landing');
+});
+
+Route::post('/', [SendMailController::class, 'sendMail'])->name('sendEmailFromLanding');
+
 Route::get('{any}', function () {
     return view('index');
 })->where('any', '.*');
 
-//Auth::routes();
 
 

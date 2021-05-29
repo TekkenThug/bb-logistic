@@ -13,7 +13,7 @@
     <link rel="icon" type="image/x-icon" href="{{ asset('/images/favicon.ico') }}">
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-    <title>Document</title>
+    <title>B&B Logistic</title>
 </head>
 <body>
 <div id="app">
