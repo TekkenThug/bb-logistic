@@ -4326,6 +4326,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _components_OrderRow__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../components/OrderRow */ "./resources/js/components/OrderRow.vue");
+/* harmony import */ var _components_SearchInput__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../components/SearchInput */ "./resources/js/components/SearchInput.vue");
 //
 //
 //
@@ -4350,24 +4351,54 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "OrderList",
   components: {
-    OrderRow: _components_OrderRow__WEBPACK_IMPORTED_MODULE_0__.default
+    OrderRow: _components_OrderRow__WEBPACK_IMPORTED_MODULE_0__.default,
+    SearchInput: _components_SearchInput__WEBPACK_IMPORTED_MODULE_1__.default
   },
   data: function data() {
     return {
       preloader: true,
-      orders: []
+      stopSearch: false,
+      orders: [],
+      searchText: ""
     };
   },
+  watch: {
+    searchText: function searchText() {
+      this.getOrders();
+    }
+  },
+  methods: {
+    getOrders: function getOrders() {
+      var _this = this;
+
+      if (!this.stopSearch) {
+        this.stopSearch = true;
+        this.orders = [];
+        this.preloader = true;
+        axios.get("/orders?role=client&id=".concat(this.searchText)).then(function (res) {
+          _this.orders = res.data.orders;
+          _this.preloader = false;
+          _this.stopSearch = false;
+        });
+      }
+    }
+  },
   mounted: function mounted() {
-    var _this = this;
+    var _this2 = this;
 
     axios.get('/orders?role=client').then(function (res) {
-      _this.orders = res.data.orders;
-      _this.preloader = false;
+      _this2.orders = res.data.orders;
+      _this2.preloader = false;
     });
   }
 });
@@ -43903,6 +43934,18 @@ var render = function() {
         "div",
         { staticClass: "client__list client-tab", attrs: { id: "order-list" } },
         [
+          _c("SearchInput", {
+            staticStyle: { "margin-bottom": "20px" },
+            attrs: { placeholder: "Поиск по номеру заявки..." },
+            model: {
+              value: _vm.searchText,
+              callback: function($$v) {
+                _vm.searchText = $$v
+              },
+              expression: "searchText"
+            }
+          }),
+          _vm._v(" "),
           _vm.preloader ? _c("preloader") : _vm._e(),
           _vm._v(" "),
           _vm.orders.length === 0 && !_vm.preloader

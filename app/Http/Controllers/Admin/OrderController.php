@@ -17,7 +17,11 @@ class OrderController extends Controller
      */
     public function index(Request $request)
     {
-        if ($request->input('role') === 'client')
+        if ($request->input('id') && $request->input('role') === 'client') {
+            $orders = Order::where(['client_id' => auth()->id()])
+                ->where('id', 'LIKE', "%{$request->input('id')}%")
+                ->get();
+        } else if ($request->input('role') === 'client')
             $orders = Order::where(['client_id' => auth()->id()])->get();
         else
             $orders = Order::all();
