@@ -92,6 +92,16 @@ class OrderController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $order = Order::find($id);
+
+        if ($order->delete()) {
+            return response([
+                'status' => 'success'
+            ]);
+        } else {
+            return response([
+                'status' => 'fail'
+            ]);
+        }
     }
 }

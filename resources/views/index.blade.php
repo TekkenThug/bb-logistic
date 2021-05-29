@@ -20,6 +20,8 @@
     <section class="global-wrapper">
         <router-view></router-view>
     </section>
+    <v-footer></v-footer>
+
 </div>
 <script src="js/app.js"></script>
 </body>

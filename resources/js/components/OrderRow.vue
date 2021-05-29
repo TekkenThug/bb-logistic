@@ -7,7 +7,7 @@
 
             <div class="buttons">
                     <button v-if="status === 'pending' || status === 'not-allocated'" class="btn edit-order" title="Изменить"><i class="fas fa-pen"></i></button>
-                    <button v-if="status === 'pending' || status === 'not-allocated'" class="btn delete-order" title="Отменить"><i class="fas fa-times"></i></button>
+                    <button @click="showModal = true" v-if="status === 'pending' || status === 'not-allocated'" class="btn delete-order" title="Отменить"><i class="fas fa-times"></i></button>
                     <button @click="showMore = !showMore" type="button" class="btn btn-more" title="Раскрыть">
                         <i class="fas fa-chevron-down" :class="{ active: showMore }"></i>
                     </button>
@@ -44,6 +44,13 @@
 
             </div>
         </transition>
+
+        <popup v-if="showModal" @serverEvent="deleteOrder" @close="showModal = false">
+            <h3 slot="header">Удаление заявки</h3>
+            <p slot="body">
+                Вы действительно хотите удалить зявку?
+            </p>
+        </popup>
     </div>
 </template>
 
@@ -52,7 +59,8 @@ export default {
     name: "OrderRow",
     data() {
         return {
-            showMore: false
+            showMore: false,
+            showModal: false,
         }
     },
     props: {
@@ -118,7 +126,24 @@ export default {
             return `${date}`;
         },
     },
+    methods: {
+        deleteOrder() {
+            axios.delete(`/orders/${this.id}`)
+                .then((res) => {
+                    if (res.data.status === "success") {
+                        console.log("Успешно удалено");
+                        this.showModal = false;
+                        setTimeout(() => {
+                            this.$destroy();
+                            this.$el.parentNode.removeChild(this.$el);
+                        }, 500);
 
+                    } else {
+                        console.log("Ошибка!")
+                    }
+                })
+        }
+    }
 }
 </script>
 
