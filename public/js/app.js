@@ -3537,23 +3537,63 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  name: "OrderRow"
+  name: "OrderRow",
+  data: function data() {
+    return {
+      showMore: false
+    };
+  },
+  props: {
+    id: {
+      required: true,
+      type: Number
+    },
+    status: {
+      type: String
+    },
+    createDate: {
+      type: String
+    },
+    deliveryType: {
+      type: String
+    },
+    deliveryAddress: {
+      type: String
+    },
+    deliveryTime: {
+      type: String
+    },
+    clientFullname: {
+      type: String
+    },
+    clientPhones: {
+      type: String
+    },
+    clientPay: {
+      type: String
+    },
+    comment: {
+      type: String
+    }
+  },
+  computed: {
+    setStatusOrder: function setStatusOrder() {
+      if (this.status === 'not-allocated') return 'Не распределено';else if (this.status === 'pending') return 'Ожидает забора товара';else if (this.status === 'stock') return 'На складе';else if (this.status === 'courier') return 'У курьера';else if (this.status === 'finish') return 'Отгружено';else if (this.status === 'return') return 'Возврат';
+    },
+    setOrderDate: function setOrderDate() {
+      var rawDate = new Date(this.createDate);
+      var date = new Intl.DateTimeFormat('ru', {
+        hour12: false,
+        year: 'numeric',
+        hour: "numeric",
+        minute: "numeric",
+        month: '2-digit',
+        day: '2-digit'
+      }).format(rawDate);
+      return "".concat(date);
+    }
+  }
 });
 
 /***/ }),
@@ -4297,11 +4337,38 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "OrderList",
   components: {
     OrderRow: _components_OrderRow__WEBPACK_IMPORTED_MODULE_0__.default
+  },
+  data: function data() {
+    return {
+      preloader: true,
+      orders: []
+    };
+  },
+  mounted: function mounted() {
+    var _this = this;
+
+    axios.get('/orders?role=client').then(function (res) {
+      _this.orders = res.data.orders;
+      _this.preloader = false;
+    });
   }
 });
 
@@ -9145,6 +9212,30 @@ var routes = [{
 
 })));
 //# sourceMappingURL=bootstrap.js.map
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/OrderRow.vue?vue&type=style&index=0&id=bc3da1d2&scoped=true&lang=css&":
+/*!***********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/OrderRow.vue?vue&type=style&index=0&id=bc3da1d2&scoped=true&lang=css& ***!
+  \***********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__);
+// Imports
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, "\n.client__item-info[data-v-bc3da1d2] {\n    display: flex;\n    /*flex-direction: column;*/\n    align-items: flex-start;\n    flex-wrap: wrap;\n}\n.client__item-info .info[data-v-bc3da1d2] {\n    margin-top: 0;\n    margin-right: 40px;\n    margin-bottom: 20px;\n}\n.fa-chevron-down[data-v-bc3da1d2] {\n    transition: all 0.2s ease\n}\n.fa-chevron-down.active[data-v-bc3da1d2] {\n    transform: rotate(180deg);\n}\n\n", ""]);
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
 
 /***/ }),
@@ -40334,15 +40425,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _OrderRow_vue_vue_type_template_id_bc3da1d2_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./OrderRow.vue?vue&type=template&id=bc3da1d2&scoped=true& */ "./resources/js/components/OrderRow.vue?vue&type=template&id=bc3da1d2&scoped=true&");
 /* harmony import */ var _OrderRow_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./OrderRow.vue?vue&type=script&lang=js& */ "./resources/js/components/OrderRow.vue?vue&type=script&lang=js&");
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* harmony import */ var _OrderRow_vue_vue_type_style_index_0_id_bc3da1d2_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./OrderRow.vue?vue&type=style&index=0&id=bc3da1d2&scoped=true&lang=css& */ "./resources/js/components/OrderRow.vue?vue&type=style&index=0&id=bc3da1d2&scoped=true&lang=css&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! !../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
+;
 
 
 /* normalize component */
-;
-var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__.default)(
+
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__.default)(
   _OrderRow_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__.default,
   _OrderRow_vue_vue_type_template_id_bc3da1d2_scoped_true___WEBPACK_IMPORTED_MODULE_0__.render,
   _OrderRow_vue_vue_type_template_id_bc3da1d2_scoped_true___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
@@ -41790,6 +41883,23 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/OrderRow.vue?vue&type=style&index=0&id=bc3da1d2&scoped=true&lang=css&":
+/*!*******************************************************************************************************!*\
+  !*** ./resources/js/components/OrderRow.vue?vue&type=style&index=0&id=bc3da1d2&scoped=true&lang=css& ***!
+  \*******************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_style_loader_index_js_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_OrderRow_vue_vue_type_style_index_0_id_bc3da1d2_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-style-loader/index.js!../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./OrderRow.vue?vue&type=style&index=0&id=bc3da1d2&scoped=true&lang=css& */ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/OrderRow.vue?vue&type=style&index=0&id=bc3da1d2&scoped=true&lang=css&");
+/* harmony import */ var _node_modules_vue_style_loader_index_js_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_OrderRow_vue_vue_type_style_index_0_id_bc3da1d2_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_vue_style_loader_index_js_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_OrderRow_vue_vue_type_style_index_0_id_bc3da1d2_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ var __WEBPACK_REEXPORT_OBJECT__ = {};
+/* harmony reexport (unknown) */ for(const __WEBPACK_IMPORT_KEY__ in _node_modules_vue_style_loader_index_js_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_OrderRow_vue_vue_type_style_index_0_id_bc3da1d2_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== "default") __WEBPACK_REEXPORT_OBJECT__[__WEBPACK_IMPORT_KEY__] = () => _node_modules_vue_style_loader_index_js_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_OrderRow_vue_vue_type_style_index_0_id_bc3da1d2_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__[__WEBPACK_IMPORT_KEY__]
+/* harmony reexport (unknown) */ __webpack_require__.d(__webpack_exports__, __WEBPACK_REEXPORT_OBJECT__);
+
+
+/***/ }),
+
 /***/ "./resources/js/components/Preloader.vue?vue&type=style&index=0&id=77d6c8ca&scoped=true&lang=css&":
 /*!********************************************************************************************************!*\
   !*** ./resources/js/components/Preloader.vue?vue&type=style&index=0&id=77d6c8ca&scoped=true&lang=css& ***!
@@ -42572,86 +42682,128 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c(
+    "div",
+    { staticClass: "client__item" },
+    [
+      _c("h4", { staticClass: "client__item-title" }, [
+        _vm._v("\n            Заявка № " + _vm._s(_vm.id) + " "),
+        _c("span", { staticClass: "status", class: _vm.status }, [
+          _vm._v(_vm._s(_vm.setStatusOrder))
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "buttons" }, [
+          _vm._m(0),
+          _vm._v(" "),
+          _vm._m(1),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-more",
+              attrs: { type: "button", title: "Раскрыть" },
+              on: {
+                click: function($event) {
+                  _vm.showMore = !_vm.showMore
+                }
+              }
+            },
+            [
+              _c("i", {
+                staticClass: "fas fa-chevron-down",
+                class: { active: _vm.showMore }
+              })
+            ]
+          )
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "short-descr" }, [
+          _c("span", { staticClass: "date" }, [
+            _vm._v(_vm._s(_vm.setOrderDate))
+          ]),
+          _vm._v(" "),
+          _c("span", { staticClass: "address mx-2" }, [
+            _vm._v(_vm._s(_vm.deliveryAddress))
+          ]),
+          _vm._v(" "),
+          _c("span", { staticClass: "type" }, [
+            _vm._v(_vm._s(_vm.deliveryType))
+          ])
+        ])
+      ]),
+      _vm._v(" "),
+      _c("transition", { attrs: { name: "fade" } }, [
+        _c(
+          "div",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.showMore,
+                expression: "showMore"
+              }
+            ],
+            staticClass: "client__item-info"
+          },
+          [
+            _c("div", { staticClass: "info" }, [
+              _vm._v("\n                    Время доставки: "),
+              _c("span", [_vm._v(_vm._s(_vm.deliveryTime))])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "info" }, [
+              _vm._v("\n                    Имя клиента: "),
+              _c("span", [_vm._v(_vm._s(_vm.clientFullname))])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "info" }, [
+              _vm._v("\n                    Контакты: "),
+              _c("span", [_vm._v(_vm._s(_vm.clientPhones))])
+            ]),
+            _vm._v(" "),
+            _vm.clientPay
+              ? _c("div", { staticClass: "info" }, [
+                  _vm._v("\n                    Плата с клиента: "),
+                  _c("span", [_vm._v("Да - " + _vm._s(_vm.clientPay))])
+                ])
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.comment
+              ? _c("div", { staticClass: "info" }, [
+                  _vm._v("\n                    Комментарий: "),
+                  _c("span", [_vm._v(_vm._s(_vm.comment))])
+                ])
+              : _vm._e(),
+            _vm._v(" "),
+            _c("div", { staticClass: "info" })
+          ]
+        )
+      ])
+    ],
+    1
+  )
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "client__item" }, [
-      _c("h4", { staticClass: "client__item-title" }, [
-        _vm._v("\n            Заявка № "),
-        _c("span", { staticClass: "status" }),
-        _vm._v(" "),
-        _c("div", { staticClass: "buttons" }, [
-          _c("form", { staticClass: "order-change" }, [
-            _c("input", {
-              attrs: { type: "hidden", name: "order-id", value: "" }
-            }),
-            _vm._v(" "),
-            _c(
-              "a",
-              {
-                staticClass: "btn edit-order",
-                attrs: { href: "", title: "Изменить" }
-              },
-              [_c("i", { staticClass: "fas fa-pen" })]
-            ),
-            _vm._v(" "),
-            _c(
-              "button",
-              {
-                staticClass: "btn delete-order",
-                attrs: {
-                  "data-method": "DELETE",
-                  "data-url": "",
-                  title: "Отменить"
-                }
-              },
-              [_c("i", { staticClass: "fas fa-times" })]
-            ),
-            _vm._v(" "),
-            _c(
-              "button",
-              {
-                staticClass: "btn btn-more",
-                attrs: { type: "button", title: "Раскрыть" }
-              },
-              [_c("i", { staticClass: "fas fa-chevron-down" })]
-            )
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "short-descr" }, [
-          _c("span"),
-          _vm._v(" "),
-          _c("span", { staticClass: "address" }),
-          _vm._v(" "),
-          _c("span", { staticClass: "type" })
-        ])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "client__item-info" }, [
-        _c("div", { staticClass: "info" }, [_c("span")]),
-        _vm._v(" "),
-        _c("div", { staticClass: "info" }, [_c("span")]),
-        _vm._v(" "),
-        _c("div", { staticClass: "info" }, [_c("span")]),
-        _vm._v(" "),
-        _c("div", { staticClass: "info" }, [_c("span")]),
-        _vm._v(" "),
-        _c("div", { staticClass: "info" }, [_c("span")]),
-        _vm._v(" "),
-        _c("div", { staticClass: "info" }),
-        _vm._v(" "),
-        _c("div", { staticClass: "info" }),
-        _vm._v(" "),
-        _c("div", { staticClass: "info" }),
-        _vm._v(" "),
-        _c("div", { staticClass: "info" })
-      ])
-    ])
+    return _c(
+      "a",
+      { staticClass: "btn edit-order", attrs: { href: "", title: "Изменить" } },
+      [_c("i", { staticClass: "fas fa-pen" })]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      { staticClass: "btn delete-order", attrs: { title: "Отменить" } },
+      [_c("i", { staticClass: "fas fa-times" })]
+    )
   }
 ]
 render._withStripped = true
@@ -43751,11 +43903,31 @@ var render = function() {
         "div",
         { staticClass: "client__list client-tab", attrs: { id: "order-list" } },
         [
-          _c("h2", { staticClass: "text-center" }, [_vm._v("Заявок нет")]),
+          _vm.preloader ? _c("preloader") : _vm._e(),
           _vm._v(" "),
-          _c("OrderRow")
+          _vm.orders.length === 0 && !_vm.preloader
+            ? _c("h2", { staticClass: "text-center" }, [_vm._v("Заявок нет")])
+            : _vm._e(),
+          _vm._v(" "),
+          _vm._l(_vm.orders, function(order) {
+            return _c("OrderRow", {
+              key: order.id,
+              attrs: {
+                id: order.id,
+                status: order.status,
+                "create-date": order.created_at,
+                "delivery-type": order.delivery_type,
+                "delivery-address": order.delivery_address,
+                "delivery-time": order.delivery_time,
+                "client-phones": order.delivery_phones,
+                "client-fullname": order.delivery_fio,
+                comment: order.delivery_comment,
+                "client-pay": order.delivery_pay
+              }
+            })
+          })
         ],
-        1
+        2
       )
     ])
   ])
@@ -47146,6 +47318,27 @@ if (inBrowser && window.Vue) {
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (VueRouter);
 
+
+/***/ }),
+
+/***/ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/OrderRow.vue?vue&type=style&index=0&id=bc3da1d2&scoped=true&lang=css&":
+/*!****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-style-loader/index.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/OrderRow.vue?vue&type=style&index=0&id=bc3da1d2&scoped=true&lang=css& ***!
+  \****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(/*! !!../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./OrderRow.vue?vue&type=style&index=0&id=bc3da1d2&scoped=true&lang=css& */ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/OrderRow.vue?vue&type=style&index=0&id=bc3da1d2&scoped=true&lang=css&");
+if(content.__esModule) content = content.default;
+if(typeof content === 'string') content = [[module.id, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var add = __webpack_require__(/*! !../../../node_modules/vue-style-loader/lib/addStylesClient.js */ "./node_modules/vue-style-loader/lib/addStylesClient.js").default
+var update = add("134022e4", content, false, {});
+// Hot Module Replacement
+if(false) {}
 
 /***/ }),
 

@@ -15,9 +15,14 @@ class OrderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        if ($request->input('role') === 'client')
+            $orders = Order::where(['client_id' => auth()->id()])->get();
+        else
+            $orders = Order::all();
 
+        return response(['orders' => $orders], 200);
     }
 
     /**
