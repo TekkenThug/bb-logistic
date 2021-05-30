@@ -1,7 +1,11 @@
 <template>
     <div class="row">
         <div class="col-lg-8 offset-lg-2">
-            <CreateForm />
+            <CreateForm :clients="clients"
+                        :couriers="couriers"
+                        @serializeForm="createOrder"
+                        is-admin
+                        new-order/>
         </div>
     </div>
 </template>
@@ -11,7 +15,32 @@ import CreateForm from "../../components/CreateForm"
 
 export default {
     name: "EditOrder",
-    components: { CreateForm }
+    components: {CreateForm},
+    data() {
+        return {
+            couriers: [],
+            clients: []
+        }
+    },
+    methods: {
+        createOrder(obj) {
+            axios.post('/orders', obj)
+                .then(res => {
+                    if (res.data.status === "success") {
+                        this.$router.push('/admin/orders');
+                    }
+                })
+        }
+    },
+    beforeCreate() {
+        axios.get('/clients').then(res => {
+            this.clients = res.data.clients
+        })
+
+        axios.get('/couriers').then(res => {
+            this.couriers = res.data.couriers
+        })
+    }
 }
 </script>
 

@@ -5,12 +5,25 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\Good;
+use App\Models\Role;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class OrderController extends Controller
 {
+
+    protected function getFullData($orders) {
+        foreach ($orders as $order) {
+            $order['goods'] = $order->goods;
+            $order['client_name'] = $order->client->name;
+            $order['courier_name'] = $order->courier ? $order->courier->name : "";
+            $order['courier_phone'] = $order->courier ? $order->courier->phone_number : "";
+        }
+
+        return $orders;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -26,29 +39,36 @@ class OrderController extends Controller
 
             foreach ($orders as $order) {
                 $order['goods'] = $order->goods;
+                $order['courier_name'] = $order->courier ? $order->courier->name : "";
+                $order['courier_phone'] = $order->courier ? $order->courier->phone_number : "";
             }
         } else if ($request->input('role') === 'client') {
             $orders = Order::where(['client_id' => auth()->id()])->get();
 
             foreach ($orders as $order) {
                 $order['goods'] = $order->goods;
+                $order['courier_name'] = $order->courier ? $order->courier->name : "";
+                $order['courier_phone'] = $order->courier ? $order->courier->phone_number : "";
             }
 
             return response(['orders' => $orders], 200);
+        } else if ($request->input('id')) {
+            $orders = Order::where('id', 'LIKE', "%{$request->input('id')}%")
+                ->get()->sortByDesc('created_at');
+
+            $orders = $this->getFullData($orders);
+        } else if ($request->input('filter')) {
+            $orders = Order::where('status', $request->input('filter'))
+                ->get()->sortByDesc('created_at');
+
+            $orders = $this->getFullData($orders);
         }
 
         // Все заявки для админа
         else {
             $orders = Order::all()->sortByDesc('created_at');
-
-            foreach ($orders as $order) {
-                $order['goods'] = $order->goods;
-                $order['client_name'] = $order->client->name;
-                $order['courier_name'] = $order->courier ? $order->courier->name : "";
-                $order['courier_phone'] = $order->courier ? $order->courier->phone_number : "";
-            }
+            $orders = $this->getFullData($orders);
         }
-
 
         return response(['orders' => $orders], 200);
     }
@@ -61,23 +81,43 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
+
         $cost = 0;
         foreach ($request['products'] as $price) {
             $cost += $price['cost'] * $price['count'];
         }
 
-        $order = Order::create([
-            'client_id' => auth()->id(),
-            'delivery_type' => $request['deliveryType'],
-            'delivery_date' => $request['date'],
-            'delivery_time' => $request['time'],
-            'delivery_address' => $request['address'],
-            'delivery_fio' => $request['fullname'],
-            'delivery_phones' => implode("\n", $request['phones']),
-            'delivery_comment' => $request['comment'],
-            'delivery_cost' => $cost,
-            'delivery_pay' => $request['clientPay'],
-        ]);
+        if (User::find(auth()->id())->roles->name === 'admin') {
+            $order = Order::create([
+                'client_id' => $request['user'],
+                'courier_id' => $request['courier'],
+                'status' => $request['deliveryStatus'],
+                'delivery_type' => $request['deliveryType'],
+                'delivery_date' => $request['date'],
+                'delivery_time' => $request['time'],
+                'delivery_address' => $request['address'],
+                'delivery_fio' => $request['fullname'],
+                'delivery_phones' => implode("\n", $request['phones']),
+                'delivery_comment' => $request['comment'],
+                'delivery_cost' => $cost,
+                'delivery_pay' => $request['clientPay'],
+            ]);
+        } else {
+            $order = Order::create([
+                'client_id' => auth()->id(),
+                'delivery_type' => $request['deliveryType'],
+                'delivery_date' => $request['date'],
+                'delivery_time' => $request['time'],
+                'delivery_address' => $request['address'],
+                'delivery_fio' => $request['fullname'],
+                'delivery_phones' => implode("\n", $request['phones']),
+                'delivery_comment' => $request['comment'],
+                'delivery_cost' => $cost,
+                'delivery_pay' => $request['clientPay'],
+            ]);
+        }
+
+
 
         if ($order) {
             foreach ($request['products'] as $product) {
@@ -198,6 +238,4 @@ class OrderController extends Controller
             ]);
         }
     }
-
-
 }

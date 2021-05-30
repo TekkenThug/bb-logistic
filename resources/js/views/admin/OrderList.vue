@@ -4,21 +4,11 @@
             <div class="admin-orders overall">
                 <h4>Список заявок:</h4>
                 <div class="d-flex justify-content-between align-items-center">
-                    <SearchInput class="flex-grow-1" style="margin-right: 10px" placeholder="Поиск по номеру заявки..." />
+                    <SearchInput v-model="searchText" class="flex-grow-1" style="margin-right: 10px" placeholder="Поиск по номеру заявки..." />
                     <router-link to="/admin/new-order" style="width: 200px" class="flex-shrink-0 btn btn-primary">Создать
                         новую заявку</router-link>
                 </div>
-                <div class="admin-client__filter">
-                    <select class="form-select" id="order-filter">
-                        <option class="btn-filter" value="all" selected>Выберите фильтр</option>
-                        <option class="btn-filter" value="not-allocated">Не распределено</option>
-                        <option class="btn-filter" value="pending">Ожидается забор товара</option>
-                        <option class="btn-filter" value="stock">Товар на складе</option>
-                        <option class="btn-filter" value="courier">Товар у курьера</option>
-                        <option class="btn-filter" value="return">Возврат/перенос</option>
-                        <option class="btn-filter" value="finished">Отгружен</option>
-                    </select>
-                </div>
+                <SelectFilter v-model="filter" />
                 <preloader v-if="preloader" />
                 <h2 v-if="orders.length === 0 && !preloader" class="text-center">Заявок нет</h2>
                 <div class="admin__client-list">
@@ -54,9 +44,11 @@
 <script>
 import OrderRow from "../../components/OrderRow";
 import SearchInput from "../../components/SearchInput";
+import SelectFilter from "../../components/SelectFilter";
+
 export default {
     name: "OrderList",
-    components: {SearchInput, OrderRow},
+    components: { SearchInput, OrderRow, SelectFilter },
     data() {
         return {
             role: 'admin',
@@ -65,11 +57,24 @@ export default {
             orders: [],
             couriers: [],
             searchText: "",
+            filter: ""
         }
     },
     watch: {
         searchText() {
             this.getOrders();
+        },
+        filter() {
+            if (!this.stopSearch) {
+                this.stopSearch = true;
+                this.orders= [];
+                this.preloader = true;
+                axios.get(`/orders?filter=${this.filter}`).then(res => {
+                    this.orders = res.data.orders;
+                    this.preloader = false;
+                    this.stopSearch = false;
+                })
+            }
         }
     },
     methods: {
@@ -78,7 +83,7 @@ export default {
                 this.stopSearch = true;
                 this.orders= [];
                 this.preloader = true;
-                axios.get(`/orders?role=client&id=${this.searchText}`).then(res => {
+                axios.get(`/orders?id=${this.searchText}`).then(res => {
                     this.orders = res.data.orders;
                     this.preloader = false;
                     this.stopSearch = false;
@@ -101,9 +106,10 @@ export default {
         updateOrdersPage() {
             if (!this.stopSearch) {
                 this.preloader = true;
-                axios.get('/couriers').then(res => {
+                this.orders = [];
+                axios.get('/orders').then(res => {
                     this.preloader = false;
-                    this.couriers = res.data.couriers;
+                    this.orders = res.data.orders;
                 });
             }
         }

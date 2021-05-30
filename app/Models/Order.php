@@ -11,7 +11,7 @@ class Order extends Model
 
     protected $fillable = [
         'client_id', 'delivery_pay', 'delivery_type', 'delivery_time', 'delivery_address', 'delivery_date', 'delivery_fio', 'delivery_phones', 'delivery_comment',
-        'delivery_cost'
+        'delivery_cost', 'status', 'courier_id'
     ];
 
     public function goods() {

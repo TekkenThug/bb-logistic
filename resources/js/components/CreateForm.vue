@@ -5,45 +5,37 @@
             <h4 v-if="newOrder" class="admin-create__form-title">Создание заявки</h4>
             <h4 v-else class="admin-create__form-title">Изменить заявку</h4>
 
+            <div v-if="isAdmin" class="client__order-row">
+                <h4 class="client__order-subtitle">Изменить статус:</h4>
+                <div class="required">
+                    <select v-model="deliveryStatus" class="form-control" name="order-status" required>
+                        <option value="not-allocated" selected>Не распределен</option>
+                        <option value="pending">Ожидается забор товара</option>
+                        <option value="stock">Товар на складе</option>
+                        <option value="courier">Товар у курьера</option>
+                        <option value="return">Возврат/перенос</option>
+                        <option value="finished">Отгружен</option>
+                    </select>
+                </div>
+            </div>
 
-            <!--            <h3 class="w-100">Заявка №{{ id }}</h3>-->
+            <div v-if="isAdmin" class="client__order-row">
+                <h4 class="client__order-subtitle">От кого заказ:</h4>
+                <div class="required">
+                    <select v-model="user" class="form-control" name="order-client" required>
+                        <option v-for="client in clients" :key="client.id" :value="client.id">{{ client.name }}</option>
+                    </select>
+                </div>
+            </div>
 
-<!--                        <div class="client__order-row">-->
-<!--                            <h4 class="client__order-subtitle">Изменить статус:</h4>-->
-<!--                            <div class="required">-->
-<!--                                <select class="form-control" name="order-status" required>-->
-<!--                                    <option value="not-allocated" selected>Не распределен</option>-->
-<!--                                    <option value="pending">Ожидается забор товара</option>-->
-<!--                                    <option value="stock">Товар на складе</option>-->
-<!--                                    <option value="courier">Товар у курьера</option>-->
-<!--                                    <option value="return">Возврат/перенос</option>-->
-<!--                                    <option value="finished">Отгружен</option>-->
-<!--                                </select>-->
-<!--                            </div>-->
-<!--                        </div>-->
-
-            <!--            <div class="client__order-row">-->
-            <!--                <h4 class="client__order-subtitle">От кого заказ:</h4>-->
-            <!--                <div class="required">-->
-            <!--                    <select class="form-control" name="order-client" required>-->
-            <!--                        <option value="{{ Auth::user()->id }}" selected>От администратора</option>-->
-            <!--                        @foreach($clients as $client)-->
-            <!--                        <option value="{{ $client->id }}">{{ $client->name }}</option>-->
-            <!--                        @endforeach-->
-            <!--                    </select>-->
-            <!--                </div>-->
-            <!--            </div>-->
-
-            <!--            <div class="client__order-row">-->
-            <!--                <h4 class="client__order-subtitle">Курьер:</h4>-->
-            <!--                <div class="required">-->
-            <!--                    <select class="form-control" name="order-courier" required>-->
-            <!--                        @foreach($couriers as $courier)-->
-            <!--                        <option value="{{ $courier->id }}">{{ $courier->name }} {{ $courier->courier_comment }}</option>-->
-            <!--                        @endforeach-->
-            <!--                    </select>-->
-            <!--                </div>-->
-            <!--            </div>-->
+            <div v-if="isAdmin" class="client__order-row">
+                <h4 class="client__order-subtitle">Курьер:</h4>
+                <div class="required">
+                    <select v-model="courier" class="form-control" name="order-courier" required>
+                        <option v-for="courier in couriers" :key="courier.id" :value="courier.id">{{ courier.name }}</option>
+                    </select>
+                </div>
+            </div>
 
             <div class="client__order-row">
                 <h4 class="client__order-subtitle">Тип доставки:</h4>
@@ -59,18 +51,6 @@
                 </div>
 
             </div>
-
-            <!--            <div class="client__order-row">-->
-            <!--                <h4 class="client__order-subtitle">Тип заявки:</h4>-->
-            <!--                <div class="client__order-field">-->
-            <!--                    <label for="order-type-1">Забор</label>-->
-            <!--                    <input type="radio" name="order-type" id="order-type-1" value="Забор" checked>-->
-            <!--                </div>-->
-            <!--                <div class="client__order-field">-->
-            <!--                    <label for="order-type-2">Доставка</label>-->
-            <!--                    <input type="radio" name="order-type" id="order-type-2" value="Доставка">-->
-            <!--                </div>-->
-            <!--            </div>-->
 
             <div class="client__order-row">
                 <h4 class="client__order-subtitle">Дата доставки:</h4>
@@ -154,63 +134,6 @@
                           placeholder="Комментарий к заказу"></textarea>
             </div>
 
-            <!--            <div class="client__order-row">-->
-            <!--                <h4 class="client__order-subtitle">Изменить статус:</h4>-->
-            <!--                <div class="required">-->
-            <!--                    <select class="form-control" name="order-status" required>-->
-            <!--                        <option value="not-allocated" @if($status == "not-allocated") selected @endif>Не распределен</option>-->
-            <!--                        <option value="pending" @if($status == "pending") selected @endif>Ожидается забор товара-->
-            <!--                        </option>-->
-            <!--                        <option value="stock" @if($status == "stock") selected @endif>Товар на складе</option>-->
-            <!--                        <option value="courier" @if($status == "courier") selected @endif>Товар у курьера</option>-->
-            <!--                        <option value="return" @if($status == "return") selected @endif>Возврат/перенос</option>-->
-            <!--                        <option value="finished" @if($status == "finished") selected @endif>Отгружен</option>-->
-            <!--                    </select>-->
-            <!--                </div>-->
-            <!--            </div>-->
-
-            <!--            <div class="client__order-row">-->
-            <!--                <h4 class="client__order-subtitle">От кого заказ:</h4>-->
-            <!--                <div class="required">-->
-            <!--                    <select class="form-control" name="order-client" required>-->
-
-            <!--                        <option @if (App\User::find($client_id)->roles->name === "admin") selected-->
-            <!--                            @endif value="{{ Auth::user()->id }}">От администратора-->
-            <!--                        </option>-->
-
-            <!--                        @foreach($clients as $client)-->
-            <!--                        <option @if($client_id == $client->id) selected-->
-            <!--                            @endif value="{{ $client->id }}">{{ $client->name }}</option>-->
-            <!--                        @endforeach-->
-            <!--                    </select>-->
-            <!--                </div>-->
-            <!--            </div>-->
-
-            <!--            <div class="client__order-row">-->
-            <!--                <h4 class="client__order-subtitle">Курьер:</h4>-->
-            <!--                <div class="required">-->
-            <!--                    <select class="form-control" name="order-courier" required>-->
-            <!--                        @foreach($couriers as $courier)-->
-            <!--                        <option @if($courier_id == $courier->id) selected-->
-            <!--                            @endif value="{{ $courier->id }}">{{ $courier->name }} {{ $courier->courier_comment }}</option>-->
-            <!--                        @endforeach-->
-            <!--                    </select>-->
-            <!--                </div>-->
-            <!--            </div>-->
-
-
-            <!--            <div class="client__order-row">-->
-            <!--                <h4 class="client__order-subtitle">Тип заявки:</h4>-->
-            <!--                <div class="client__order-field">-->
-            <!--                    <label for="order-type-1">Забор</label>-->
-            <!--                    <input type="radio" name="order-type" id="order-type-1" value="Забор" checked>-->
-            <!--                </div>-->
-            <!--                <div class="client__order-field">-->
-            <!--                    <label for="order-type-2">Доставка</label>-->
-            <!--                    <input type="radio" name="order-type" id="order-type-2" value="Доставка">-->
-            <!--                </div>-->
-            <!--            </div>-->
-
             <button v-if="newOrder" @click.prevent="serializeForm" class="btn btn-primary">Оформить доставку</button>
             <button v-else @click.prevent="serializeForm" class="btn btn-primary">Сохранить изменения</button>
         </form>
@@ -238,7 +161,19 @@ export default {
             default() {
                 return {}
             }
-        }
+        },
+        clients: {
+            type: Array,
+            default() {
+                return []
+            }
+        },
+        couriers: {
+            type: Array,
+            default() {
+                return []
+            }
+        },
     },
     data() {
         return {
@@ -252,6 +187,10 @@ export default {
             clientPay: false,
             clientPayCost: null,
             comment: "",
+
+            user: "",
+            courier: "",
+            deliveryStatus: "not-allocated"
         }
     },
     methods: {
@@ -272,7 +211,11 @@ export default {
                 phones: this.contacts,
                 products: this.products,
                 clientPay: this.clientPayCost,
-                comment: this.comment
+                comment: this.comment,
+
+                user: this.user,
+                courier: this.courier,
+                deliveryStatus: this.deliveryStatus
             })
         },
         completedForm() {
