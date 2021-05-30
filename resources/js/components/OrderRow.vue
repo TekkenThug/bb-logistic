@@ -6,7 +6,7 @@
 <!--            <span  style="font-size: 16px" class="mt-2 d-block">Курьер: {{ $courier }}, {{ $courierPhone }}</span>-->
 
             <div class="buttons">
-                    <button v-if="status === 'pending' || status === 'not-allocated'" class="btn edit-order" title="Изменить"><i class="fas fa-pen"></i></button>
+                    <router-link :to="{ path: '/client/list/' + id}" v-if="status === 'pending' || status === 'not-allocated'" class="btn edit-order" title="Изменить"><i class="fas fa-pen"></i></router-link>
                     <button @click="showModal = true" v-if="status === 'pending' || status === 'not-allocated'" class="btn delete-order" title="Отменить"><i class="fas fa-times"></i></button>
                     <button @click="showMore = !showMore" type="button" class="btn btn-more" title="Раскрыть">
                         <i class="fas fa-chevron-down" :class="{ active: showMore }"></i>
@@ -22,13 +22,16 @@
         <transition name="fade">
             <div v-show="showMore" class="client__item-info">
                 <div class="info">
+                    Дата доставки: <span>{{ deliveryDate }}</span>
+                </div>
+                <div class="info">
                     Время доставки: <span>{{ deliveryTime }}</span>
                 </div>
                 <div class="info">
                     Имя клиента: <span>{{ clientFullname }}</span>
                 </div>
                 <div class="info">
-                    Контакты: <span>{{ clientPhones }}</span>
+                    Контакты: <span style="white-space: break-spaces">{{ clientPhones }}</span>
                 </div>
                 <div v-if="clientPay" class="info">
                     Плата с клиента: <span>Да - {{ clientPay }}</span>
@@ -37,9 +40,8 @@
                     Комментарий: <span>{{ comment }}</span>
                 </div>
                 <div class="info">
-                    <!--                @foreach($products as $product)-->
-                    <!--                <span>{{ $product->name }} - {{ $product->count }} шт.</span>-->
-                    <!--                @endforeach-->
+                    Товары к доставке:
+                    <span v-for="product in products" :key="product.id">{{ product.name }} - {{ product.count }} шт.</span>
                 </div>
 
             </div>
@@ -80,6 +82,9 @@ export default {
         deliveryAddress: {
             type: String
         },
+        deliveryDate: {
+            type: String
+        },
         deliveryTime: {
             type: String
         },
@@ -94,6 +99,9 @@ export default {
         },
         comment: {
             type: String,
+        },
+        products: {
+            type: Array
         }
     },
     computed: {

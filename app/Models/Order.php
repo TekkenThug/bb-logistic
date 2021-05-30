@@ -13,4 +13,8 @@ class Order extends Model
         'client_id', 'delivery_pay', 'delivery_type', 'delivery_time', 'delivery_address', 'delivery_date', 'delivery_fio', 'delivery_phones', 'delivery_comment',
         'delivery_cost'
     ];
+
+    public function goods() {
+        return $this->hasMany(Good::class);
+    }
 }

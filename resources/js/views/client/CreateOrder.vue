@@ -12,11 +12,6 @@ import CreateForm from "../../components/CreateForm";
 export default {
     name: "CreateOrder",
     components: { CreateForm },
-    data() {
-        return {
-            clean: false,
-        }
-    },
     methods: {
         createOrder(obj) {
             axios.post('/orders', obj)

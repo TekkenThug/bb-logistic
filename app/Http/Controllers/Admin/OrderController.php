@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
+use App\Models\Good;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -21,8 +22,16 @@ class OrderController extends Controller
             $orders = Order::where(['client_id' => auth()->id()])
                 ->where('id', 'LIKE', "%{$request->input('id')}%")
                 ->get();
-        } else if ($request->input('role') === 'client')
+        } else if ($request->input('role') === 'client') {
             $orders = Order::where(['client_id' => auth()->id()])->get();
+
+            foreach ($orders as $order) {
+                $order['goods'] = $order->goods;
+            }
+
+            return response(['orders' => $orders], 200);
+        }
+
         else
             $orders = Order::all();
 
@@ -55,8 +64,19 @@ class OrderController extends Controller
             'delivery_pay' => $request['clientPay'],
         ]);
 
-        if ($order)
+        if ($order) {
+            foreach ($request['products'] as $product) {
+                Good::create([
+                    'order_id' => $order->id,
+                    'name' => $product['name'],
+                    'count' => $product['count'],
+                    'cost' => $product['cost']
+                ]);
+            }
+
             return response(['status' => 'success'], 200);
+        }
+
 
         return response([], 500);
     }
@@ -67,9 +87,23 @@ class OrderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id, Request $request)
     {
-        //
+        if ($request->input('role') == 'client') {
+            $order = Order::where(['id' => $id, 'client_id' => auth()->id()])->first();
+
+            if (!$order) {
+                return response([
+                    'status' => 'fail'
+                ], 501);
+            }
+
+            $order['goods'] = $order->goods;
+            return response([
+                'status' => 'success',
+                'order' => $order
+            ]);
+        }
     }
 
     /**
@@ -81,7 +115,42 @@ class OrderController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        if ($request->input('role') === 'client') {
+
+            $cost = 0;
+            foreach ($request['products'] as $price) {
+                $cost += $price['cost'] * $price['count'];
+            }
+
+            $order = Order::where(['id' => $id,'client_id' => auth()->id()])
+                ->update([
+                'delivery_type' => $request['deliveryType'],
+                'delivery_date' => $request['date'],
+                'delivery_time' => $request['time'],
+                'delivery_address' => $request['address'],
+                'delivery_fio' => $request['fullname'],
+                'delivery_phones' => implode("\n", $request['phones']),
+                'delivery_comment' => $request['comment'],
+                'delivery_cost' => $cost,
+                'delivery_pay' => $request['clientPay'],
+            ]);
+
+            if ($order) {
+                $order = Order::find($id);
+                $order->goods()->delete();
+
+                foreach ($request['products'] as $product) {
+                    Good::create([
+                        'order_id' => $order->id,
+                        'name' => $product['name'],
+                        'count' => $product['count'],
+                        'cost' => $product['cost']
+                    ]);
+                }
+
+                return response(['status' => 'success'], 200);
+            }
+        }
     }
 
     /**
@@ -104,4 +173,6 @@ class OrderController extends Controller
             ]);
         }
     }
+
+
 }

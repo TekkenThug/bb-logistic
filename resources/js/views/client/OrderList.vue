@@ -17,10 +17,12 @@
                           :delivery-type="order.delivery_type"
                           :delivery-address="order.delivery_address"
                           :delivery-time="order.delivery_time"
+                          :delivery-date="order.delivery_date"
                           :client-phones="order.delivery_phones"
                           :client-fullname="order.delivery_fio"
                           :comment="order.delivery_comment"
                           :client-pay="order.delivery_pay"
+                          :products="order.goods"
                 />
             </div>
         </div>

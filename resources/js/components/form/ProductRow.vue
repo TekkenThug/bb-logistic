@@ -1,15 +1,15 @@
 <template>
     <tr>
         <td class="client__order-item-name">
-            <input @input="send($event, 'name')" class="form-control" required name="delivery-info" type="text"
+            <input :value="info.name" @input="send($event, 'name')" class="form-control" required name="delivery-info" type="text"
                    placeholder="Наименование товара">
         </td>
         <td class="client__order-item-cost">
-            <input  @input="send($event, 'count')"  class="form-control" required name="delivery-info" type="text"
+            <input :value="info.cost"  @input="send($event, 'cost')"  class="form-control" required name="delivery-info" type="text"
                    placeholder="Стоимость шт.">
         </td>
         <td class="client__order-item-count">
-            <input @input="send($event, 'cost')"  required class="form-control" name="delivery-info" type="number" min="1"
+            <input :value="info.count"  @input="send($event, 'count')"  required class="form-control" name="delivery-info" type="number" min="1"
                    placeholder="Кол-во">
         </td>
     </tr>

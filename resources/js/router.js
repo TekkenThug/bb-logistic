@@ -9,6 +9,7 @@ import NotFound from "./views/NotFound";
 import Client from "./views/client/Client";
 import ClientOrderList from "./views/client/OrderList";
 import ClientCreateOrder from "./views/client/CreateOrder";
+import ClientEditOrder from "./views/client/EditOrder"
 
 import Courier from "./views/courier/Courier";
 import CourierOpenOrders from "./views/courier/OpenOrders";
@@ -61,6 +62,11 @@ const routes = [
                 path: "list",
                 component: ClientOrderList,
                 meta: {title: postfix("Список заявок")},
+            },
+            {
+                path: "list/:order_id",
+                component: ClientEditOrder,
+                meta: {title: postfix("Изменить заказ")},
             }
         ]
     },
