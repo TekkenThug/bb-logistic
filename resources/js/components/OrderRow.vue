@@ -1,13 +1,23 @@
 <template>
-    <div class="client__item">
+    <div class="client__item" :class="{ 'dvd': deliveryType === 'ДВД' }">
         <h4 class="client__item-title">
-            Заявка № {{ id }} <span class="status" :class="status">{{ setStatusOrder }}</span>
+            {{ role === 'admin' ? `№ ${id} - ${userName}` : `Заявка № ${id}` }} <span class="status" :class="status">{{ setStatusOrder }}</span>
 
-<!--            <span  style="font-size: 16px" class="mt-2 d-block">Курьер: {{ $courier }}, {{ $courierPhone }}</span>-->
+            <span v-if="courierName" style="font-size: 16px" class="mt-2 d-block">Курьер: {{ courierName }}, {{ courierPhone }}</span>
 
             <div class="buttons">
-                    <router-link :to="{ path: '/client/list/' + id}" v-if="status === 'pending' || status === 'not-allocated'" class="btn edit-order" title="Изменить"><i class="fas fa-pen"></i></router-link>
-                    <button @click="showModal = true" v-if="status === 'pending' || status === 'not-allocated'" class="btn delete-order" title="Отменить"><i class="fas fa-times"></i></button>
+                    <router-link :to="{ path: '/client/list/' + id}"
+                                 v-if="(status === 'not-allocated' && role === 'client') || role === 'admin'"
+                                 class="btn edit-order"
+                                 title="Изменить">
+                        <i class="fas fa-pen"></i>
+                    </router-link>
+                    <button @click="showModal = true"
+                            v-if="(status === 'not-allocated' && role === 'client') || role === 'admin'"
+                            class="btn delete-order"
+                            title="Отменить">
+                        <i class="fas fa-times"></i>
+                    </button>
                     <button @click="showMore = !showMore" type="button" class="btn btn-more" title="Раскрыть">
                         <i class="fas fa-chevron-down" :class="{ active: showMore }"></i>
                     </button>
@@ -16,6 +26,15 @@
                 <span class="date">{{ setOrderDate }}</span>
                 <span class="address mx-2">{{ deliveryAddress }}</span>
                 <span class="type">{{ deliveryType }}</span>
+                <div v-if="selectCourier && role === 'admin'" class="d-flex align-items-center">
+                    <select v-model="courierId" class="form-select d-inline-block">
+                        <option value="not" selected disabled>Выберите курьера</option>
+                        <option v-for="courier in couriers" :key="courier.id" :value="courier.id">
+                            {{ courier.name }} - {{ courier.courier_comment }}
+                        </option>
+                    </select>
+                    <button @click="$emit('setCourier', id, courierId)" class="btn btn-primary">Назначить</button>
+                </div>
             </div>
         </h4>
 
@@ -63,6 +82,8 @@ export default {
         return {
             showMore: false,
             showModal: false,
+            selectCourier: this.status === "not-allocated",
+            courierId: 'not',
         }
     },
     props: {
@@ -102,7 +123,30 @@ export default {
         },
         products: {
             type: Array
-        }
+        },
+        role: {
+            type: String,
+            default: 'client'
+        },
+        userName: {
+            type: String,
+            default: 'User'
+        },
+        couriers: {
+            type: Array,
+            default() {
+                return [];
+            }
+        },
+
+        courierName: {
+            type: String,
+            default: ""
+        },
+        courierPhone: {
+            type: String,
+            default: ""
+        },
     },
     computed: {
         setStatusOrder() {
@@ -150,7 +194,7 @@ export default {
                         console.log("Ошибка!")
                     }
                 })
-        }
+        },
     }
 }
 </script>
@@ -173,4 +217,9 @@ export default {
         transform: rotate(180deg);
     }
 
+    .form-select {
+        margin: 15px 0;
+        margin-right: 10px;
+        max-width: 400px;
+    }
 </style>

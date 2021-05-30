@@ -17,4 +17,12 @@ class Order extends Model
     public function goods() {
         return $this->hasMany(Good::class);
     }
+
+    public function client() {
+        return $this->belongsTo(User::class, 'client_id');
+    }
+
+    public function courier() {
+        return $this->belongsTo(User::class, 'courier_id');
+    }
 }

@@ -18,10 +18,15 @@ class OrderController extends Controller
      */
     public function index(Request $request)
     {
+        // Поиск по номеру для клиента
         if ($request->input('id') && $request->input('role') === 'client') {
             $orders = Order::where(['client_id' => auth()->id()])
                 ->where('id', 'LIKE', "%{$request->input('id')}%")
                 ->get();
+
+            foreach ($orders as $order) {
+                $order['goods'] = $order->goods;
+            }
         } else if ($request->input('role') === 'client') {
             $orders = Order::where(['client_id' => auth()->id()])->get();
 
@@ -32,8 +37,18 @@ class OrderController extends Controller
             return response(['orders' => $orders], 200);
         }
 
-        else
-            $orders = Order::all();
+        // Все заявки для админа
+        else {
+            $orders = Order::all()->sortByDesc('created_at');
+
+            foreach ($orders as $order) {
+                $order['goods'] = $order->goods;
+                $order['client_name'] = $order->client->name;
+                $order['courier_name'] = $order->courier ? $order->courier->name : "";
+                $order['courier_phone'] = $order->courier ? $order->courier->phone_number : "";
+            }
+        }
+
 
         return response(['orders' => $orders], 200);
     }
@@ -150,6 +165,16 @@ class OrderController extends Controller
 
                 return response(['status' => 'success'], 200);
             }
+        }
+        else if ($request->input('role') === 'admin' && $request->input('fast') === 'true') {
+            $order = Order::where('id', $id)
+                ->update([
+                'courier_id' => $request['courier_id'],
+                    'status' => 'pending'
+                ]);
+
+            if ($order) return response(['status' => 'success'], 200);
+            else return response(['status' => 'fail'], 500);
         }
     }
 

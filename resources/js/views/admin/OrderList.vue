@@ -19,8 +19,31 @@
                         <option class="btn-filter" value="finished">Отгружен</option>
                     </select>
                 </div>
+                <preloader v-if="preloader" />
+                <h2 v-if="orders.length === 0 && !preloader" class="text-center">Заявок нет</h2>
                 <div class="admin__client-list">
-                    <OrderRow />
+                    <OrderRow
+                        v-for="order in orders"
+                        :key="order.id"
+                        :id="order.id"
+                        :status="order.status"
+                        :create-date="order.created_at"
+                        :delivery-type="order.delivery_type"
+                        :delivery-address="order.delivery_address"
+                        :delivery-time="order.delivery_time"
+                        :delivery-date="order.delivery_date"
+                        :client-phones="order.delivery_phones"
+                        :client-fullname="order.delivery_fio"
+                        :comment="order.delivery_comment"
+                        :client-pay="order.delivery_pay"
+                        :products="order.goods"
+                        :role="role"
+                        :user-name="order.client_name"
+                        :couriers="couriers"
+                        :courier-name="order.courier_name"
+                        :courier-phone="order.courier_phone"
+                        @setCourier="setCourier"
+                    />
                 </div>
             </div>
 <!--            {{ $orders->links() }}-->
@@ -33,7 +56,68 @@ import OrderRow from "../../components/OrderRow";
 import SearchInput from "../../components/SearchInput";
 export default {
     name: "OrderList",
-    components: {SearchInput, OrderRow}
+    components: {SearchInput, OrderRow},
+    data() {
+        return {
+            role: 'admin',
+            preloader: true,
+            stopSearch: false,
+            orders: [],
+            couriers: [],
+            searchText: "",
+        }
+    },
+    watch: {
+        searchText() {
+            this.getOrders();
+        }
+    },
+    methods: {
+        getOrders() {
+            if (!this.stopSearch) {
+                this.stopSearch = true;
+                this.orders= [];
+                this.preloader = true;
+                axios.get(`/orders?role=client&id=${this.searchText}`).then(res => {
+                    this.orders = res.data.orders;
+                    this.preloader = false;
+                    this.stopSearch = false;
+                })
+            }
+        },
+        setCourier(id, courierId) {
+            if (+courierId) {
+                axios.patch(`/orders/${id}?role=admin&fast=true`, {
+                    courier_id: courierId
+                }).then(res => {
+                    if (res.data.status === "success") {
+                        this.updateOrdersPage();
+                    } else {
+                        console.log("Ошибка на получении заявок")
+                    }
+                })
+            }
+        },
+        updateOrdersPage() {
+            if (!this.stopSearch) {
+                this.preloader = true;
+                axios.get('/couriers').then(res => {
+                    this.preloader = false;
+                    this.couriers = res.data.couriers;
+                });
+            }
+        }
+    },
+    mounted() {
+        axios.get('/orders?role=admin').then(res => {
+            this.orders = res.data.orders;
+            this.preloader = false;
+        });
+
+        axios.get('/couriers').then(res => {
+            this.couriers = res.data.couriers;
+        });
+    }
 }
 </script>
 

@@ -23,6 +23,8 @@
                           :comment="order.delivery_comment"
                           :client-pay="order.delivery_pay"
                           :products="order.goods"
+                          :courier-name="order.courier_name"
+                          :courier-phone="order.courier_phone"
                 />
             </div>
         </div>

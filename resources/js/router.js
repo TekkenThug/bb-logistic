@@ -115,6 +115,11 @@ const routes = [
                 component: AdminClientList
             },
             {
+                path: "clients/:id",
+                meta: {title: postfix("Клиент")},
+                component: AdminClientList
+            },
+            {
                 path: "couriers",
                 meta: {title: postfix("Список курьеров")},
                 component: AdminCourierList

@@ -1,8 +1,8 @@
 <template>
-    <a v-if="role === 'client'" class="admin-client-list__item" href="">
+    <router-link :to="{ path: '/admin/clients/' + id}" v-if="role === 'client'" class="admin-client-list__item" href="">
         <h4>{{ name }} <span>{{ email }}</span></h4>
         <span>Aдрес забора: {{ address }}</span>
-    </a>
+    </router-link>
 
     <a v-else-if="role === 'courier'" class="admin-client-list__item" href="">
         <h4>{{ name }} <span>{{ comment }}</span></h4>

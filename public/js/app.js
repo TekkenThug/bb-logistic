@@ -3567,12 +3567,33 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "OrderRow",
   data: function data() {
     return {
       showMore: false,
-      showModal: false
+      showModal: false,
+      selectCourier: this.status === "not-allocated",
+      courierId: 'not'
     };
   },
   props: {
@@ -3612,6 +3633,28 @@ __webpack_require__.r(__webpack_exports__);
     },
     products: {
       type: Array
+    },
+    role: {
+      type: String,
+      "default": 'client'
+    },
+    userName: {
+      type: String,
+      "default": 'User'
+    },
+    couriers: {
+      type: Array,
+      "default": function _default() {
+        return [];
+      }
+    },
+    courierName: {
+      type: String,
+      "default": ""
+    },
+    courierPhone: {
+      type: String,
+      "default": ""
     }
   },
   computed: {
@@ -4370,6 +4413,29 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -4377,6 +4443,74 @@ __webpack_require__.r(__webpack_exports__);
   components: {
     SearchInput: _components_SearchInput__WEBPACK_IMPORTED_MODULE_1__.default,
     OrderRow: _components_OrderRow__WEBPACK_IMPORTED_MODULE_0__.default
+  },
+  data: function data() {
+    return {
+      role: 'admin',
+      preloader: true,
+      stopSearch: false,
+      orders: [],
+      couriers: [],
+      searchText: ""
+    };
+  },
+  watch: {
+    searchText: function searchText() {
+      this.getOrders();
+    }
+  },
+  methods: {
+    getOrders: function getOrders() {
+      var _this = this;
+
+      if (!this.stopSearch) {
+        this.stopSearch = true;
+        this.orders = [];
+        this.preloader = true;
+        axios.get("/orders?role=client&id=".concat(this.searchText)).then(function (res) {
+          _this.orders = res.data.orders;
+          _this.preloader = false;
+          _this.stopSearch = false;
+        });
+      }
+    },
+    setCourier: function setCourier(id, courierId) {
+      var _this2 = this;
+
+      if (+courierId) {
+        axios.patch("/orders/".concat(id, "?role=admin&fast=true"), {
+          courier_id: courierId
+        }).then(function (res) {
+          if (res.data.status === "success") {
+            _this2.updateOrdersPage();
+          } else {
+            console.log("Ошибка на получении заявок");
+          }
+        });
+      }
+    },
+    updateOrdersPage: function updateOrdersPage() {
+      var _this3 = this;
+
+      if (!this.stopSearch) {
+        this.preloader = true;
+        axios.get('/couriers').then(function (res) {
+          _this3.preloader = false;
+          _this3.couriers = res.data.couriers;
+        });
+      }
+    }
+  },
+  mounted: function mounted() {
+    var _this4 = this;
+
+    axios.get('/orders?role=admin').then(function (res) {
+      _this4.orders = res.data.orders;
+      _this4.preloader = false;
+    });
+    axios.get('/couriers').then(function (res) {
+      _this4.couriers = res.data.couriers;
+    });
   }
 });
 
@@ -4535,6 +4669,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _components_OrderRow__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../components/OrderRow */ "./resources/js/components/OrderRow.vue");
 /* harmony import */ var _components_SearchInput__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../components/SearchInput */ "./resources/js/components/SearchInput.vue");
+//
+//
 //
 //
 //
@@ -5019,6 +5155,12 @@ var routes = [{
     path: "clients",
     meta: {
       title: postfix("Список клиентов")
+    },
+    component: _views_admin_ClientList__WEBPACK_IMPORTED_MODULE_13__.default
+  }, {
+    path: "clients/:id",
+    meta: {
+      title: postfix("Клиент")
     },
     component: _views_admin_ClientList__WEBPACK_IMPORTED_MODULE_13__.default
   }, {
@@ -9530,7 +9672,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.client__item-info[data-v-bc3da1d2] {\n    display: flex;\n    align-items: flex-start;\n    flex-wrap: wrap;\n}\n.client__item-info .info[data-v-bc3da1d2] {\n    margin-top: 0;\n    margin-right: 40px;\n    margin-bottom: 20px;\n}\n.fa-chevron-down[data-v-bc3da1d2] {\n    transition: all 0.2s ease\n}\n.fa-chevron-down.active[data-v-bc3da1d2] {\n    transform: rotate(180deg);\n}\n\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.client__item-info[data-v-bc3da1d2] {\n    display: flex;\n    align-items: flex-start;\n    flex-wrap: wrap;\n}\n.client__item-info .info[data-v-bc3da1d2] {\n    margin-top: 0;\n    margin-right: 40px;\n    margin-bottom: 20px;\n}\n.fa-chevron-down[data-v-bc3da1d2] {\n    transition: all 0.2s ease\n}\n.fa-chevron-down.active[data-v-bc3da1d2] {\n    transform: rotate(180deg);\n}\n.form-select[data-v-bc3da1d2] {\n    margin: 15px 0;\n    margin-right: 10px;\n    max-width: 400px;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -43423,19 +43565,46 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "client__item" },
+    { staticClass: "client__item", class: { dvd: _vm.deliveryType === "ДВД" } },
     [
       _c("h4", { staticClass: "client__item-title" }, [
-        _vm._v("\n            Заявка № " + _vm._s(_vm.id) + " "),
+        _vm._v(
+          "\n        " +
+            _vm._s(
+              _vm.role === "admin"
+                ? "№ " + _vm.id + " - " + _vm.userName
+                : "Заявка № " + _vm.id
+            ) +
+            " "
+        ),
         _c("span", { staticClass: "status", class: _vm.status }, [
           _vm._v(_vm._s(_vm.setStatusOrder))
         ]),
+        _vm._v(" "),
+        _vm.courierName
+          ? _c(
+              "span",
+              {
+                staticClass: "mt-2 d-block",
+                staticStyle: { "font-size": "16px" }
+              },
+              [
+                _vm._v(
+                  "Курьер: " +
+                    _vm._s(_vm.courierName) +
+                    ", " +
+                    _vm._s(_vm.courierPhone)
+                )
+              ]
+            )
+          : _vm._e(),
         _vm._v(" "),
         _c(
           "div",
           { staticClass: "buttons" },
           [
-            _vm.status === "pending" || _vm.status === "not-allocated"
+            (_vm.status === "not-allocated" && _vm.role === "client") ||
+            _vm.role === "admin"
               ? _c(
                   "router-link",
                   {
@@ -43449,7 +43618,8 @@ var render = function() {
                 )
               : _vm._e(),
             _vm._v(" "),
-            _vm.status === "pending" || _vm.status === "not-allocated"
+            (_vm.status === "not-allocated" && _vm.role === "client") ||
+            _vm.role === "admin"
               ? _c(
                   "button",
                   {
@@ -43498,7 +43668,78 @@ var render = function() {
           _vm._v(" "),
           _c("span", { staticClass: "type" }, [
             _vm._v(_vm._s(_vm.deliveryType))
-          ])
+          ]),
+          _vm._v(" "),
+          _vm.selectCourier && _vm.role === "admin"
+            ? _c("div", { staticClass: "d-flex align-items-center" }, [
+                _c(
+                  "select",
+                  {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.courierId,
+                        expression: "courierId"
+                      }
+                    ],
+                    staticClass: "form-select d-inline-block",
+                    on: {
+                      change: function($event) {
+                        var $$selectedVal = Array.prototype.filter
+                          .call($event.target.options, function(o) {
+                            return o.selected
+                          })
+                          .map(function(o) {
+                            var val = "_value" in o ? o._value : o.value
+                            return val
+                          })
+                        _vm.courierId = $event.target.multiple
+                          ? $$selectedVal
+                          : $$selectedVal[0]
+                      }
+                    }
+                  },
+                  [
+                    _c(
+                      "option",
+                      { attrs: { value: "not", selected: "", disabled: "" } },
+                      [_vm._v("Выберите курьера")]
+                    ),
+                    _vm._v(" "),
+                    _vm._l(_vm.couriers, function(courier) {
+                      return _c(
+                        "option",
+                        { key: courier.id, domProps: { value: courier.id } },
+                        [
+                          _vm._v(
+                            "\n                        " +
+                              _vm._s(courier.name) +
+                              " - " +
+                              _vm._s(courier.courier_comment) +
+                              "\n                    "
+                          )
+                        ]
+                      )
+                    })
+                  ],
+                  2
+                ),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-primary",
+                    on: {
+                      click: function($event) {
+                        return _vm.$emit("setCourier", _vm.id, _vm.courierId)
+                      }
+                    }
+                  },
+                  [_vm._v("Назначить")]
+                )
+              ])
+            : _vm._e()
         ])
       ]),
       _vm._v(" "),
@@ -43518,22 +43759,22 @@ var render = function() {
           },
           [
             _c("div", { staticClass: "info" }, [
-              _vm._v("\n                    Дата доставки: "),
+              _vm._v("\n                Дата доставки: "),
               _c("span", [_vm._v(_vm._s(_vm.deliveryDate))])
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "info" }, [
-              _vm._v("\n                    Время доставки: "),
+              _vm._v("\n                Время доставки: "),
               _c("span", [_vm._v(_vm._s(_vm.deliveryTime))])
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "info" }, [
-              _vm._v("\n                    Имя клиента: "),
+              _vm._v("\n                Имя клиента: "),
               _c("span", [_vm._v(_vm._s(_vm.clientFullname))])
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "info" }, [
-              _vm._v("\n                    Контакты: "),
+              _vm._v("\n                Контакты: "),
               _c("span", { staticStyle: { "white-space": "break-spaces" } }, [
                 _vm._v(_vm._s(_vm.clientPhones))
               ])
@@ -43541,14 +43782,14 @@ var render = function() {
             _vm._v(" "),
             _vm.clientPay
               ? _c("div", { staticClass: "info" }, [
-                  _vm._v("\n                    Плата с клиента: "),
+                  _vm._v("\n                Плата с клиента: "),
                   _c("span", [_vm._v("Да - " + _vm._s(_vm.clientPay))])
                 ])
               : _vm._e(),
             _vm._v(" "),
             _vm.comment
               ? _c("div", { staticClass: "info" }, [
-                  _vm._v("\n                    Комментарий: "),
+                  _vm._v("\n                Комментарий: "),
                   _c("span", [_vm._v(_vm._s(_vm.comment))])
                 ])
               : _vm._e(),
@@ -43558,7 +43799,7 @@ var render = function() {
               { staticClass: "info" },
               [
                 _vm._v(
-                  "\n                    Товары к доставке:\n                    "
+                  "\n                Товары к доставке:\n                "
                 ),
                 _vm._l(_vm.products, function(product) {
                   return _c("span", { key: product.id }, [
@@ -43595,7 +43836,7 @@ var render = function() {
               _vm._v(" "),
               _c("p", { attrs: { slot: "body" }, slot: "body" }, [
                 _vm._v(
-                  "\n                Вы действительно хотите удалить зявку?\n            "
+                  "\n            Вы действительно хотите удалить зявку?\n        "
                 )
               ])
             ]
@@ -43786,14 +44027,21 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _vm.role === "client"
-    ? _c("a", { staticClass: "admin-client-list__item", attrs: { href: "" } }, [
-        _c("h4", [
-          _vm._v(_vm._s(_vm.name) + " "),
-          _c("span", [_vm._v(_vm._s(_vm.email))])
-        ]),
-        _vm._v(" "),
-        _c("span", [_vm._v("Aдрес забора: " + _vm._s(_vm.address))])
-      ])
+    ? _c(
+        "router-link",
+        {
+          staticClass: "admin-client-list__item",
+          attrs: { to: { path: "/admin/clients/" + _vm.id }, href: "" }
+        },
+        [
+          _c("h4", [
+            _vm._v(_vm._s(_vm.name) + " "),
+            _c("span", [_vm._v(_vm._s(_vm.email))])
+          ]),
+          _vm._v(" "),
+          _c("span", [_vm._v("Aдрес забора: " + _vm._s(_vm.address))])
+        ]
+      )
     : _vm.role === "courier"
     ? _c("a", { staticClass: "admin-client-list__item", attrs: { href: "" } }, [
         _c("h4", [
@@ -44651,36 +44899,78 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "row" }, [
     _c("div", { staticClass: "col-lg-8 offset-lg-2" }, [
-      _c("div", { staticClass: "admin-orders overall" }, [
-        _c("h4", [_vm._v("Список заявок:")]),
-        _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "d-flex justify-content-between align-items-center" },
-          [
-            _c("SearchInput", {
-              staticClass: "flex-grow-1",
-              staticStyle: { "margin-right": "10px" },
-              attrs: { placeholder: "Поиск по номеру заявки..." }
+      _c(
+        "div",
+        { staticClass: "admin-orders overall" },
+        [
+          _c("h4", [_vm._v("Список заявок:")]),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass: "d-flex justify-content-between align-items-center"
+            },
+            [
+              _c("SearchInput", {
+                staticClass: "flex-grow-1",
+                staticStyle: { "margin-right": "10px" },
+                attrs: { placeholder: "Поиск по номеру заявки..." }
+              }),
+              _vm._v(" "),
+              _c(
+                "router-link",
+                {
+                  staticClass: "flex-shrink-0 btn btn-primary",
+                  staticStyle: { width: "200px" },
+                  attrs: { to: "/admin/new-order" }
+                },
+                [_vm._v("Создать\n                        новую заявку")]
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _vm._m(0),
+          _vm._v(" "),
+          _vm.preloader ? _c("preloader") : _vm._e(),
+          _vm._v(" "),
+          _vm.orders.length === 0 && !_vm.preloader
+            ? _c("h2", { staticClass: "text-center" }, [_vm._v("Заявок нет")])
+            : _vm._e(),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "admin__client-list" },
+            _vm._l(_vm.orders, function(order) {
+              return _c("OrderRow", {
+                key: order.id,
+                attrs: {
+                  id: order.id,
+                  status: order.status,
+                  "create-date": order.created_at,
+                  "delivery-type": order.delivery_type,
+                  "delivery-address": order.delivery_address,
+                  "delivery-time": order.delivery_time,
+                  "delivery-date": order.delivery_date,
+                  "client-phones": order.delivery_phones,
+                  "client-fullname": order.delivery_fio,
+                  comment: order.delivery_comment,
+                  "client-pay": order.delivery_pay,
+                  products: order.goods,
+                  role: _vm.role,
+                  "user-name": order.client_name,
+                  couriers: _vm.couriers,
+                  "courier-name": order.courier_name,
+                  "courier-phone": order.courier_phone
+                },
+                on: { setCourier: _vm.setCourier }
+              })
             }),
-            _vm._v(" "),
-            _c(
-              "router-link",
-              {
-                staticClass: "flex-shrink-0 btn btn-primary",
-                staticStyle: { width: "200px" },
-                attrs: { to: "/admin/new-order" }
-              },
-              [_vm._v("Создать\n                        новую заявку")]
-            )
-          ],
-          1
-        ),
-        _vm._v(" "),
-        _vm._m(0),
-        _vm._v(" "),
-        _c("div", { staticClass: "admin__client-list" }, [_c("OrderRow")], 1)
-      ])
+            1
+          )
+        ],
+        1
+      )
     ])
   ])
 }
@@ -44914,7 +45204,9 @@ var render = function() {
                 "client-fullname": order.delivery_fio,
                 comment: order.delivery_comment,
                 "client-pay": order.delivery_pay,
-                products: order.goods
+                products: order.goods,
+                "courier-name": order.courier_name,
+                "courier-phone": order.courier_phone
               }
             })
           })
