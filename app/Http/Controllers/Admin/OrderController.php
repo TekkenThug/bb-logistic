@@ -45,11 +45,7 @@ class OrderController extends Controller
         } else if ($request->input('role') === 'client') {
             $orders = Order::where(['client_id' => auth()->id()])->get();
 
-            foreach ($orders as $order) {
-                $order['goods'] = $order->goods;
-                $order['courier_name'] = $order->courier ? $order->courier->name : "";
-                $order['courier_phone'] = $order->courier ? $order->courier->phone_number : "";
-            }
+            $orders = $this->getFullData($orders);
 
             return response(['orders' => $orders], 200);
         } else if ($request->input('id')) {
@@ -62,6 +58,19 @@ class OrderController extends Controller
                 ->get()->sortByDesc('created_at');
 
             $orders = $this->getFullData($orders);
+        } else if ($request->input('courier') && $request->input('open')) {
+            $orders = Order::where(['courier_id' => auth()->id()])->where('status', 'pending')
+                ->orWhere('status', 'courier')
+                ->get()
+                ->sortByDesc('created_at');
+
+            $orders = $this->getFullData($orders);
+        } else if ($request->input('courier')) {
+            $orders = Order::where(['courier_id' => auth()->id()])->where('status', 'finished')
+                ->get()
+                ->sortByDesc('created_at');
+
+            $orders = $this->getFullData($orders);
         }
 
         // Все заявки для админа
@@ -70,7 +79,10 @@ class OrderController extends Controller
             $orders = $this->getFullData($orders);
         }
 
-        return response(['orders' => $orders], 200);
+        return response([
+            'status' => 'success',
+            'orders' => $orders
+        ], 200);
     }
 
     /**
@@ -204,6 +216,15 @@ class OrderController extends Controller
                 }
 
                 return response(['status' => 'success'], 200);
+            }
+        }
+        else if ($request->input('role') === 'courier') {
+            $order = Order::where(['id' => $id, 'courier_id' => auth()->id()])->first();
+
+            if ($order->update(['status' => $request->input('status')])) {
+                return response([
+                    'status' => 'success'
+                ], 200);
             }
         }
         else if ($request->input('role') === 'admin' && $request->input('fast') === 'true') {

@@ -3623,6 +3623,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "OrderRow",
   data: function data() {
@@ -3696,7 +3702,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     setStatusOrder: function setStatusOrder() {
-      if (this.status === 'not-allocated') return 'Не распределено';else if (this.status === 'pending') return 'Ожидает забора товара';else if (this.status === 'stock') return 'На складе';else if (this.status === 'courier') return 'У курьера';else if (this.status === 'finish') return 'Отгружено';else if (this.status === 'return') return 'Возврат';
+      if (this.status === 'not-allocated') return 'Не распределено';else if (this.status === 'pending') return 'Ожидает забора товара';else if (this.status === 'stock') return 'На складе';else if (this.status === 'courier') return 'У курьера';else if (this.status === 'finished') return 'Отгружено';else if (this.status === 'return') return 'Возврат';
     },
     setOrderDate: function setOrderDate() {
       var rawDate = new Date(this.createDate);
@@ -5180,18 +5186,66 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "ClosingOrders",
+  components: {
+    OrderRow: _components_OrderRow__WEBPACK_IMPORTED_MODULE_0__.default
+  },
   data: function data() {
     return {
       credit: 0,
       cash: 0,
-      count: 0
+      count: 0,
+      preloader: true,
+      orders: []
     };
   },
-  components: {
-    OrderRow: _components_OrderRow__WEBPACK_IMPORTED_MODULE_0__.default
+  methods: {
+    getOrders: function getOrders() {
+      var _this = this;
+
+      this.preloader = true;
+      this.orders = [];
+      axios.get("/orders?courier=true").then(function (res) {
+        if (res.data.status === 'success') {
+          _this.preloader = false;
+          _this.orders = res.data.orders;
+        }
+      });
+    },
+    changeOrderStatus: function changeOrderStatus(status, id) {
+      var _this2 = this;
+
+      axios.patch("/orders/".concat(id, "?role=courier&status=").concat(status)).then(function (res) {
+        if (res.data.status === 'success') {
+          _this2.getOrders();
+        } else {
+          console.log("Невозможно обновить статус");
+        }
+      });
+    }
+  },
+  beforeMount: function beforeMount() {
+    this.getOrders();
   }
 });
 
@@ -5250,11 +5304,63 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "OpenOrders",
   components: {
     OrderRow: _components_OrderRow__WEBPACK_IMPORTED_MODULE_0__.default
+  },
+  data: function data() {
+    return {
+      preloader: true,
+      orders: []
+    };
+  },
+  methods: {
+    getOrders: function getOrders() {
+      var _this = this;
+
+      this.preloader = true;
+      this.orders = [];
+      axios.get("/orders?courier=true&open=true").then(function (res) {
+        if (res.data.status === 'success') {
+          _this.preloader = false;
+          _this.orders = res.data.orders;
+        }
+      });
+    },
+    changeOrderStatus: function changeOrderStatus(status, id) {
+      var _this2 = this;
+
+      axios.patch("/orders/".concat(id, "?role=courier&status=").concat(status)).then(function (res) {
+        if (res.data.status === 'success') {
+          _this2.getOrders();
+        } else {
+          console.log("Невозможно обновить статус");
+        }
+      });
+    }
+  },
+  beforeMount: function beforeMount() {
+    this.getOrders();
   }
 });
 
@@ -44855,66 +44961,120 @@ var render = function() {
                 value: _vm.showMore,
                 expression: "showMore"
               }
-            ],
-            staticClass: "client__item-info"
+            ]
           },
           [
-            _c("div", { staticClass: "info" }, [
-              _vm._v("\n                Дата доставки: "),
-              _c("span", [_vm._v(_vm._s(_vm.deliveryDate))])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "info" }, [
-              _vm._v("\n                Время доставки: "),
-              _c("span", [_vm._v(_vm._s(_vm.deliveryTime))])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "info" }, [
-              _vm._v("\n                Имя клиента: "),
-              _c("span", [_vm._v(_vm._s(_vm.clientFullname))])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "info" }, [
-              _vm._v("\n                Контакты: "),
-              _c("span", { staticStyle: { "white-space": "break-spaces" } }, [
-                _vm._v(_vm._s(_vm.clientPhones))
-              ])
-            ]),
-            _vm._v(" "),
-            _vm.clientPay
-              ? _c("div", { staticClass: "info" }, [
-                  _vm._v("\n                Плата с клиента: "),
-                  _c("span", [_vm._v("Да - " + _vm._s(_vm.clientPay))])
+            _c("div", { staticClass: "client__item-info" }, [
+              _c("div", { staticClass: "info" }, [
+                _vm._v("\n                    Дата доставки: "),
+                _c("span", [_vm._v(_vm._s(_vm.deliveryDate))])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "info" }, [
+                _vm._v("\n                    Время доставки: "),
+                _c("span", [_vm._v(_vm._s(_vm.deliveryTime))])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "info" }, [
+                _vm._v("\n                    Имя клиента: "),
+                _c("span", [_vm._v(_vm._s(_vm.clientFullname))])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "info" }, [
+                _vm._v("\n                    Контакты: "),
+                _c("span", { staticStyle: { "white-space": "break-spaces" } }, [
+                  _vm._v(_vm._s(_vm.clientPhones))
                 ])
-              : _vm._e(),
-            _vm._v(" "),
-            _vm.comment
-              ? _c("div", { staticClass: "info" }, [
-                  _vm._v("\n                Комментарий: "),
-                  _c("span", [_vm._v(_vm._s(_vm.comment))])
-                ])
-              : _vm._e(),
-            _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "info" },
-              [
-                _vm._v(
-                  "\n                Товары к доставке:\n                "
-                ),
-                _vm._l(_vm.products, function(product) {
-                  return _c("span", { key: product.id }, [
-                    _vm._v(
-                      _vm._s(product.name) +
-                        " - " +
-                        _vm._s(product.count) +
-                        " шт."
-                    )
+              ]),
+              _vm._v(" "),
+              _vm.clientPay
+                ? _c("div", { staticClass: "info" }, [
+                    _vm._v("\n                    Плата с клиента: "),
+                    _c("span", [_vm._v("Да - " + _vm._s(_vm.clientPay))])
                   ])
-                })
-              ],
-              2
-            )
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.comment
+                ? _c("div", { staticClass: "info" }, [
+                    _vm._v("\n                    Комментарий: "),
+                    _c("span", [_vm._v(_vm._s(_vm.comment))])
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "info" },
+                [
+                  _vm._v(
+                    "\n                    Товары к доставке:\n                    "
+                  ),
+                  _vm._l(_vm.products, function(product) {
+                    return _c("span", { key: product.id }, [
+                      _vm._v(
+                        _vm._s(product.name) +
+                          " - " +
+                          _vm._s(product.count) +
+                          " шт."
+                      )
+                    ])
+                  })
+                ],
+                2
+              )
+            ]),
+            _vm._v(" "),
+            _vm.role === "courier"
+              ? _c("div", { staticClass: "buttons" }, [
+                  _vm.status === "pending"
+                    ? _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-primary",
+                          on: {
+                            click: function($event) {
+                              return _vm.$emit("statusEvent", "courier", _vm.id)
+                            }
+                          }
+                        },
+                        [_vm._v("Взять заказ")]
+                      )
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.status === "courier"
+                    ? _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-primary",
+                          on: {
+                            click: function($event) {
+                              return _vm.$emit(
+                                "statusEvent",
+                                "finished",
+                                _vm.id
+                              )
+                            }
+                          }
+                        },
+                        [_vm._v("Отгрузить")]
+                      )
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.status === "courier"
+                    ? _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-danger",
+                          on: {
+                            click: function($event) {
+                              return _vm.$emit("statusEvent", "return", _vm.id)
+                            }
+                          }
+                        },
+                        [_vm._v("Возврат")]
+                      )
+                    : _vm._e()
+                ])
+              : _vm._e()
           ]
         )
       ]),
@@ -46761,9 +46921,35 @@ var render = function() {
             ])
           ]),
           _vm._v(" "),
-          _c("OrderRow")
+          _vm.orders.length === 0 && !_vm.preloader
+            ? _c("h2", { staticClass: "text-center" }, [_vm._v("Заявок нет")])
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.preloader ? _c("preloader") : _vm._e(),
+          _vm._v(" "),
+          _vm._l(_vm.orders, function(order) {
+            return _c("OrderRow", {
+              key: order.id,
+              attrs: {
+                role: "courier",
+                id: order.id,
+                status: order.status,
+                "create-date": order.created_at,
+                "delivery-type": order.delivery_type,
+                "delivery-address": order.delivery_address,
+                "delivery-time": order.delivery_time,
+                "delivery-date": order.delivery_date,
+                "client-phones": order.delivery_phones,
+                "client-fullname": order.delivery_fio,
+                comment: order.delivery_comment,
+                "client-pay": order.delivery_pay,
+                products: order.goods
+              },
+              on: { statusEvent: _vm.changeOrderStatus }
+            })
+          })
         ],
-        1
+        2
       )
     ])
   ])
@@ -46832,8 +47018,36 @@ var render = function() {
           staticClass: "client__list client-tab active",
           attrs: { id: "open-orders" }
         },
-        [_c("OrderRow")],
-        1
+        [
+          _vm.orders.length === 0 && !_vm.preloader
+            ? _c("h2", { staticClass: "text-center" }, [_vm._v("Заявок нет")])
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.preloader ? _c("preloader") : _vm._e(),
+          _vm._v(" "),
+          _vm._l(_vm.orders, function(order) {
+            return _c("OrderRow", {
+              key: order.id,
+              attrs: {
+                role: "courier",
+                id: order.id,
+                status: order.status,
+                "create-date": order.created_at,
+                "delivery-type": order.delivery_type,
+                "delivery-address": order.delivery_address,
+                "delivery-time": order.delivery_time,
+                "delivery-date": order.delivery_date,
+                "client-phones": order.delivery_phones,
+                "client-fullname": order.delivery_fio,
+                comment: order.delivery_comment,
+                "client-pay": order.delivery_pay,
+                products: order.goods
+              },
+              on: { statusEvent: _vm.changeOrderStatus }
+            })
+          })
+        ],
+        2
       )
     ])
   ])

@@ -39,30 +39,36 @@
         </h4>
 
         <transition name="fade">
-            <div v-show="showMore" class="client__item-info">
-                <div class="info">
-                    Дата доставки: <span>{{ deliveryDate }}</span>
+            <div v-show="showMore">
+                <div class="client__item-info">
+                    <div class="info">
+                        Дата доставки: <span>{{ deliveryDate }}</span>
+                    </div>
+                    <div class="info">
+                        Время доставки: <span>{{ deliveryTime }}</span>
+                    </div>
+                    <div class="info">
+                        Имя клиента: <span>{{ clientFullname }}</span>
+                    </div>
+                    <div class="info">
+                        Контакты: <span style="white-space: break-spaces">{{ clientPhones }}</span>
+                    </div>
+                    <div v-if="clientPay" class="info">
+                        Плата с клиента: <span>Да - {{ clientPay }}</span>
+                    </div>
+                    <div v-if="comment" class="info">
+                        Комментарий: <span>{{ comment }}</span>
+                    </div>
+                    <div class="info">
+                        Товары к доставке:
+                        <span v-for="product in products" :key="product.id">{{ product.name }} - {{ product.count }} шт.</span>
+                    </div>
                 </div>
-                <div class="info">
-                    Время доставки: <span>{{ deliveryTime }}</span>
+                <div v-if="role === 'courier'" class="buttons">
+                    <button @click="$emit('statusEvent', 'courier', id)" v-if="status === 'pending'" class="btn btn-primary">Взять заказ</button>
+                    <button @click="$emit('statusEvent', 'finished', id)" v-if="status === 'courier'" class="btn btn-primary">Отгрузить</button>
+                    <button @click="$emit('statusEvent', 'return', id)" v-if="status === 'courier'" class="btn btn-danger">Возврат</button>
                 </div>
-                <div class="info">
-                    Имя клиента: <span>{{ clientFullname }}</span>
-                </div>
-                <div class="info">
-                    Контакты: <span style="white-space: break-spaces">{{ clientPhones }}</span>
-                </div>
-                <div v-if="clientPay" class="info">
-                    Плата с клиента: <span>Да - {{ clientPay }}</span>
-                </div>
-                <div v-if="comment" class="info">
-                    Комментарий: <span>{{ comment }}</span>
-                </div>
-                <div class="info">
-                    Товары к доставке:
-                    <span v-for="product in products" :key="product.id">{{ product.name }} - {{ product.count }} шт.</span>
-                </div>
-
             </div>
         </transition>
 
@@ -158,7 +164,7 @@ export default {
                 return 'На складе'
             else if (this.status === 'courier')
                 return 'У курьера'
-            else if (this.status === 'finish')
+            else if (this.status === 'finished')
                 return 'Отгружено'
             else if (this.status === 'return')
                 return 'Возврат'
