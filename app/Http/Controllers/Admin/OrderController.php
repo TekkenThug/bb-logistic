@@ -156,6 +156,7 @@ class OrderController extends Controller
      */
     public function show($id, Request $request)
     {
+
         if ($request->input('role') == 'client') {
             $order = Order::where(['id' => $id, 'client_id' => auth()->id()])->first();
 
@@ -166,6 +167,22 @@ class OrderController extends Controller
             }
 
             $order['goods'] = $order->goods;
+            return response([
+                'status' => 'success',
+                'order' => $order
+            ]);
+        }
+        else if ($request->input('role') == 'admin') {
+            $order = Order::find($id);
+
+            if (!$order) {
+                return response([
+                    'status' => 'fail'
+                ], 501);
+            }
+
+            $order['goods'] = $order->goods;
+
             return response([
                 'status' => 'success',
                 'order' => $order
@@ -236,6 +253,44 @@ class OrderController extends Controller
 
             if ($order) return response(['status' => 'success'], 200);
             else return response(['status' => 'fail'], 500);
+        }
+        else if ($request->input('role') === 'admin') {
+            $cost = 0;
+            foreach ($request['products'] as $price) {
+                $cost += $price['cost'] * $price['count'];
+            }
+
+            $order = Order::where('id', $id)
+                ->update([
+                    'status' => $request['deliveryStatus'],
+                    'client_id' => $request['user'],
+                    'courier_id' => $request['courier'],
+                    'delivery_type' => $request['deliveryType'],
+                    'delivery_date' => $request['date'],
+                    'delivery_time' => $request['time'],
+                    'delivery_address' => $request['address'],
+                    'delivery_fio' => $request['fullname'],
+                    'delivery_phones' => implode("\n", $request['phones']),
+                    'delivery_comment' => $request['comment'],
+                    'delivery_cost' => $cost,
+                    'delivery_pay' => $request['clientPay'],
+                ]);
+
+            if ($order) {
+                $order = Order::find($id);
+                $order->goods()->delete();
+
+                foreach ($request['products'] as $product) {
+                    Good::create([
+                        'order_id' => $order->id,
+                        'name' => $product['name'],
+                        'count' => $product['count'],
+                        'cost' => $product['cost']
+                    ]);
+                }
+
+                return response(['status' => 'success'], 200);
+            }
         }
     }
 

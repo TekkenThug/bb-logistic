@@ -238,6 +238,9 @@ export default {
                 });
             })
 
+            this.deliveryStatus = this.order.status;
+            this.user = this.order.client_id;
+            this.courier = this.order.courier_id;
         }
     },
     computed: {

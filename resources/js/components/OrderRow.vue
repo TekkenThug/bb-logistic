@@ -1,26 +1,30 @@
 <template>
     <div class="client__item" :class="{ 'dvd': deliveryType === 'ДВД' }">
         <h4 class="client__item-title">
-            {{ role === 'admin' ? `№ ${id} - ${userName}` : `Заявка № ${id}` }} <span class="status" :class="status">{{ setStatusOrder }}</span>
+            {{ role === 'admin' ? `№ ${id} - ${userName}` : `Заявка № ${id}` }} <span class="status" :class="status">{{
+                setStatusOrder
+            }}</span>
 
-            <span v-if="courierName" style="font-size: 16px" class="mt-2 d-block">Курьер: {{ courierName }}, {{ courierPhone }}</span>
+            <span v-if="courierName" style="font-size: 16px" class="mt-2 d-block">Курьер: {{
+                    courierName
+                }}, {{ courierPhone }}</span>
 
             <div class="buttons">
-                    <router-link :to="{ path: '/client/list/' + id}"
-                                 v-if="(status === 'not-allocated' && role === 'client') || role === 'admin'"
-                                 class="btn edit-order"
-                                 title="Изменить">
-                        <i class="fas fa-pen"></i>
-                    </router-link>
-                    <button @click="showModal = true"
-                            v-if="(status === 'not-allocated' && role === 'client') || role === 'admin'"
-                            class="btn delete-order"
-                            title="Отменить">
-                        <i class="fas fa-times"></i>
-                    </button>
-                    <button @click="showMore = !showMore" type="button" class="btn btn-more" title="Раскрыть">
-                        <i class="fas fa-chevron-down" :class="{ active: showMore }"></i>
-                    </button>
+                <router-link :to="{ path: role === 'admin' ? '/admin/orders/' + id:'/client/list/' + id}"
+                             v-if="(status === 'not-allocated' && role === 'client') || role === 'admin'"
+                             class="btn edit-order"
+                             title="Изменить">
+                    <i class="fas fa-pen"></i>
+                </router-link>
+                <button @click="showModal = true"
+                        v-if="(status === 'not-allocated' && role === 'client') || role === 'admin'"
+                        class="btn delete-order"
+                        title="Отменить">
+                    <i class="fas fa-times"></i>
+                </button>
+                <button @click="showMore = !showMore" type="button" class="btn btn-more" title="Раскрыть">
+                    <i class="fas fa-chevron-down" :class="{ active: showMore }"></i>
+                </button>
             </div>
             <div class="short-descr">
                 <span class="date">{{ setOrderDate }}</span>
@@ -61,13 +65,21 @@
                     </div>
                     <div class="info">
                         Товары к доставке:
-                        <span v-for="product in products" :key="product.id">{{ product.name }} - {{ product.count }} шт.</span>
+                        <span v-for="product in products" :key="product.id">{{ product.name }} - {{
+                                product.count
+                            }} шт.</span>
                     </div>
                 </div>
                 <div v-if="role === 'courier'" class="buttons">
-                    <button @click="$emit('statusEvent', 'courier', id)" v-if="status === 'pending'" class="btn btn-primary">Взять заказ</button>
-                    <button @click="$emit('statusEvent', 'finished', id)" v-if="status === 'courier'" class="btn btn-primary">Отгрузить</button>
-                    <button @click="$emit('statusEvent', 'return', id)" v-if="status === 'courier'" class="btn btn-danger">Возврат</button>
+                    <button @click="$emit('statusEvent', 'courier', id)" v-if="status === 'pending'"
+                            class="btn btn-primary">Взять заказ
+                    </button>
+                    <button @click="$emit('statusEvent', 'finished', id)" v-if="status === 'courier'"
+                            class="btn btn-primary">Отгрузить
+                    </button>
+                    <button @click="$emit('statusEvent', 'return', id)" v-if="status === 'courier'"
+                            class="btn btn-danger">Возврат
+                    </button>
                 </div>
             </div>
         </transition>
@@ -205,26 +217,33 @@ export default {
 </script>
 
 <style scoped>
-    .client__item-info {
-        display: flex;
-        align-items: flex-start;
-        flex-wrap: wrap;
-    }
-    .client__item-info .info {
-        margin-top: 0;
-        margin-right: 40px;
-        margin-bottom: 20px;
-    }
-    .fa-chevron-down {
-        transition: all 0.2s ease
-    }
-    .fa-chevron-down.active {
-        transform: rotate(180deg);
-    }
+.client__item {
+    z-index: 1;
+}
 
-    .form-select {
-        margin: 15px 0;
-        margin-right: 10px;
-        max-width: 400px;
-    }
+.client__item-info {
+    display: flex;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+
+.client__item-info .info {
+    margin-top: 0;
+    margin-right: 40px;
+    margin-bottom: 20px;
+}
+
+.fa-chevron-down {
+    transition: all 0.2s ease
+}
+
+.fa-chevron-down.active {
+    transform: rotate(180deg);
+}
+
+.form-select {
+    margin: 15px 0;
+    margin-right: 10px;
+    max-width: 400px;
+}
 </style>

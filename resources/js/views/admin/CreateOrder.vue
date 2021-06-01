@@ -1,15 +1,11 @@
 <template>
     <div class="row">
         <div class="col-lg-8 offset-lg-2">
-            <preloader v-if="preloader" />
-            <CreateForm v-else
-                        :clients="clients"
+            <CreateForm :clients="clients"
                         :couriers="couriers"
-                        :order="order"
-                        ref="form"
-                        @serializeForm="updateOrder"
+                        @serializeForm="createOrder"
                         is-admin
-            />
+                        new-order/>
         </div>
     </div>
 </template>
@@ -23,36 +19,18 @@ export default {
     data() {
         return {
             couriers: [],
-            preloader: true,
-            order: {},
             clients: []
         }
     },
     methods: {
-        updateOrder(obj) {
-            axios.patch(`/orders/${this.$route.params.id}?role=admin`, obj)
+        createOrder(obj) {
+            axios.post('/orders', obj)
                 .then(res => {
                     if (res.data.status === "success") {
                         this.$router.push('/admin/orders');
                     }
                 })
         }
-    },
-    updated() {
-        this.$refs.form.completedForm();
-    },
-    beforeMount() {
-        axios.get(`/orders/${this.$route.params.id}?role=admin`)
-            .then(res => {
-                if (res.data.status === "fail") {
-                    console.log('fail')
-                    this.$router.push('/admin/orders');
-                } else {
-                    this.order = res.data.order;
-                }
-
-                this.preloader = false
-            })
     },
     beforeCreate() {
         axios.get('/clients').then(res => {
