@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-12">
                 <div class="text-center">
-                    <h1>404: страница не найдена</h1>
+                    <h1>{{ title }}: {{ text }}</h1>
                 </div>
             </div>
         </div>
@@ -13,16 +13,20 @@
 
 <script>
 export default {
-    name: "NotFound"
+    name: "Error",
+    props: {
+        title: "",
+        text: ""
+    }
 }
 </script>
 
 <style scoped>
-    .container {
-        height: 100vh;
-    }
-    .row {
-        align-items: center;
-        height: 100%;
-    }
+.container {
+    height: 100vh;
+}
+.row {
+    align-items: center;
+    height: 100%;
+}
 </style>

@@ -40,7 +40,7 @@
                     </ul>
                 </div>
                 <div class="col-3 col-sm-2 d-flex justify-content-center align-items-center">
-                    <a class="header__logout" href="/" @click="$auth.logout()">Выйти</a>
+                    <a class="header__logout" @click="logout()">Выйти</a>
                 </div>
             </div>
         </div>
@@ -55,10 +55,21 @@ export default {
             type: String,
             default: ""
         }
+    },
+    methods: {
+        logout() {
+            this.$auth
+                .logout({
+                    makeRequest: true,
+                    redirect: {name: 'login'},
+                });
+        }
     }
 }
 </script>
 
 <style scoped>
-
+    .header__logout {
+        cursor: pointer;
+    }
 </style>

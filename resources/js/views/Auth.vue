@@ -1,17 +1,19 @@
 <template>
-    <div>
-        <div class="container">
+
+    <div class="container">
         <div class="row">
             <div class="col-lg-4 offset-lg-4">
                 <div class="login-form-wrapper">
                     <img class="login-form__img" src="/images/logo.png" alt="bandb">
                     <form class="login-form" method="POST" @submit.prevent="login">
                         <div class="form-group login">
-                            <input v-model="email" type="text" name="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+                            <input v-model="email" type="text" name="email" class="form-control" id="exampleInputEmail1"
+                                   aria-describedby="emailHelp"
                                    placeholder="Логин" required value="">
                         </div>
                         <div class="form-group password">
-                            <input v-model="password" type="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="Пароль" required>
+                            <input v-model="password" type="password" name="password" class="form-control"
+                                   id="exampleInputPassword1" placeholder="Пароль" required>
                         </div>
 
                         <button type="submit" class="btn btn-primary mt-2">Войти</button>
@@ -20,15 +22,14 @@
             </div>
         </div>
     </div>
-        <v-footer></v-footer>
-    </div>
+
 
 </template>
 
 <script>
 export default {
     name: "Auth",
-    data(){
+    data() {
         return {
             email: null,
             password: null,
@@ -36,13 +37,14 @@ export default {
         }
     },
     methods: {
-        login(){
+        login() {
             this.$auth.login({
                 data: {
                     email: this.email,
                     password: this.password
                 },
                 rememberMe: true,
+                staySignedIn: true,
                 fetchUser: true,
             }).then(() => {
                 const redirectPath = this.$auth.user().role_id === 1 ? '/admin' :

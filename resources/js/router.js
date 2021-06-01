@@ -4,7 +4,7 @@ import VueRouter from 'vue-router'
 Vue.use(VueRouter);
 
 import Auth from "./views/Auth";
-import NotFound from "./views/NotFound";
+import Error from "./views/Errors/Error";
 
 import Client from "./views/client/Client";
 import ClientOrderList from "./views/client/OrderList";
@@ -29,19 +29,35 @@ const postfix = (str) => `${str} - B&B Logistic`;
 
 const routes = [
     {
-        path: "*",
-        component: NotFound,
+        path: "/404",
+        component: Error,
+        name: 'error',
+        props: {
+            title: "404",
+            text: "Страница не найдена"
+        },
         meta: {
             title: postfix("404")
         }
     },
     {
+        path: "/403",
+        component: Error,
+        name: 'forbidden',
+        props: {
+            title: "403",
+            text: "Недостаточно прав"
+        },
+        meta: {
+            title: postfix("403")
+        }
+    },
+    {
         path: "/login",
         component: Auth,
+        name: 'login',
         meta: {
             title: postfix("Вход"),
-            notFoundRedirect: '/',
-            forbiddenRedirect: '/',
             auth: false
         }
     },
@@ -52,7 +68,7 @@ const routes = [
         meta: {
             auth: {
                 roles: 2,
-                redirect: "/",
+                forbiddenRedirect: { name: 'forbidden' },
             }
         },
         children: [
@@ -80,7 +96,7 @@ const routes = [
         meta: {
             auth: {
                 roles: 3,
-                redirect: "/",
+                forbiddenRedirect: { name: 'forbidden' },
             }
         },
         children: [
@@ -103,7 +119,7 @@ const routes = [
         meta: {
             auth: {
                 roles: 1,
-                redirect: "/",
+                forbiddenRedirect: { name: 'forbidden' },
             }
         },
         children: [
