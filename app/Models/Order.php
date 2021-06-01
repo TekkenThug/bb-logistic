@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Payment;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -24,5 +25,9 @@ class Order extends Model
 
     public function courier() {
         return $this->belongsTo(User::class, 'courier_id');
+    }
+
+    public function payment() {
+        return $this->hasOne(Payment::class, 'order_id');
     }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\Good;
+use App\Models\Payment;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -13,7 +14,6 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 
 class OrderController extends Controller
 {
-
     public static function getFullData($orders) {
         foreach ($orders as $order) {
             $order['goods'] = $order->goods;
@@ -130,8 +130,10 @@ class OrderController extends Controller
         }
 
 
-
         if ($order) {
+            $payment = new Payment(['order_id' => $order->id]);
+            $payment->save();
+
             foreach ($request['products'] as $product) {
                 Good::create([
                     'order_id' => $order->id,
@@ -167,6 +169,7 @@ class OrderController extends Controller
             }
 
             $order['goods'] = $order->goods;
+
             return response([
                 'status' => 'success',
                 'order' => $order
@@ -239,6 +242,9 @@ class OrderController extends Controller
             $order = Order::where(['id' => $id, 'courier_id' => auth()->id()])->first();
 
             if ($order->update(['status' => $request->input('status')])) {
+                if ($request->input('status') === 'finished')
+                    $order->payment()->update(['paymentPos' => 'courier']);
+
                 return response([
                     'status' => 'success'
                 ], 200);

@@ -19,9 +19,9 @@
                             Пожалуйста, проверьте введенные данные.
                         </div>
                         <button type="submit" class="btn btn-primary mt-2">Войти</button>
+                        <preloader v-if="preloader" class="mt-2" />
                     </form>
                 </div>
-
             </div>
         </div>
     </div>
@@ -32,15 +32,18 @@
 <script>
 export default {
     name: "Auth",
+
     data() {
         return {
             email: null,
             password: null,
             error: false,
+            preloader: false,
         }
     },
     methods: {
         login() {
+            this.preloader = true;
             this.$auth.login({
                 data: {
                     email: this.email,
@@ -56,8 +59,10 @@ export default {
                     this.$router.push(redirectPath);
                 }
             ).catch(() => {
+                this.preloader = false;
                 this.error = true;
             });
+
         },
     },
     watch: {
@@ -68,7 +73,7 @@ export default {
             }
         },
         email(val) {
-            if (this.error === true && val.length !== 0)
+            if (this.error === true && val === null)
                 this.error = false;
         }
     }

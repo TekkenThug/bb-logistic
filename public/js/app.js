@@ -4099,13 +4099,15 @@ __webpack_require__.r(__webpack_exports__);
     return {
       email: null,
       password: null,
-      error: false
+      error: false,
+      preloader: false
     };
   },
   methods: {
     login: function login() {
       var _this = this;
 
+      this.preloader = true;
       this.$auth.login({
         data: {
           email: this.email,
@@ -4119,6 +4121,7 @@ __webpack_require__.r(__webpack_exports__);
 
         _this.$router.push(redirectPath);
       })["catch"](function () {
+        _this.preloader = false;
         _this.error = true;
       });
     }
@@ -4131,7 +4134,7 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     email: function email(val) {
-      if (this.error === true && val.length !== 0) this.error = false;
+      if (this.error === true && val === null) this.error = false;
     }
   }
 });
@@ -45971,8 +45974,13 @@ var render = function() {
                   attrs: { type: "submit" }
                 },
                 [_vm._v("Войти")]
-              )
-            ]
+              ),
+              _vm._v(" "),
+              _vm.preloader
+                ? _c("preloader", { staticClass: "mt-2" })
+                : _vm._e()
+            ],
+            1
           )
         ])
       ])
