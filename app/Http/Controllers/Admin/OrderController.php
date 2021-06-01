@@ -131,8 +131,8 @@ class OrderController extends Controller
 
 
         if ($order) {
-            $payment = new Payment(['order_id' => $order->id]);
-            $payment->save();
+            $payment = new Payment;
+            $order->payment()->save($payment);
 
             foreach ($request['products'] as $product) {
                 Good::create([
@@ -285,6 +285,10 @@ class OrderController extends Controller
             if ($order) {
                 $order = Order::find($id);
                 $order->goods()->delete();
+
+                if ($order->status === 'pending' || $order->status === 'not-allocated') {
+                    $order->payment->update(['paymentPos' => 'start']);
+                }
 
                 foreach ($request['products'] as $product) {
                     Good::create([
