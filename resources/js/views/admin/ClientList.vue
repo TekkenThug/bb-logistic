@@ -7,9 +7,11 @@
                 <div class="admin__client-list">
                     <preloader v-if="preloader" />
                     <UserRow v-for="client in clients"
+                             :path="'/admin/clients/'"
                              :role="'client'"
                              :key="client.id"
                              :name="client.name"
+                             :id="client.id"
                              :email="client.email"
                              :address="client.delivery_address"/>
                 </div>

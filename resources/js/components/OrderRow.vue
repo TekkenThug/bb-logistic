@@ -183,7 +183,6 @@ export default {
             axios.delete(`/orders/${this.id}`)
                 .then((res) => {
                     if (res.data.status === "success") {
-                        console.log("Успешно удалено");
                         this.showModal = false;
                         setTimeout(() => {
                             this.$destroy();

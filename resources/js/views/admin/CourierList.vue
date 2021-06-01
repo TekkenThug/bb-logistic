@@ -8,7 +8,9 @@
                     <preloader v-if="preloader" />
                     <UserRow v-for="courier in couriers"
                              :role="'courier'"
+                             :path="'/admin/couriers/'"
                              :key="courier.id"
+                             :id="courier.id"
                              :name="courier.name"
                              :email="courier.email"
                              :comment="courier.courier_comment"

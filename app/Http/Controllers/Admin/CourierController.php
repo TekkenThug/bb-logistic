@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Order;
 use App\Models\Role;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class CourierController extends Controller
@@ -49,7 +51,21 @@ class CourierController extends Controller
      */
     public function show($id)
     {
-        //
+        $courier = User::find($id)->roles->name === 'courier' ? User::find($id) : null;
+
+        if (!$courier) {
+            return response([
+                'status' => 'fail'
+            ], 404);
+        }
+
+        $courierOrders = Order::where('courier_id', $id)->get();
+
+        return response([
+            'status' => 'success',
+            'courier' => $courier,
+            'courierOrders' => OrderController::getFullData($courierOrders)
+        ], 200);
     }
 
     /**
@@ -61,7 +77,46 @@ class CourierController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $courier = User::find($id);
+
+        if ($courier->roles->name !== 'courier') {
+            return response([
+                'status' => 'fail',
+                'data' => 'Courier not found'
+            ]);
+        }
+
+        if ($request->input('comment')) {
+            $courier->update(['courier_comment' => $request['comment']]);
+            return response([
+                'status' => 'success'
+            ]);
+        }
+
+        if ($request['password']) {
+            $upd = $courier->update([
+                'name' => $request['name'],
+                'email' => $request['email'],
+                'phone_number' => $request['phone'],
+                'password' => bcrypt($request['password'])
+            ]);
+        } else {
+            $upd = $courier->update([
+                'name' => $request['name'],
+                'email' => $request['email'],
+                'phone_number' => $request['phone'],
+            ]);
+        }
+
+        if ($upd) {
+            return response([
+                'status' => 'success'
+            ]);
+        } else {
+            return response([
+                'status' => 'fail'
+            ]);
+        }
     }
 
     /**

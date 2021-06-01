@@ -21,6 +21,8 @@ import AdminClientList from "./views/admin/ClientList";
 import AdminCourierList from "./views/admin/CourierList";
 import AdminOrderList from "./views/admin/OrderList";
 import AdminCreateOrder from "./views/admin/EditOrder";
+import AdminClientPage from "./views/admin/ClientPage";
+import AdminCourierPage from "./views/admin/CourierPage";
 
 const postfix = (str) => `${str} - B&B Logistic`;
 
@@ -117,12 +119,17 @@ const routes = [
             {
                 path: "clients/:id",
                 meta: {title: postfix("Клиент")},
-                component: AdminClientList
+                component: AdminClientPage
             },
             {
                 path: "couriers",
                 meta: {title: postfix("Список курьеров")},
                 component: AdminCourierList
+            },
+            {
+                path: "couriers/:id",
+                meta: {title: postfix("Курьер")},
+                component: AdminCourierPage
             },
             {
                 path: "orders",

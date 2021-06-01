@@ -14,7 +14,7 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 class OrderController extends Controller
 {
 
-    protected function getFullData($orders) {
+    public static function getFullData($orders) {
         foreach ($orders as $order) {
             $order['goods'] = $order->goods;
             $order['client_name'] = $order->client->name;

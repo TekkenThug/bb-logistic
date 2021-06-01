@@ -1,13 +1,13 @@
 <template>
-    <router-link :to="{ path: '/admin/clients/' + id}" v-if="role === 'client'" class="admin-client-list__item" href="">
+    <router-link :to="{ path: path + id}" v-if="role === 'client'" class="admin-client-list__item">
         <h4>{{ name }} <span>{{ email }}</span></h4>
         <span>Aдрес забора: {{ address }}</span>
     </router-link>
 
-    <a v-else-if="role === 'courier'" class="admin-client-list__item" href="">
+    <router-link :to="{ path: path + id}" v-else-if="role === 'courier'" class="admin-client-list__item">
         <h4>{{ name }} <span>{{ comment }}</span></h4>
         <span>{{ email }} {{ phone }}</span>
-    </a>
+    </router-link>
 </template>
 
 <script>
@@ -37,6 +37,14 @@ export default {
         role: {
             type: String,
             default: ""
+        },
+        path: {
+            type: String,
+            default: ""
+        },
+        id: {
+            type: Number,
+            default: 0
         }
     }
 }
