@@ -54,7 +54,7 @@ class CourierController extends Controller
      */
     public function show($id)
     {
-        $courier = User::find($id)->roles->name === 'courier' ? User::find($id) : null;
+        $courier = $this->user->find($id)->couriers()->first();
 
         if (!$courier) {
             return response([
@@ -62,7 +62,7 @@ class CourierController extends Controller
             ], 404);
         }
 
-        $courierOrders = Order::where('courier_id', $id)->get();
+        $courierOrders = $this->user->ordersWhereParts('courier');
 
         return response([
             'status' => 'success',

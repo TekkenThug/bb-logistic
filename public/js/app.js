@@ -4777,6 +4777,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "CreateUser",
   data: function data() {
@@ -4787,12 +4789,16 @@ __webpack_require__.r(__webpack_exports__);
       passwordDuplicate: '',
       role: "admin",
       deliveryAddress: '',
-      phone: ''
+      phone: '',
+      errors: [],
+      preloader: false
     };
   },
   methods: {
     createUser: function createUser() {
       var _this = this;
+
+      this.preloader = true;
 
       if (this.password === this.passwordDuplicate) {
         this.$auth.register({
@@ -4807,12 +4813,46 @@ __webpack_require__.r(__webpack_exports__);
           redirect: null
         }).then(function (res) {
           if (res.data.status === "success") {
-            _this.name = _this.email = _this.password = _this.passwordDuplicate = _this.phone = _this.deliveryAddress = '';
-          } else {
-            console.log("Ошибка!");
+            _this.cleanFields();
+
+            _this.preloader = false;
           }
+        })["catch"](function (error) {
+          _this.extractErrors(error.response.data.errors);
+
+          _this.preloader = false;
+        });
+      } else {
+        this.preloader = false;
+        this.errors.push("Пароли не совпадают");
+      }
+    },
+    cleanFields: function cleanFields() {
+      this.name = this.email = this.password = this.passwordDuplicate = this.phone = this.deliveryAddress = '';
+      this.role = "admin";
+    },
+    extractErrors: function extractErrors(errors) {
+      var _this2 = this;
+
+      for (var key in errors) {
+        errors[key].forEach(function (str) {
+          return _this2.errors.push(str);
         });
       }
+    }
+  },
+  watch: {
+    name: function name() {
+      this.errors = [];
+    },
+    email: function email() {
+      this.errors = [];
+    },
+    password: function password() {
+      this.errors = [];
+    },
+    role: function role() {
+      this.errors = [];
     }
   }
 });
@@ -46610,7 +46650,7 @@ var render = function() {
           "form",
           {
             staticClass: "admin-create__form",
-            attrs: { id: "create-user", method: "POST" },
+            attrs: { method: "POST" },
             on: {
               submit: function($event) {
                 $event.preventDefault()
@@ -46897,6 +46937,22 @@ var render = function() {
                 : _vm._e()
             ]),
             _vm._v(" "),
+            _vm.errors.length > 0
+              ? _c(
+                  "div",
+                  {
+                    staticClass: "alert alert-danger mt-3",
+                    attrs: { role: "alert" }
+                  },
+                  _vm._l(_vm.errors, function(error, index) {
+                    return _c("span", { key: index, staticClass: "d-block" }, [
+                      _vm._v(_vm._s(error))
+                    ])
+                  }),
+                  0
+                )
+              : _vm._e(),
+            _vm._v(" "),
             _c(
               "button",
               {
@@ -46904,8 +46960,11 @@ var render = function() {
                 attrs: { type: "submit" }
               },
               [_vm._v("Создать учетную запись")]
-            )
-          ]
+            ),
+            _vm._v(" "),
+            _vm.preloader ? _c("preloader", { staticClass: "mt-2" }) : _vm._e()
+          ],
+          1
         )
       ])
     ])

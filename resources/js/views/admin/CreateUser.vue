@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-lg-6 offset-lg-3">
             <div class="admin-create overall">
-                <form id="create-user" class="admin-create__form" method="POST" @submit.prevent="createUser">
+                <form class="admin-create__form" method="POST" @submit.prevent="createUser">
                     <h4 class="admin-create__form-title">Создание учетной записи</h4>
                     <div class="admin-create__form-inner">
                         <div class="admin-create__row">
@@ -37,10 +37,12 @@
                             <input v-model="phone" class="form-control" type="text" name="phone_number" placeholder="Введите номер телефона" required>
                         </div>
                     </div>
-
+                    <div v-if="errors.length > 0" class="alert alert-danger mt-3" role="alert">
+                        <span v-for="(error, index) in errors" :key="index" class="d-block">{{ error }}</span>
+                    </div>
                     <button class="btn btn-primary mt-4 w-100" type="submit">Создать учетную запись</button>
+                    <preloader class="mt-2" v-if="preloader" />
                 </form>
-
             </div>
         </div>
     </div>
@@ -57,11 +59,14 @@ export default {
             passwordDuplicate: '',
             role: "admin",
             deliveryAddress: '',
-            phone: ''
+            phone: '',
+            errors: [],
+            preloader: false,
         }
     },
     methods: {
         createUser(){
+            this.preloader = true;
             if (this.password === this.passwordDuplicate) {
                 this.$auth.register({
                     data: {
@@ -75,13 +80,34 @@ export default {
                     redirect: null
                 }).then(res => {
                     if (res.data.status === "success") {
-                        this.name = this.email = this.password = this.passwordDuplicate = this.phone = this.deliveryAddress = '';
-                    } else {
-                        console.log("Ошибка!")
+                        this.cleanFields();
+                        this.preloader = false;
                     }
+                }).catch(error => {
+                    this.extractErrors(error.response.data.errors)
+                    this.preloader = false;
                 });
+
+            } else {
+                this.preloader = false;
+                this.errors.push("Пароли не совпадают");
+            }
+        },
+        cleanFields() {
+            this.name = this.email = this.password = this.passwordDuplicate = this.phone = this.deliveryAddress = '';
+            this.role = "admin";
+        },
+        extractErrors(errors) {
+            for (let key in errors) {
+                errors[key].forEach(str => this.errors.push(str));
             }
         }
+    },
+    watch: {
+        name() { this.errors = [] },
+        email() { this.errors = [] },
+        password() { this.errors = [] },
+        role() { this.errors = [] },
     }
 }
 </script>

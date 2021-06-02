@@ -52,6 +52,16 @@ class User extends Authenticatable implements JWTSubject
         return Role::find(3)->users()->get();
     }
 
+    public function ordersWhereParts($role) {
+        if ($role === 'client') {
+            $str = 'client_id';
+        } else {
+            $str = 'courier_id';
+        }
+
+        return Order::where($str, $this->value('id'))->get();
+    }
+
     public function searchByName($name, $role) {
         return $this->where('name', 'LIKE', "%{$name}%")
             ->where('role_id', Role::firstWhere('name', $role)->id)
