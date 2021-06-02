@@ -10,6 +10,12 @@ use Illuminate\Http\Request;
 
 class CourierController extends Controller
 {
+    protected $user;
+    public function __construct(User $user)
+    {
+        $this->user = $user;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -18,17 +24,14 @@ class CourierController extends Controller
     public function index(Request $request)
     {
         if ($request->input('name')) {
-            $parametr = $request->input('name');
-            $couriers = Role::where('name', 'courier')
-                ->first()
-                ->users()
-                ->where('name', 'LIKE', "%{$parametr}%")
-                ->get();
-        } else
-            $couriers = Role::where('name', 'courier')->first()->users;
+            return response([
+                'couriers' => $this->user
+                    ->searchByName($request->input('name'), 'courier')
+            ]);
+        }
 
         return response([
-            'couriers' => $couriers,
+            'couriers' => $this->user->couriers(),
         ]);
     }
 

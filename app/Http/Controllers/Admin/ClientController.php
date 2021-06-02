@@ -6,10 +6,18 @@ use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\Role;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 
 class ClientController extends Controller
 {
+
+    protected $user;
+    public function __construct(User $user)
+    {
+        $this->user = $user;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -17,19 +25,15 @@ class ClientController extends Controller
      */
     public function index(Request $request)
     {
-
         if ($request->input('name')) {
-            $parametr = $request->input('name');
-            $clients = Role::where('name', 'client')
-                ->first()
-                ->users()
-                ->where('name', 'LIKE', "%{$parametr}%")
-                ->get();
-        } else
-            $clients = Role::where('name', 'client')->first()->users;
+            return response([
+                'clients' => $this->user
+                    ->searchByName($request->input('name'), 'client')
+            ]);
+        }
 
         return response([
-            'clients' => $clients,
+            'clients' => $this->user->clients(),
         ]);
     }
 
@@ -52,9 +56,11 @@ class ClientController extends Controller
      */
     public function show($id, Request $request)
     {
+
+
         $client = User::find($id)->roles->name === 'client' ? User::find($id) : null;
 
-        if (!$client) {
+        if (!$this->user->find($id)) {
             return response([
                 'status' => 'fail'
             ], 404);

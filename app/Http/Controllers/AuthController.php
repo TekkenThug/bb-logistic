@@ -28,9 +28,9 @@ class AuthController extends Controller
         $user->name = $request->name;
         $user->password = bcrypt($request->password);
 
-        if ($request->role == "client") {
+        if ($request['role'] === "client") {
             $user->delivery_address = $request->deliveryAddress;
-        } else if ($request->role == "courier") {
+        } else if ($request['role'] == "courier") {
             $user->phone_number = $request->phone;
         }
 

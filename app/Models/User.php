@@ -38,8 +38,23 @@ class User extends Authenticatable implements JWTSubject
     {
         return [];
     }
+
     public function roles()
     {
         return $this->belongsTo(Role::class, 'role_id');
+    }
+
+    public function clients() {
+        return Role::find(2)->users()->get();
+    }
+
+    public function couriers() {
+        return Role::find(3)->users()->get();
+    }
+
+    public function searchByName($name, $role) {
+        return $this->where('name', 'LIKE', "%{$name}%")
+            ->where('role_id', Role::firstWhere('name', $role)->id)
+            ->get();
     }
 }
