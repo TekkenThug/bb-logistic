@@ -11,13 +11,14 @@ use Illuminate\Http\Request;
 class CourierController extends Controller
 {
     protected $user;
+
     public function __construct(User $user)
     {
         $this->user = $user;
     }
 
     /**
-     * Display a listing of the resource.
+     * Отобразить всех курьеров
      *
      * @return \Illuminate\Http\Response
      */
@@ -38,7 +39,7 @@ class CourierController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -47,23 +48,27 @@ class CourierController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Отобразить одного курьера
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        $courier = $this->user->find($id)->couriers()->first();
+        // Получение курьера
+        $courier = $this->user->find($id);
 
-        if (!$courier) {
+        // Действительно ли это курьер
+        if (!($courier->hasRole() === 'courier')) {
             return response([
                 'status' => 'fail'
             ], 404);
         }
 
-        $courierOrders = $this->user->ordersWhereParts('courier');
+        // Получаем заказы, в которых он указан исполнителем
+        $courierOrders = $courier->ordersWhereParts('courier');
 
+        // Возврат курьера и связанных с ним заявок
         return response([
             'status' => 'success',
             'courier' => $courier,
@@ -72,23 +77,25 @@ class CourierController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Обновить данные курьера
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
-        $courier = User::find($id);
+        // Получение курьера
+        $courier = $this->user->find($id);
 
-        if ($courier->roles->name !== 'courier') {
+        // Действительно ли курьер
+        if (!($courier->hasRole() === 'courier')) {
             return response([
                 'status' => 'fail',
-                'data' => 'Courier not found'
-            ]);
+            ], 500);
         }
 
+        // Добавляем комментарий, если он есть
         if ($request->input('comment')) {
             $courier->update(['courier_comment' => $request['comment']]);
             return response([
@@ -96,36 +103,22 @@ class CourierController extends Controller
             ]);
         }
 
+        // Проверяем, есть ли обновление поля пароля и обновляем
         if ($request['password']) {
-            $upd = $courier->update([
-                'name' => $request['name'],
-                'email' => $request['email'],
-                'phone_number' => $request['phone'],
-                'password' => bcrypt($request['password'])
-            ]);
+            $upd = $courier->updateUser($request, 'courier', true);
         } else {
-            $upd = $courier->update([
-                'name' => $request['name'],
-                'email' => $request['email'],
-                'phone_number' => $request['phone'],
-            ]);
+            $upd = $courier->updateUser($request, 'courier', false);
         }
 
-        if ($upd) {
-            return response([
-                'status' => 'success'
-            ]);
-        } else {
-            return response([
-                'status' => 'fail'
-            ]);
-        }
+        // Ответ
+        if ($upd) return response(['status' => 'success']);
+        return response(['status' => 'fail'], 500);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)

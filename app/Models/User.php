@@ -59,12 +59,37 @@ class User extends Authenticatable implements JWTSubject
             $str = 'courier_id';
         }
 
-        return Order::where($str, $this->value('id'))->get();
+        return Order::where($str, $this->id)->get();
     }
 
     public function searchByName($name, $role) {
         return $this->where('name', 'LIKE', "%{$name}%")
             ->where('role_id', Role::firstWhere('name', $role)->id)
             ->get();
+    }
+
+    public function hasRole() {
+        return $this->roles->name;
+    }
+
+    public function updateUser($data, $role, $password) {
+        if ($role === 'courier') {
+            if ($password) {
+                return $this->update([
+                    'name' => $data['name'],
+                    'email' => $data['email'],
+                    'phone_number' => $data['phone'],
+                    'password' => bcrypt($data['password'])
+                ]);
+            } else {
+                return $this->update([
+                    'name' => $data['name'],
+                    'email' => $data['email'],
+                    'phone_number' => $data['phone'],
+                ]);
+            }
+        }
+
+        return false;
     }
 }

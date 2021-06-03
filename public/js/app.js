@@ -4625,6 +4625,8 @@ __webpack_require__.r(__webpack_exports__);
           _this.orders = res.data.courierOrders;
           _this.preloader = false;
         }
+      })["catch"](function () {
+        return _this.$router.push('/admin/couriers');
       });
     },
     updateCourier: function updateCourier(obj) {

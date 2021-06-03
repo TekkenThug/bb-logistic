@@ -89,7 +89,7 @@ export default {
                         this.orders = res.data.courierOrders;
                         this.preloader = false;
                     }
-                })
+                }).catch(() => this.$router.push('/admin/couriers'));
         },
         updateCourier(obj) {
             axios.patch(`/couriers/${this.courier.id}`, obj)
