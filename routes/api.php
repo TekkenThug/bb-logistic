@@ -26,8 +26,11 @@ Route::group(['middleware' => ['api', 'cors'], 'prefix' => 'auth'], function($ro
     Route::post('register', [AuthController::class, 'register']);
 });
 
-Route::apiResource('clients', ClientController::class);
-Route::apiResource('couriers', CourierController::class);
-Route::apiResource('orders', OrderController::class);
+Route::middleware('auth:api')->group(function() {
+    Route::apiResource('clients', ClientController::class);
+    Route::apiResource('couriers', CourierController::class);
+    Route::apiResource('orders', OrderController::class);
+});
+
 
 
