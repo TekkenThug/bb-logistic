@@ -29,4 +29,11 @@ class Order extends Model
     public function payment() {
         return $this->hasOne(Payment::class, 'order_id');
     }
+
+    public function getOrder($id) {
+        if (auth()->user()->roles->name === 'client')
+            return $this->where(['id' => $id, 'client_id', auth()->id()]);
+        else if (auth()->user()->roles->name === 'admin')
+            return $this->find($id);
+    }
 }

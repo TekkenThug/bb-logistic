@@ -14,7 +14,15 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 
 class OrderController extends Controller
 {
-    public static function getFullData($orders) {
+    protected $order;
+
+    public function __construct(Order $order)
+    {
+        $this->order = $order;
+    }
+
+    public static function getFullData($orders)
+    {
         foreach ($orders as $order) {
             $order['goods'] = $order->goods;
             $order['client_name'] = $order->client->name;
@@ -24,6 +32,7 @@ class OrderController extends Controller
 
         return $orders;
     }
+
     /**
      * Display a listing of the resource.
      *
@@ -71,13 +80,8 @@ class OrderController extends Controller
                 ->sortByDesc('created_at');
 
             $orders = $this->getFullData($orders);
-        }
-
-        // Все заявки для админа
-        else {
-            $orders = Order::all()->sortByDesc('created_at');
-            $orders = $this->getFullData($orders);
-        }
+        } // Все заявки для админа
+        else $orders = $this->getFullData($this->order->latest()->get());
 
         return response([
             'status' => 'success',
@@ -88,7 +92,7 @@ class OrderController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -151,53 +155,34 @@ class OrderController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Отображение одного заказа
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id, Request $request)
+    public function show($id)
     {
+        // Получение заказа
+        $order = $this->order->getOrder($id);
 
-        if ($request->input('role') == 'client') {
-            $order = Order::where(['id' => $id, 'client_id' => auth()->id()])->first();
+        // Ошибка если нет товара
+        if (!$order) return response(['status' => 'fail'], 500);
 
-            if (!$order) {
-                return response([
-                    'status' => 'fail'
-                ], 501);
-            }
+        // Получение сопутствующих товаров
+        $order['goods'] = $order->goods;
 
-            $order['goods'] = $order->goods;
-
-            return response([
-                'status' => 'success',
-                'order' => $order
-            ]);
-        }
-        else if ($request->input('role') == 'admin') {
-            $order = Order::find($id);
-
-            if (!$order) {
-                return response([
-                    'status' => 'fail'
-                ], 501);
-            }
-
-            $order['goods'] = $order->goods;
-
-            return response([
-                'status' => 'success',
-                'order' => $order
-            ]);
-        }
+        // Ответ
+        return response([
+            'status' => 'success',
+            'order' => $order
+        ], 200);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -209,18 +194,18 @@ class OrderController extends Controller
                 $cost += $price['cost'] * $price['count'];
             }
 
-            $order = Order::where(['id' => $id,'client_id' => auth()->id()])
+            $order = Order::where(['id' => $id, 'client_id' => auth()->id()])
                 ->update([
-                'delivery_type' => $request['deliveryType'],
-                'delivery_date' => $request['date'],
-                'delivery_time' => $request['time'],
-                'delivery_address' => $request['address'],
-                'delivery_fio' => $request['fullname'],
-                'delivery_phones' => implode("\n", $request['phones']),
-                'delivery_comment' => $request['comment'],
-                'delivery_cost' => $cost,
-                'delivery_pay' => $request['clientPay'],
-            ]);
+                    'delivery_type' => $request['deliveryType'],
+                    'delivery_date' => $request['date'],
+                    'delivery_time' => $request['time'],
+                    'delivery_address' => $request['address'],
+                    'delivery_fio' => $request['fullname'],
+                    'delivery_phones' => implode("\n", $request['phones']),
+                    'delivery_comment' => $request['comment'],
+                    'delivery_cost' => $cost,
+                    'delivery_pay' => $request['clientPay'],
+                ]);
 
             if ($order) {
                 $order = Order::find($id);
@@ -237,8 +222,7 @@ class OrderController extends Controller
 
                 return response(['status' => 'success'], 200);
             }
-        }
-        else if ($request->input('role') === 'courier') {
+        } else if ($request->input('role') === 'courier') {
             $order = Order::where(['id' => $id, 'courier_id' => auth()->id()])->first();
 
             if ($order->update(['status' => $request->input('status')])) {
@@ -249,18 +233,16 @@ class OrderController extends Controller
                     'status' => 'success'
                 ], 200);
             }
-        }
-        else if ($request->input('role') === 'admin' && $request->input('fast') === 'true') {
+        } else if ($request->input('role') === 'admin' && $request->input('fast') === 'true') {
             $order = Order::where('id', $id)
                 ->update([
-                'courier_id' => $request['courier_id'],
+                    'courier_id' => $request['courier_id'],
                     'status' => 'pending'
                 ]);
 
             if ($order) return response(['status' => 'success'], 200);
             else return response(['status' => 'fail'], 500);
-        }
-        else if ($request->input('role') === 'admin') {
+        } else if ($request->input('role') === 'admin') {
             $cost = 0;
             foreach ($request['products'] as $price) {
                 $cost += $price['cost'] * $price['count'];
@@ -305,23 +287,16 @@ class OrderController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Удаление заказа
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        $order = Order::find($id);
+        if ($this->order->find($id)->delete())
+            return response(['status' => 'success'], 200);
 
-        if ($order->delete()) {
-            return response([
-                'status' => 'success'
-            ]);
-        } else {
-            return response([
-                'status' => 'fail'
-            ]);
-        }
+        return response(['status' => 'fail'], 500);
     }
 }
