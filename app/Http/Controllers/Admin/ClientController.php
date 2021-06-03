@@ -19,7 +19,7 @@ class ClientController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * Отобразить всех клиентов.
      *
      * @return \Illuminate\Http\Response
      */
@@ -49,32 +49,33 @@ class ClientController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Отобразить одного клиента
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function show($id, Request $request)
     {
+        // Получение клиента
+        $client = $this->user->find($id);
 
-
-        $client = User::find($id)->roles->name === 'client' ? User::find($id) : null;
-
-        if (!$this->user->find($id)) {
+        // Действительно ли клиент
+        if (!($client->hasRole() === 'client')) {
             return response([
                 'status' => 'fail'
             ], 404);
         }
 
+        // Получаем заказы, в которых он указан исполнителем
         if ($filter = $request->input('filter')) {
-            $clientOrders = Order::where(['client_id' => $id, 'delivery_type' => $filter])->get();
-        } else $clientOrders = Order::where('client_id', $id)->get();
+            $clientOrders = $client->ordersWhereParts('client', ['delivery_type' => $filter]);
+        } else $clientOrders = $client->ordersWhereParts('client');
 
-
+        // Ответ
         return response([
             'status' => 'success',
             'client' => $client,
-            'couriers' => User::where('role_id', 3)->get(),
+            'couriers' => $this->user->couriers(),
             'clientOrders' => OrderController::getFullData($clientOrders)
         ], 200);
     }
@@ -88,39 +89,26 @@ class ClientController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $client = User::find($id);
+        // Получение клиента
+        $client = $this->user->find($id);
 
-        if ($client->roles->name !== 'client') {
-            return response([
-                'status' => 'fail',
-                'data' => 'Client not found'
-            ]);
-        }
-
-        if ($request['password']) {
-            $upd = $client->update([
-                'name' => $request['name'],
-                'email' => $request['email'],
-                'delivery_address' => $request['address'],
-                'password' => bcrypt($request['password'])
-            ]);
-        } else {
-            $upd = $client->update([
-                'name' => $request['name'],
-                'email' => $request['email'],
-                'delivery_address' => $request['address'],
-            ]);
-        }
-
-        if ($upd) {
-            return response([
-                'status' => 'success'
-            ]);
-        } else {
+        // Действительно ли клиент
+        if (!($client->hasRole() === 'client')) {
             return response([
                 'status' => 'fail'
-            ]);
+            ], 404);
         }
+
+        // Проверяем, есть ли обновление поля пароля и обновляем
+        if ($request['password']) {
+            $upd = $client->updateUser($request, 'client', true);
+        } else {
+            $upd = $client->updateUser($request, 'client', false);
+        }
+
+        // Ответ
+        if ($upd) return response(['status' => 'success'], 200);
+        return response(['status' => 'fail'], 500);
     }
 
     /**

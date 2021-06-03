@@ -52,14 +52,19 @@ class User extends Authenticatable implements JWTSubject
         return Role::find(3)->users()->get();
     }
 
-    public function ordersWhereParts($role) {
+    public function ordersWhereParts($role, $filters = []) {
         if ($role === 'client') {
             $str = 'client_id';
         } else {
             $str = 'courier_id';
         }
 
-        return Order::where($str, $this->id)->get();
+        if (count($filters) > 0) {
+            $filter = array_merge([$str => $this->id], $filters);
+            return Order::where($filter)->latest()->get();
+        }
+
+        return Order::where($str, $this->id)->latest()->get();
     }
 
     public function searchByName($name, $role) {
@@ -86,6 +91,21 @@ class User extends Authenticatable implements JWTSubject
                     'name' => $data['name'],
                     'email' => $data['email'],
                     'phone_number' => $data['phone'],
+                ]);
+            }
+        } else if ($role === 'client') {
+            if ($password) {
+                return $this->update([
+                    'name' => $data['name'],
+                    'email' => $data['email'],
+                    'delivery_address' => $data['address'],
+                    'password' => bcrypt($data['password'])
+                ]);
+            } else {
+                return $this->update([
+                    'name' => $data['name'],
+                    'email' => $data['email'],
+                    'delivery_address' => $data['address'],
                 ]);
             }
         }

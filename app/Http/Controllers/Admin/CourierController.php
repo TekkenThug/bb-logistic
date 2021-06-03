@@ -111,7 +111,7 @@ class CourierController extends Controller
         }
 
         // Ответ
-        if ($upd) return response(['status' => 'success']);
+        if ($upd) return response(['status' => 'success'], 200);
         return response(['status' => 'fail'], 500);
     }
 
