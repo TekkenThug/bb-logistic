@@ -3,7 +3,7 @@
         <div class="col-lg-8 offset-lg-2">
             <div class="client__list client-tab">
                 <div class="client__titles mb-3">
-                    <h4>Выполненных заказов: {{ count }}</h4>
+                    <h4>Выполненных заказов: {{ orders.length }}</h4>
                     <h4>Наличные: {{ cash }} руб.</h4>
                     <h4>Безналичный расчет: {{ credit }} руб.</h4>
                 </div>
@@ -41,7 +41,6 @@ export default {
       return {
           credit: 0,
           cash: 0,
-          count: 0,
           preloader: true,
           orders: []
       }
@@ -54,6 +53,8 @@ export default {
                 if (res.data.status === 'success') {
                     this.preloader = false;
                     this.orders = res.data.orders
+                    this.credit = res.data.payments.credit
+                    this.cash = res.data.payments.cash
                 }
             })
         },

@@ -9,7 +9,7 @@ import driverAuthBearer      from '@websanova/vue-auth/dist/drivers/auth/bearer.
 import driverHttpAxios       from '@websanova/vue-auth/dist/drivers/http/axios.1.x.esm.js';
 import driverRouterVueRouter from '@websanova/vue-auth/dist/drivers/router/vue-router.2.x.esm.js';
 
-axios.defaults.baseURL = 'http://localhost:8000/api';
+axios.defaults.baseURL = 'http://bb-logistic.test/api';
 
 Vue.use(VueAxios, axios);
 

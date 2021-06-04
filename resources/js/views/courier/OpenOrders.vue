@@ -49,8 +49,8 @@ export default {
                 }
             })
         },
-        changeOrderStatus(status, id) {
-            axios.patch(`/orders/${id}?role=courier&status=${status}`).then(res => {
+        changeOrderStatus(status, id, payMethod = null) {
+            axios.patch(`/orders/${id}?role=courier&status=${status}&pay-method=${payMethod}`).then(res => {
                 if (res.data.status === 'success') {
                     this.getOrders();
                 } else {

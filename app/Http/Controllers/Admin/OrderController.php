@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Events\ImportantOrderCreated;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\Good;
 use App\Models\Payment;
 use App\Models\Role;
 use App\Models\User;
+use App\Services\PaymentService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -15,10 +17,12 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 class OrderController extends Controller
 {
     protected $order;
+    protected $paymentService;
 
-    public function __construct(Order $order)
+    public function __construct(Order $order, PaymentService $paymentService)
     {
         $this->order = $order;
+        $this->paymentService = $paymentService;
     }
 
     public static function getFullData($orders)
@@ -42,11 +46,13 @@ class OrderController extends Controller
     {
         // Получение заказов
         $orders = $this->getFullData($this->order->getOrders($request->input('filter'), $request->input('id')));
+        $payments = $this->paymentService->getPayments($orders);
 
         // Ответ
         return response([
             'status' => 'success',
-            'orders' => $orders
+            'orders' => $orders,
+            'payments' => $payments
         ], 200);
     }
 
@@ -107,7 +113,7 @@ class OrderController extends Controller
                     'cost' => $product['cost']
                 ]);
             }
-
+            event(new ImportantOrderCreated($order->id));
             return response(['status' => 'success'], 200);
         }
 
@@ -187,8 +193,14 @@ class OrderController extends Controller
             $order = Order::where(['id' => $id, 'courier_id' => auth()->id()])->first();
 
             if ($order->update(['status' => $request->input('status')])) {
-                if ($request->input('status') === 'finished')
-                    $order->payment()->update(['paymentPos' => 'courier']);
+                if ($request->input('status') === 'finished') {
+                    $payMethod = $request->input('pay-method');
+                    $order->payment()->update([
+                        'paymentPos' => 'courier',
+                        'isCredit' => $payMethod === 'card'
+                    ]);
+                }
+
 
                 return response([
                     'status' => 'success'

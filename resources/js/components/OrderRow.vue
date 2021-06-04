@@ -74,12 +74,26 @@
                     <button @click="$emit('statusEvent', 'courier', id)" v-if="status === 'pending'"
                             class="btn btn-primary">Взять заказ
                     </button>
-                    <button @click="$emit('statusEvent', 'finished', id)" v-if="status === 'courier'"
+                    <button @click="$emit('statusEvent', 'finished', id, payMethod)" v-if="status === 'courier'"
                             class="btn btn-primary">Отгрузить
                     </button>
                     <button @click="$emit('statusEvent', 'return', id)" v-if="status === 'courier'"
                             class="btn btn-danger">Возврат
                     </button>
+                    <div class="mt-3" v-if="status === 'courier'">
+                        <div class="form-check">
+                            <input v-model="payMethod" value="cash" class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+                            <label class="form-check-label" for="flexRadioDefault1">
+                                Наличный расчёт
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input v-model="payMethod" value="card" class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
+                            <label class="form-check-label" for="flexRadioDefault2">
+                                Оплата картой
+                            </label>
+                        </div>
+                    </div>
                 </div>
             </div>
         </transition>
@@ -102,6 +116,7 @@ export default {
             showModal: false,
             selectCourier: this.status === "not-allocated",
             courierId: 'not',
+            payMethod: 'cash',
         }
     },
     props: {

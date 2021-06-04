@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\Role;
 use App\Models\User;
+use App\Services\PaymentService;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 
@@ -13,9 +14,12 @@ class ClientController extends Controller
 {
 
     protected $user;
-    public function __construct(User $user)
+    protected $paymentService;
+
+    public function __construct(User $user, PaymentService $paymentService)
     {
         $this->user = $user;
+        $this->paymentService = $paymentService;
     }
 
     /**
@@ -66,15 +70,18 @@ class ClientController extends Controller
             ], 404);
         }
 
-        // Получаем заказы, в которых он указан исполнителем
+        // Получаем заказы, в которых он указан заказчиком
         if ($filter = $request->input('filter')) {
             $clientOrders = $client->ordersWhereParts('client', ['delivery_type' => $filter]);
         } else $clientOrders = $client->ordersWhereParts('client');
+
+        $payments = $this->paymentService->getPayments($client->ordersWhereParts('client'), 'client');
 
         // Ответ
         return response([
             'status' => 'success',
             'client' => $client,
+            'money' => $payments,
             'couriers' => $this->user->couriers(),
             'clientOrders' => OrderController::getFullData($clientOrders)
         ], 200);
@@ -97,6 +104,16 @@ class ClientController extends Controller
             return response([
                 'status' => 'fail'
             ], 404);
+        }
+
+        // Отдача денег курьеру
+        if ($request->input('payment')) {
+            $orders = $client->ordersWhereParts('client');
+            $this->paymentService->updatePaymentsStatus($orders, "finish");
+
+            return response([
+                'status' => 'success'
+            ]);
         }
 
         // Проверяем, есть ли обновление поля пароля и обновляем

@@ -4,8 +4,8 @@
             <preloader class="mt-5" v-if="preloader" />
             <div v-else class="admin-client overall">
                 <h2 class="admin-client__name">{{ client.name }}</h2>
-<!--                <h5>Наличный расчет: {{ $cash }} руб.</h5>-->
-<!--                <h5>Безналичный расчет: {{ $credit }} руб.</h5>-->
+                <h5>Наличный расчет: {{ cash }} руб.</h5>
+                <h5>Безналичный расчет: {{ credit }} руб.</h5>
                 <button @click="displayUserSettings = !displayUserSettings" class="btn btn-primary w-100">
                     {{ btnMsg }}
                 </button>
@@ -15,10 +15,14 @@
                               @serialize="updateClient"
                 />
                 <form class="admin-client__required-form">
-                    <button class="btn btn-primary w-100 btn-change-cash" type="button">Сдать деньги клиенту</button>
-                    <div class="warning">
+                    <button @click="displayCashAttempt = !displayCashAttempt"
+                            class="btn btn-primary w-100 btn-change-cash"
+                            type="button">
+                        Сдать деньги клиенту
+                    </button>
+                    <div v-if="displayCashAttempt" class="warning">
                         <b class="mb-2">Вы подтверждаете действие?</b>
-                        <button class="btn btn-warning w-100" type="submit">Да</button>
+                        <button @click.prevent="cashFlowMove" class="btn btn-warning w-100" type="submit">Да</button>
                     </div>
                 </form>
                 <div class="admin-client__filter">
@@ -69,15 +73,19 @@ export default {
         return {
             preloader: true,
             displayUserSettings: false,
+            displayCashAttempt: false,
             client: [],
             couriers: [],
-            orders: []
+            orders: [],
+
+            cash: 0,
+            credit: 0,
         }
     },
     computed: {
         btnMsg() {
             return this.displayUserSettings ? "Скрыть настройки" : "Показать настройки пользователя"
-        }
+        },
     },
     methods: {
         setCourier(id, courierId) {
@@ -101,6 +109,8 @@ export default {
                         this.client = res.data.client;
                         this.orders = res.data.clientOrders;
                         this.couriers = res.data.couriers;
+                        this.credit = res.data.money.credit;
+                        this.cash = res.data.money.cash;
                         this.preloader = false;
                     }
                 })
@@ -114,6 +124,14 @@ export default {
                         console.log('Ошибка при обновлении клиента')
                     }
                 })
+        },
+        cashFlowMove() {
+            this.preloader = true;
+            axios.patch(`/clients/${this.client.id}?payment=true`).then(res => {
+                if (res.data.status === 'success') {
+                    this.preloader = false;
+                }
+            })
         }
     },
     beforeMount() {

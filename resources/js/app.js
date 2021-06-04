@@ -22,7 +22,7 @@ window.Vue = require('vue').default;
 
 Vue.component('v-footer', require('./components/Footer.vue').default);
 Vue.component('preloader', require('./components/Preloader.vue').default);
-Vue.component('modal-window', require('./components/ModalWindow.vue').default);
+Vue.component('message', require('./components/ModalWindow.vue').default);
 Vue.component('popup', require('./components/Popup.vue').default);
 
 /**

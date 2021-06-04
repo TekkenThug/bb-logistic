@@ -4,8 +4,8 @@
             <preloader class="mt-5" v-if="preloader" />
             <div v-else class="admin-client overall">
                 <h2 class="admin-client__name">{{ courier.name }}</h2>
-                <!--                <h5>Наличный расчет: {{ $cash }} руб.</h5>-->
-                <!--                <h5>Безналичный расчет: {{ $credit }} руб.</h5>-->
+                <h5>Наличный расчет: {{ cash }} руб.</h5>
+                <h5>Безналичный расчет: {{ credit }} руб.</h5>
                 <button @click="displayUserSettings = !displayUserSettings" class="btn btn-primary w-100">
                     {{ btnMsg }}
                 </button>
@@ -15,10 +15,14 @@
                               @serialize="updateCourier"
                 />
                 <form class="admin-client__required-form">
-                    <button class="btn btn-primary w-100 btn-change-cash" type="button">Взять деньги у курьера</button>
-                    <div class="warning">
+                    <button class="btn btn-primary w-100 btn-change-cash"
+                            type="button"
+                            @click="displayCashAttempt = !displayCashAttempt">
+                        Взять деньги у курьера
+                    </button>
+                    <div v-if="displayCashAttempt" class="warning">
                         <b class="mb-2">Вы подтверждаете действие?</b>
-                        <button class="btn btn-warning w-100" type="submit">Да</button>
+                        <button class="btn btn-warning w-100" @click.prevent="cashFlowMove">Да</button>
                     </div>
                 </form>
                 <div class="mb-5">
@@ -68,9 +72,13 @@ export default {
         return {
             preloader: true,
             displayUserSettings: false,
+            displayCashAttempt: false,
             comment: "",
             courier: [],
-            orders: []
+            orders: [],
+
+            cash: "",
+            credit: ""
         }
     },
     computed: {
@@ -86,6 +94,8 @@ export default {
                     else {
                         this.courier = res.data.courier;
                         this.comment = res.data.courier.courier_comment
+                        this.credit = res.data.money.credit;
+                        this.cash = res.data.money.cash;
                         this.orders = res.data.courierOrders;
                         this.preloader = false;
                     }
@@ -110,6 +120,14 @@ export default {
                         console.log('Ошибка при добавлении комментария')
                     }
                 })
+        },
+        cashFlowMove() {
+            this.preloader = true;
+            axios.patch(`/couriers/${this.courier.id}?payment=true`).then(res => {
+                if (res.data.status === 'success') {
+                    this.preloader = false;
+                }
+            })
         }
     },
     beforeMount() {

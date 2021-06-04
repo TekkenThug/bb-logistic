@@ -73,7 +73,7 @@ export default {
             }
         },
         email(val) {
-            if (this.error === true && val === null)
+            if (this.error === true && val !== null)
                 this.error = false;
         }
     }

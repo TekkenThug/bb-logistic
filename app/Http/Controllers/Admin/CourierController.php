@@ -6,15 +6,18 @@ use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\Role;
 use App\Models\User;
+use App\Services\PaymentService;
 use Illuminate\Http\Request;
 
 class CourierController extends Controller
 {
     protected $user;
+    protected $paymentService;
 
-    public function __construct(User $user)
+    public function __construct(User $user, PaymentService $paymentService)
     {
         $this->user = $user;
+        $this->paymentService = $paymentService;
     }
 
     /**
@@ -67,11 +70,13 @@ class CourierController extends Controller
 
         // Получаем заказы, в которых он указан исполнителем
         $courierOrders = $courier->ordersWhereParts('courier');
+        $payments = $this->paymentService->getPayments($courierOrders);
 
-        // Возврат курьера и связанных с ним заявок
+        // Возврат курьера и связанных с ним заявок, а также платежей
         return response([
             'status' => 'success',
             'courier' => $courier,
+            'money' => $payments,
             'courierOrders' => OrderController::getFullData($courierOrders)
         ], 200);
     }
@@ -98,6 +103,16 @@ class CourierController extends Controller
         // Добавляем комментарий, если он есть
         if ($request->input('comment')) {
             $courier->update(['courier_comment' => $request['comment']]);
+            return response([
+                'status' => 'success'
+            ]);
+        }
+
+        // Забор денег с курьера
+        if ($request->input('payment')) {
+            $orders = $courier->ordersWhereParts('courier');
+           $this->paymentService->updatePaymentsStatus($orders, "admin");
+
             return response([
                 'status' => 'success'
             ]);
