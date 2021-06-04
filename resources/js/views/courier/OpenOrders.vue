@@ -42,7 +42,7 @@ export default {
         getOrders() {
             this.preloader = true;
             this.orders = [];
-            axios.get(`/orders?courier=true&open=true`).then(res => {
+            axios.get(`/orders?filter=open`).then(res => {
                 if (res.data.status === 'success') {
                     this.preloader = false;
                     this.orders = res.data.orders

@@ -34,55 +34,16 @@ class OrderController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * Отображение заказов.
      *
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
     {
-        // Поиск по номеру для клиента
-        if ($request->input('id') && $request->input('role') === 'client') {
-            $orders = Order::where(['client_id' => auth()->id()])
-                ->where('id', 'LIKE', "%{$request->input('id')}%")
-                ->get();
+        // Получение заказов
+        $orders = $this->getFullData($this->order->getOrders($request->input('filter'), $request->input('id')));
 
-            foreach ($orders as $order) {
-                $order['goods'] = $order->goods;
-                $order['courier_name'] = $order->courier ? $order->courier->name : "";
-                $order['courier_phone'] = $order->courier ? $order->courier->phone_number : "";
-            }
-        } else if ($request->input('role') === 'client') {
-            $orders = Order::where(['client_id' => auth()->id()])->get();
-
-            $orders = $this->getFullData($orders);
-
-            return response(['orders' => $orders], 200);
-        } else if ($request->input('id')) {
-            $orders = Order::where('id', 'LIKE', "%{$request->input('id')}%")
-                ->get()->sortByDesc('created_at');
-
-            $orders = $this->getFullData($orders);
-        } else if ($request->input('filter')) {
-            $orders = Order::where('status', $request->input('filter'))
-                ->get()->sortByDesc('created_at');
-
-            $orders = $this->getFullData($orders);
-        } else if ($request->input('courier') && $request->input('open')) {
-            $orders = Order::where(['courier_id' => auth()->id()])->where('status', 'pending')
-                ->orWhere('status', 'courier')
-                ->get()
-                ->sortByDesc('created_at');
-
-            $orders = $this->getFullData($orders);
-        } else if ($request->input('courier')) {
-            $orders = Order::where(['courier_id' => auth()->id()])->where('status', 'finished')
-                ->get()
-                ->sortByDesc('created_at');
-
-            $orders = $this->getFullData($orders);
-        } // Все заявки для админа
-        else $orders = $this->getFullData($this->order->latest()->get());
-
+        // Ответ
         return response([
             'status' => 'success',
             'orders' => $orders

@@ -5253,10 +5253,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _components_OrderRow__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../components/OrderRow */ "./resources/js/components/OrderRow.vue");
-/* harmony import */ var _components_SearchInput__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../components/SearchInput */ "./resources/js/components/SearchInput.vue");
-//
-//
-//
+/* harmony import */ var _components_SelectFilter__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../components/SelectFilter */ "./resources/js/components/SelectFilter.vue");
 //
 //
 //
@@ -5293,18 +5290,18 @@ __webpack_require__.r(__webpack_exports__);
   name: "OrderList",
   components: {
     OrderRow: _components_OrderRow__WEBPACK_IMPORTED_MODULE_0__.default,
-    SearchInput: _components_SearchInput__WEBPACK_IMPORTED_MODULE_1__.default
+    SelectFilter: _components_SelectFilter__WEBPACK_IMPORTED_MODULE_1__.default
   },
   data: function data() {
     return {
       preloader: true,
       stopSearch: false,
       orders: [],
-      searchText: ""
+      filter: ""
     };
   },
   watch: {
-    searchText: function searchText() {
+    filter: function filter() {
       this.getOrders();
     }
   },
@@ -5316,7 +5313,7 @@ __webpack_require__.r(__webpack_exports__);
         this.stopSearch = true;
         this.orders = [];
         this.preloader = true;
-        axios.get("/orders?role=client&id=".concat(this.searchText)).then(function (res) {
+        axios.get("/orders?filter=".concat(this.filter)).then(function (res) {
           _this.orders = res.data.orders;
           _this.preloader = false;
           _this.stopSearch = false;
@@ -5517,7 +5514,7 @@ __webpack_require__.r(__webpack_exports__);
 
       this.preloader = true;
       this.orders = [];
-      axios.get("/orders?courier=true&open=true").then(function (res) {
+      axios.get("/orders?filter=open").then(function (res) {
         if (res.data.status === 'success') {
           _this.preloader = false;
           _this.orders = res.data.orders;
@@ -47271,15 +47268,13 @@ var render = function() {
         "div",
         { staticClass: "client__list client-tab", attrs: { id: "order-list" } },
         [
-          _c("SearchInput", {
-            staticStyle: { "margin-bottom": "20px" },
-            attrs: { placeholder: "Поиск по номеру заявки..." },
+          _c("SelectFilter", {
             model: {
-              value: _vm.searchText,
+              value: _vm.filter,
               callback: function($$v) {
-                _vm.searchText = $$v
+                _vm.filter = $$v
               },
-              expression: "searchText"
+              expression: "filter"
             }
           }),
           _vm._v(" "),

@@ -3,10 +3,7 @@
         <div class="col-lg-8 offset-lg-2">
 
             <div id="order-list" class="client__list client-tab">
-                <SearchInput style="margin-bottom: 20px;"
-                             placeholder="Поиск по номеру заявки..."
-                             v-model="searchText"
-                />
+                <SelectFilter v-model="filter" />
                 <preloader v-if="preloader" />
                 <h2 v-if="orders.length === 0 && !preloader" class="text-center">Заявок нет</h2>
                 <OrderRow v-for="order in orders"
@@ -33,21 +30,21 @@
 
 <script>
 import OrderRow from "../../components/OrderRow";
-import SearchInput from "../../components/SearchInput";
+import SelectFilter from "../../components/SelectFilter";
 
 export default {
     name: "OrderList",
-    components: { OrderRow, SearchInput },
+    components: { OrderRow, SelectFilter },
     data() {
         return {
             preloader: true,
             stopSearch: false,
             orders: [],
-            searchText: "",
+            filter: "",
         }
     },
     watch: {
-        searchText() {
+        filter() {
             this.getOrders();
         }
     },
@@ -57,7 +54,7 @@ export default {
                 this.stopSearch = true;
                 this.orders= [];
                 this.preloader = true;
-                axios.get(`/orders?role=client&id=${this.searchText}`).then(res => {
+                axios.get(`/orders?filter=${this.filter}`).then(res => {
                     this.orders = res.data.orders;
                     this.preloader = false;
                     this.stopSearch = false;

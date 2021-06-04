@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use http\Params;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -30,6 +31,38 @@ class Order extends Model
         return $this->hasOne(Payment::class, 'order_id');
     }
 
+    // Получить заказы
+    public function getOrders($filter = null, $text = null) {
+        $role = auth()->user()->hasRole();
+        $id = auth()->id();
+
+        if ($role === 'client') {
+            if ($filter)
+                return $this->where(['client_id' => $id, 'status' => $filter])->latest()->get();
+
+            return $this->where('client_id', $id)->latest()->get();
+        } else if ($role === 'courier') {
+            if ($filter === 'open')
+                return $this->where('courier_id', $id)->whereIn('status', ['pending', 'courier'])->get();
+
+            return $this->where(['courier_id' => $id, 'status' => 'finished'])->get();
+        } else {
+            $answer = $this;
+            if ($filter || $text) {
+                if ($filter)
+                    $answer = $answer->where('status', $filter);
+
+                if ($text)
+                    $answer = $answer->where('id', 'LIKE', "%{$text}%");
+
+                return $answer->latest()->get();
+            } else {
+                return $this->latest()->get();
+            }
+        }
+    }
+
+    // Получить один заказ
     public function getOrder($id) {
         if (auth()->user()->roles->name === 'client')
             return $this->where(['id' => $id, 'client_id', auth()->id()]);
