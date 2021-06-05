@@ -233,19 +233,18 @@ export default {
 
 <style scoped>
 .client__item {
-    z-index: 1;
+    z-index: auto;
 }
 
 .client__item-info {
-    display: flex;
-    align-items: flex-start;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    column-gap: 10px;
+    row-gap: 20px;
 }
 
 .client__item-info .info {
     margin-top: 0;
-    margin-right: 40px;
-    margin-bottom: 20px;
 }
 
 .fa-chevron-down {
@@ -260,5 +259,17 @@ export default {
     margin: 15px 0;
     margin-right: 10px;
     max-width: 400px;
+}
+
+@media (max-width: 768px) {
+    .client__item-info {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+}
+
+@media (max-width: 576px) {
+    .client__item-info {
+        grid-template-columns: 1fr 1fr;
+    }
 }
 </style>
