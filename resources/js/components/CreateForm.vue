@@ -23,6 +23,7 @@
                 <h4 class="client__order-subtitle">От кого заказ:</h4>
                 <div class="required">
                     <select v-model="user" class="form-control" name="order-client" required>
+                        <option :value="1">От администратора</option>
                         <option v-for="client in clients" :key="client.id" :value="client.id">{{ client.name }}</option>
                     </select>
                 </div>
@@ -188,7 +189,7 @@ export default {
             clientPayCost: null,
             comment: "",
 
-            user: "",
+            user: 1,
             courier: "",
             deliveryStatus: "not-allocated"
         }

@@ -72,7 +72,7 @@ class Order extends Model
     // Получить один заказ
     public function getOrder($id) {
         if (auth()->user()->roles->name === 'client')
-            return $this->where(['id' => $id, 'client_id', auth()->id()]);
+            return $this->where(['id' => $id, 'client_id' => auth()->id()])->first();
         else if (auth()->user()->roles->name === 'admin')
             return $this->find($id);
     }

@@ -186,7 +186,7 @@ export default {
 
         fenceAddress: {
             type: String,
-            default: ""
+            default: null
         }
     },
     computed: {

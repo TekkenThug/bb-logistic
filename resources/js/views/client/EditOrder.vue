@@ -23,7 +23,7 @@ export default {
         }
     },
     beforeMount() {
-       axios.get(`/orders/${this.$route.params.order_id}?role=client`)
+       axios.get(`/orders/${this.$route.params.order_id}`)
         .then(res => {
             if (res.data.status === "fail") {
                 console.log('fail')

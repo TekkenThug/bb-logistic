@@ -49,7 +49,7 @@
                         :client-pay="order.delivery_pay"
                         :products="order.goods"
                         :role="'admin'"
-                        :user-name="order.client_name"
+                        :user-name="order.client_id === 1 ? 'Админ' : order.client_name""
                         :couriers="couriers"
                         :courier-name="order.courier_name"
                         :courier-phone="order.courier_phone"
