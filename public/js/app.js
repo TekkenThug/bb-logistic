@@ -3668,6 +3668,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "OrderRow",
   data: function data() {
@@ -3736,6 +3739,10 @@ __webpack_require__.r(__webpack_exports__);
       "default": ""
     },
     courierPhone: {
+      type: String,
+      "default": ""
+    },
+    fenceAddress: {
       type: String,
       "default": ""
     }
@@ -5528,6 +5535,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _components_OrderRow__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../components/OrderRow */ "./resources/js/components/OrderRow.vue");
+//
 //
 //
 //
@@ -51514,6 +51522,13 @@ var render = function() {
           },
           [
             _c("div", { staticClass: "client__item-info" }, [
+              _vm.role === "courier" && _vm.fenceAddress
+                ? _c("div", { staticClass: "info" }, [
+                    _vm._v("\n                    Адрес забора: "),
+                    _c("span", [_vm._v(_vm._s(_vm.fenceAddress))])
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
               _c("div", { staticClass: "info" }, [
                 _vm._v("\n                    Дата доставки: "),
                 _c("span", [_vm._v(_vm._s(_vm.deliveryDate))])
@@ -51573,7 +51588,7 @@ var render = function() {
             ]),
             _vm._v(" "),
             _vm.role === "courier"
-              ? _c("div", { staticClass: "buttons" }, [
+              ? _c("div", { staticClass: "buttons mt-3" }, [
                   _vm.status === "pending"
                     ? _c(
                         "button",
@@ -53793,7 +53808,8 @@ var render = function() {
                 "client-fullname": order.delivery_fio,
                 comment: order.delivery_comment,
                 "client-pay": order.delivery_pay,
-                products: order.goods
+                products: order.goods,
+                "fence-address": order.fenceAddress
               },
               on: { statusEvent: _vm.changeOrderStatus }
             })

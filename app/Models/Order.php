@@ -42,8 +42,15 @@ class Order extends Model
 
             return $this->where('client_id', $id)->latest()->get();
         } else if ($role === 'courier') {
-            if ($filter === 'open')
-                return $this->where('courier_id', $id)->whereIn('status', ['pending', 'courier'])->get();
+            if ($filter === 'open') {
+                $orders = $this->where('courier_id', $id)->whereIn('status', ['pending', 'courier'])->get();
+
+                foreach ($orders as $order) {
+                    $order['fenceAddress'] = $order->client->delivery_address;
+                }
+
+                return $orders;
+            }
 
             return $this->where(['courier_id' => $id, 'status' => 'finished'])->get();
         } else {

@@ -19,6 +19,7 @@
                           :comment="order.delivery_comment"
                           :client-pay="order.delivery_pay"
                           :products="order.goods"
+                          :fence-address="order.fenceAddress"
                           @statusEvent="changeOrderStatus"
                 />
             </div>

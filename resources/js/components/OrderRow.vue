@@ -45,6 +45,9 @@
         <transition name="fade">
             <div v-show="showMore">
                 <div class="client__item-info">
+                    <div v-if="role === 'courier' && fenceAddress" class="info">
+                        Адрес забора: <span>{{ fenceAddress }}</span>
+                    </div>
                     <div class="info">
                         Дата доставки: <span>{{ deliveryDate }}</span>
                     </div>
@@ -70,7 +73,7 @@
                             }} шт.</span>
                     </div>
                 </div>
-                <div v-if="role === 'courier'" class="buttons">
+                <div v-if="role === 'courier'" class="buttons mt-3">
                     <button @click="$emit('statusEvent', 'courier', id)" v-if="status === 'pending'"
                             class="btn btn-primary">Взять заказ
                     </button>
@@ -180,6 +183,11 @@ export default {
             type: String,
             default: ""
         },
+
+        fenceAddress: {
+            type: String,
+            default: ""
+        }
     },
     computed: {
         setStatusOrder() {
