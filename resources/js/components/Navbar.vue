@@ -37,6 +37,9 @@
                         <li v-if="role === 'admin'" class="sidebar__item">
                             <router-link to="/admin/orders"><img src="/images/sidebar/clipboard.svg" alt="list"><span>Список заявок</span></router-link>
                         </li>
+                        <li v-if="role === 'admin'" class="sidebar__item">
+                            <router-link to="/admin/fulfillment"><img src="/images/sidebar/box.svg" alt="list"><span>Фулфилмент</span></router-link>
+                        </li>
                     </ul>
                 </div>
                 <div class="col-3 col-sm-2 d-flex justify-content-center align-items-center">

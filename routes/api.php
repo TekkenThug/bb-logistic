@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use \App\Http\Controllers\Admin\ClientController;
 use \App\Http\Controllers\Admin\CourierController;
 use \App\Http\Controllers\Admin\OrderController;
+use \App\Http\Controllers\Fulfillment\StockController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,6 +31,9 @@ Route::middleware('auth:api')->group(function() {
     Route::apiResource('clients', ClientController::class);
     Route::apiResource('couriers', CourierController::class);
     Route::apiResource('orders', OrderController::class);
+
+    /* Роуты для фулфилмента */
+    Route::apiResource('stock', StockController::class);
 });
 
 

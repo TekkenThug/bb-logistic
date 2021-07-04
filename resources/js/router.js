@@ -24,6 +24,7 @@ import AdminCreateOrder from "./views/admin/CreateOrder";
 import AdminClientPage from "./views/admin/ClientPage";
 import AdminCourierPage from "./views/admin/CourierPage";
 import AdminEditOrder from "./views/admin/EditOrder";
+import AdminFulfillment from "./views/admin/Fulfillment";
 
 const postfix = (str) => `${str} - B&B Logistic`;
 
@@ -163,6 +164,11 @@ const routes = [
                 meta: {title: postfix("Создать заявку")},
                 component: AdminCreateOrder
             },
+            {
+                path: "fulfillment",
+                meta: { title: postfix("Фулфилмент") },
+                component: AdminFulfillment
+            }
         ]
     }
 ];

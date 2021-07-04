@@ -39,6 +39,15 @@ router.beforeEach((to, from, next) => {
     next();
 });
 
+/**
+ * Плагины
+ */
+import ApiPlugin from "./plugins/api";
+import LoadPlugin from "./plugins/load"
+
+Vue.use(ApiPlugin);
+Vue.use(LoadPlugin);
+
 const app = new Vue({
     el: '#app',
     router,
