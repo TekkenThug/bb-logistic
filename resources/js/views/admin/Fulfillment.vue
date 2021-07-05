@@ -12,6 +12,7 @@
                 <stock-table v-show="tableData.length && !preloader"
                              :headers="tableHeaders"
                              :data="tableData"
+                             @itemHandlerUpdate="popupLogic"
                              @itemHandlerDelete="deleteItem"
                 >
                     <template v-slot:after>
@@ -20,6 +21,18 @@
                 </stock-table>
                 <h3 v-show="tableData.length < 1 && selectUser && !preloader">На складе отсутствует товар</h3>
                 <preloader v-if="preloader"/>
+
+                <popup @serverEvent="updateProduct" @close="popup.show = false" v-if="popup.show">
+                    <template v-slot:header>
+                        Редактирование товара
+                    </template>
+                    <template v-slot:body>
+                        <div v-for="(field, name) in popup.data" v-if="name !== 'id'" class="form-group">
+                            <label>{{ name | translate }}</label>
+                            <input class="form-control" type="text" v-model="popup.data[name]">
+                        </div>
+                    </template>
+                </popup>
             </div>
         </div>
     </div>
@@ -39,7 +52,11 @@ export default {
             users: [],
             preloader: false,
             tableHeaders: ['№', 'ID', 'Название', 'Цвет', 'Размер', 'Артикул', 'Штрихкод', 'Шт.', 'Операции'],
-            tableData: []
+            tableData: [],
+            popup: {
+                show: false,
+                data: null
+            }
         }
     },
     mounted() {
@@ -85,7 +102,36 @@ export default {
 
                 this.preloader = false;
             });
+        },
 
+        /* Обновление продукта */
+        updateProduct() {
+            this.$load(async () => {
+                this.popup.show = false;
+                this.preloader = true;
+                const res = await this.$api.stock.updateProduct(this.popup.data, this.popup.data['id']);
+                this.tableData = await this.getItems(this.selectUser);
+                this.preloader = false;
+                this.popup.data = {};
+            })
+        },
+
+        /* Открытие модалки по редактированию продукта */
+        popupLogic(data) {
+            this.popup.show = true;
+            this.popup.data = Object.assign({}, data);
+        }
+    },
+
+    filters: {
+        translate(value) {
+            if (value === 'name') return 'Имя'
+            if (value === 'color') return 'Цвет'
+            if (value === 'size') return 'Размер'
+            if (value === 'vendor_code') return 'Артикул'
+            if (value === 'count') return 'Шт.'
+            if (value === 'barcode') return 'Штрихкод'
+            else return 0
         }
     }
 }
@@ -94,5 +140,9 @@ export default {
 <style scoped>
 .fulfillment {
     padding-top: 80px;
+}
+
+.form-group {
+    margin-bottom: 10px;
 }
 </style>

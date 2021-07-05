@@ -27,6 +27,16 @@ class Stock extends Model
         ]);
     }
 
+    public function updateProduct($data) {
+        return $this->find($data->id)->update([
+            'name' => $data->name,
+            'color' => $data->color,
+            'vendor_code' => $data->vendor_code,
+            'size' => $data->size,
+            'count' => $data->count,
+        ]);
+    }
+
     public function deleteProduct($productId) {
         return $this->where('id', $productId)->delete();
     }

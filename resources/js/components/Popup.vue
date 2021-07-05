@@ -48,6 +48,7 @@ export default {
     background-color: rgba(0, 0, 0, 0.5);
     display: table;
     transition: opacity 0.3s ease;
+
 }
 
 .modal-wrapper {
@@ -57,6 +58,8 @@ export default {
 
 .modal-container {
     max-width: 480px;
+    max-height: 640px;
+    overflow-y: scroll;
     margin: 0px auto;
     padding: 20px 30px;
     background-color: #fff;

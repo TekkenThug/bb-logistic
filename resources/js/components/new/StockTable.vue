@@ -9,9 +9,11 @@
             <tbody>
             <tr v-for="(dataItem, index) in data" :key="index">
                 <th scope="row">{{ index + 1 }}</th>
-                <td v-for="(dataField, index) in dataItem" :key="index">{{ dataField }}</td>
+                <td v-for="(dataField, index) in dataItem" :key="index">
+                    {{ dataField }}
+                </td>
                 <td v-if="operation">
-                    <small-btn icon="fas fa-edit" />
+                    <small-btn @click="$emit('itemHandlerUpdate', dataItem)" icon="fas fa-edit" />
                     <small-btn @click="$emit('itemHandlerDelete', dataItem['id'])" icon="far fa-trash-alt" />
                 </td>
             </tr>
@@ -39,6 +41,10 @@ export default {
         operation: {
           type: Boolean,
           default: true
+        },
+        edit: {
+            type: Boolean,
+            default: false,
         }
     }
 }

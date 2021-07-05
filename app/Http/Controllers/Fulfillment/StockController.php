@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Fulfillment;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AddStockRequest;
-use App\Http\Resources\StockCollection;
 use App\Http\Resources\StockResource;
 use App\Models\Stock;
 use Illuminate\Http\Request;
@@ -68,7 +67,11 @@ class StockController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $success = $this->stock->updateProduct($request);
+
+        return response([
+            'status' => $success ? 'success' : 'fail',
+        ], $success ? 200 : 500);
     }
 
     /**

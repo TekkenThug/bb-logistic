@@ -4259,6 +4259,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "StockTable",
@@ -4275,6 +4277,10 @@ __webpack_require__.r(__webpack_exports__);
     operation: {
       type: Boolean,
       "default": true
+    },
+    edit: {
+      type: Boolean,
+      "default": false
     }
   }
 });
@@ -5269,6 +5275,19 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -5285,7 +5304,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       users: [],
       preloader: false,
       tableHeaders: ['№', 'ID', 'Название', 'Цвет', 'Размер', 'Артикул', 'Штрихкод', 'Шт.', 'Операции'],
-      tableData: []
+      tableData: [],
+      popup: {
+        show: false,
+        data: null
+      }
     };
   },
   mounted: function mounted() {
@@ -5405,6 +5428,56 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           }
         }, _callee4);
       })));
+    },
+
+    /* Обновление продукта */
+    updateProduct: function updateProduct() {
+      var _this5 = this;
+
+      this.$load( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee5() {
+        var res;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee5$(_context5) {
+          while (1) {
+            switch (_context5.prev = _context5.next) {
+              case 0:
+                _this5.popup.show = false;
+                _this5.preloader = true;
+                _context5.next = 4;
+                return _this5.$api.stock.updateProduct(_this5.popup.data, _this5.popup.data['id']);
+
+              case 4:
+                res = _context5.sent;
+                _context5.next = 7;
+                return _this5.getItems(_this5.selectUser);
+
+              case 7:
+                _this5.tableData = _context5.sent;
+                _this5.preloader = false;
+                _this5.popup.data = {};
+
+              case 10:
+              case "end":
+                return _context5.stop();
+            }
+          }
+        }, _callee5);
+      })));
+    },
+
+    /* Открытие модалки по редактированию продукта */
+    popupLogic: function popupLogic(data) {
+      this.popup.show = true;
+      this.popup.data = Object.assign({}, data);
+    }
+  },
+  filters: {
+    translate: function translate(value) {
+      if (value === 'name') return 'Имя';
+      if (value === 'color') return 'Цвет';
+      if (value === 'size') return 'Размер';
+      if (value === 'vendor_code') return 'Артикул';
+      if (value === 'count') return 'Шт.';
+      if (value === 'barcode') return 'Штрихкод';else return 0;
     }
   }
 });
@@ -6157,6 +6230,11 @@ __webpack_require__.r(__webpack_exports__);
     createProduct: function createProduct(id, data) {
       data.ownerId = id;
       return axios.post('/stock', data).then(function (res) {
+        return res.data.status;
+      });
+    },
+    updateProduct: function updateProduct(data, id) {
+      return axios.patch("/stock/".concat(id), data).then(function (res) {
         return res.data.status;
       });
     },
@@ -11185,7 +11263,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.modal-mask[data-v-a4c6995e] {\n    position: fixed;\n    z-index: 9998;\n    top: 0;\n    left: 0;\n    width: 100%;\n    height: 100%;\n    background-color: rgba(0, 0, 0, 0.5);\n    display: table;\n    transition: opacity 0.3s ease;\n}\n.modal-wrapper[data-v-a4c6995e] {\n    display: table-cell;\n    vertical-align: middle;\n}\n.modal-container[data-v-a4c6995e] {\n    max-width: 480px;\n    margin: 0px auto;\n    padding: 20px 30px;\n    background-color: #fff;\n    border-radius: 2px;\n    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);\n    transition: all 0.3s ease;\n}\n.modal-header h3[data-v-a4c6995e] {\n    margin-top: 0;\n    color: #42b983;\n}\n\n\n/*.modal-default-button {*/\n/*    float: right;*/\n/*}*/\n\n/*\n * The following styles are auto-applied to elements with\n * transition=\"modal\" when their visibility is toggled\n * by Vue.js.\n *\n * You can easily play with the modal transition by editing\n * these styles.\n */\n.modal-enter[data-v-a4c6995e] {\n    opacity: 0;\n}\n.modal-leave-active[data-v-a4c6995e] {\n    opacity: 0;\n}\n.modal-enter .modal-container[data-v-a4c6995e],\n.modal-leave-active .modal-container[data-v-a4c6995e] {\n    transform: scale(1.1);\n}\n\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.modal-mask[data-v-a4c6995e] {\n    position: fixed;\n    z-index: 9998;\n    top: 0;\n    left: 0;\n    width: 100%;\n    height: 100%;\n    background-color: rgba(0, 0, 0, 0.5);\n    display: table;\n    transition: opacity 0.3s ease;\n}\n.modal-wrapper[data-v-a4c6995e] {\n    display: table-cell;\n    vertical-align: middle;\n}\n.modal-container[data-v-a4c6995e] {\n    max-width: 480px;\n    max-height: 640px;\n    overflow-y: scroll;\n    margin: 0px auto;\n    padding: 20px 30px;\n    background-color: #fff;\n    border-radius: 2px;\n    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);\n    transition: all 0.3s ease;\n}\n.modal-header h3[data-v-a4c6995e] {\n    margin-top: 0;\n    color: #42b983;\n}\n\n\n/*.modal-default-button {*/\n/*    float: right;*/\n/*}*/\n\n/*\n * The following styles are auto-applied to elements with\n * transition=\"modal\" when their visibility is toggled\n * by Vue.js.\n *\n * You can easily play with the modal transition by editing\n * these styles.\n */\n.modal-enter[data-v-a4c6995e] {\n    opacity: 0;\n}\n.modal-leave-active[data-v-a4c6995e] {\n    opacity: 0;\n}\n.modal-enter .modal-container[data-v-a4c6995e],\n.modal-leave-active .modal-container[data-v-a4c6995e] {\n    transform: scale(1.1);\n}\n\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -11329,7 +11407,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.fulfillment[data-v-60e5050f] {\n    padding-top: 80px;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.fulfillment[data-v-60e5050f] {\n    padding-top: 80px;\n}\n.form-group[data-v-60e5050f] {\n    margin-bottom: 10px;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -54574,14 +54652,27 @@ var render = function() {
                 ]),
                 _vm._v(" "),
                 _vm._l(dataItem, function(dataField, index) {
-                  return _c("td", { key: index }, [_vm._v(_vm._s(dataField))])
+                  return _c("td", { key: index }, [
+                    _vm._v(
+                      "\n                " +
+                        _vm._s(dataField) +
+                        "\n            "
+                    )
+                  ])
                 }),
                 _vm._v(" "),
                 _vm.operation
                   ? _c(
                       "td",
                       [
-                        _c("small-btn", { attrs: { icon: "fas fa-edit" } }),
+                        _c("small-btn", {
+                          attrs: { icon: "fas fa-edit" },
+                          on: {
+                            click: function($event) {
+                              return _vm.$emit("itemHandlerUpdate", dataItem)
+                            }
+                          }
+                        }),
                         _vm._v(" "),
                         _c("small-btn", {
                           attrs: { icon: "far fa-trash-alt" },
@@ -55849,7 +55940,10 @@ var render = function() {
               }
             ],
             attrs: { headers: _vm.tableHeaders, data: _vm.tableData },
-            on: { itemHandlerDelete: _vm.deleteItem },
+            on: {
+              itemHandlerUpdate: _vm.popupLogic,
+              itemHandlerDelete: _vm.deleteItem
+            },
             scopedSlots: _vm._u([
               {
                 key: "after",
@@ -55884,7 +55978,77 @@ var render = function() {
             [_vm._v("На складе отсутствует товар")]
           ),
           _vm._v(" "),
-          _vm.preloader ? _c("preloader") : _vm._e()
+          _vm.preloader ? _c("preloader") : _vm._e(),
+          _vm._v(" "),
+          _vm.popup.show
+            ? _c("popup", {
+                on: {
+                  serverEvent: _vm.updateProduct,
+                  close: function($event) {
+                    _vm.popup.show = false
+                  }
+                },
+                scopedSlots: _vm._u(
+                  [
+                    {
+                      key: "header",
+                      fn: function() {
+                        return [
+                          _vm._v(
+                            "\n                    Редактирование товара\n                "
+                          )
+                        ]
+                      },
+                      proxy: true
+                    },
+                    {
+                      key: "body",
+                      fn: function() {
+                        return _vm._l(_vm.popup.data, function(field, name) {
+                          return name !== "id"
+                            ? _c("div", { staticClass: "form-group" }, [
+                                _c("label", [
+                                  _vm._v(_vm._s(_vm._f("translate")(name)))
+                                ]),
+                                _vm._v(" "),
+                                _c("input", {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: _vm.popup.data[name],
+                                      expression: "popup.data[name]"
+                                    }
+                                  ],
+                                  staticClass: "form-control",
+                                  attrs: { type: "text" },
+                                  domProps: { value: _vm.popup.data[name] },
+                                  on: {
+                                    input: function($event) {
+                                      if ($event.target.composing) {
+                                        return
+                                      }
+                                      _vm.$set(
+                                        _vm.popup.data,
+                                        name,
+                                        $event.target.value
+                                      )
+                                    }
+                                  }
+                                })
+                              ])
+                            : _vm._e()
+                        })
+                      },
+                      proxy: true
+                    }
+                  ],
+                  null,
+                  false,
+                  3362183631
+                )
+              })
+            : _vm._e()
         ],
         1
       )
