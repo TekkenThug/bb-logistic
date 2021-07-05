@@ -21,6 +21,7 @@ class CreateStockTable extends Migration
             $table->string('size');
             $table->string('vendor_code');
             $table->integer('count');
+            $table->string('barcode');
             $table->timestamps();
         });
     }

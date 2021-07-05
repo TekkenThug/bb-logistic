@@ -10,7 +10,8 @@
             <tr v-for="(dataItem, index) in data" :key="index">
                 <th scope="row">{{ index + 1 }}</th>
                 <td v-for="(dataField, index) in dataItem" :key="index">
-                    {{ dataField }}
+                    <img v-if="index === 'barcodeImg'" :src="dataField" alt="">
+                    <span v-else>{{ dataField }}</span>
                 </td>
                 <td v-if="operation">
                     <small-btn @click="$emit('itemHandlerUpdate', dataItem)" icon="fas fa-edit" />

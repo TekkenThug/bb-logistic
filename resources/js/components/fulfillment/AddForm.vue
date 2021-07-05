@@ -4,6 +4,9 @@
             <div class="form-group">
                 <input v-model="formData.name" type="text" class="form-control" placeholder="Название">
             </div>
+            <div class="form-group">
+                <input v-model="formData.barcode" type="text" class="form-control" placeholder="Штрихкод">
+            </div>
         </div>
         <div class="form-row">
             <div class="form-group">
@@ -34,7 +37,8 @@ export default {
                 vendorCode: null,
                 color: null,
                 size: null,
-                count: null
+                count: null,
+                barcode: null
             }
         }
     },
@@ -45,7 +49,8 @@ export default {
                 vendorCode: null,
                 color: null,
                 size: null,
-                count: null
+                count: null,
+                barcode: null
             }
         }
     }

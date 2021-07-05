@@ -4129,6 +4129,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "AddForm",
   data: function data() {
@@ -4138,7 +4141,8 @@ __webpack_require__.r(__webpack_exports__);
         vendorCode: null,
         color: null,
         size: null,
-        count: null
+        count: null,
+        barcode: null
       }
     };
   },
@@ -4149,7 +4153,8 @@ __webpack_require__.r(__webpack_exports__);
         vendorCode: null,
         color: null,
         size: null,
-        count: null
+        count: null,
+        barcode: null
       };
     }
   }
@@ -4234,6 +4239,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _components_new_SmallBtn__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../components/new/SmallBtn */ "./resources/js/components/new/SmallBtn.vue");
+//
 //
 //
 //
@@ -54382,6 +54388,30 @@ var render = function() {
               }
             }
           })
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "form-group" }, [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.formData.barcode,
+                expression: "formData.barcode"
+              }
+            ],
+            staticClass: "form-control",
+            attrs: { type: "text", placeholder: "Штрихкод" },
+            domProps: { value: _vm.formData.barcode },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.formData, "barcode", $event.target.value)
+              }
+            }
+          })
         ])
       ]),
       _vm._v(" "),
@@ -54653,11 +54683,9 @@ var render = function() {
                 _vm._v(" "),
                 _vm._l(dataItem, function(dataField, index) {
                   return _c("td", { key: index }, [
-                    _vm._v(
-                      "\n                " +
-                        _vm._s(dataField) +
-                        "\n            "
-                    )
+                    index === "barcodeImg"
+                      ? _c("img", { attrs: { src: dataField, alt: "" } })
+                      : _c("span", [_vm._v(_vm._s(dataField))])
                   ])
                 }),
                 _vm._v(" "),

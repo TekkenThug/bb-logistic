@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Services\BarcodeService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -10,10 +11,10 @@ class Stock extends Model
     use HasFactory;
 
     protected $table = 'stock';
-    protected $fillable = ['client_id', 'name', 'color', 'size', 'vendor_code', 'count'];
+    protected $fillable = ['client_id', 'name', 'color', 'size', 'vendor_code', 'count', 'barcode'];
 
     public function getProducts($id = null) {
-        return $this->where('client_id', $id)->get();
+        return BarcodeService::getBarcode($this->where('client_id', $id)->get());
     }
 
     public function createProduct($data) {
@@ -24,6 +25,7 @@ class Stock extends Model
             'vendor_code' => $data->vendorCode,
             'size' => $data->size,
             'count' => $data->count,
+            'barcode' => $data->barcode
         ]);
     }
 
@@ -34,6 +36,7 @@ class Stock extends Model
             'vendor_code' => $data->vendor_code,
             'size' => $data->size,
             'count' => $data->count,
+            'barcode' => $data->barcode
         ]);
     }
 

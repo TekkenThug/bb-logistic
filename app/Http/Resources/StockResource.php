@@ -29,7 +29,8 @@ class StockResource extends JsonResource
             'color' => $this->color,
             'size' => $this->size,
             'vendor_code' => $this->vendor_code,
-            'barcode' => 'штрих',
+            'barcode' => $this->barcode,
+//            'barcodeImg' => $this->barcodeImagePath,
             'count' => $this->count,
         ];
     }
