@@ -18,6 +18,7 @@
                         <add-form ref="addForm" @serialize="createProduct"/>
                     </template>
                 </stock-table>
+                <h3 v-show="tableData.length < 1 && selectUser && !preloader">На складе отсутствует товар</h3>
                 <preloader v-if="preloader"/>
             </div>
         </div>
@@ -37,7 +38,7 @@ export default {
             selectUser: null,
             users: [],
             preloader: false,
-            tableHeaders: ['№', 'ID', 'Название', 'Цвет', 'Размер', 'Артикул', 'Шт.', 'Штрихкод', 'Операции'],
+            tableHeaders: ['№', 'ID', 'Название', 'Цвет', 'Размер', 'Артикул', 'Штрихкод', 'Шт.', 'Операции'],
             tableData: []
         }
     },

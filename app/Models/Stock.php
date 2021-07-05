@@ -12,7 +12,7 @@ class Stock extends Model
     protected $table = 'stock';
     protected $fillable = ['client_id', 'name', 'color', 'size', 'vendor_code', 'count'];
 
-    public function getProducts($id) {
+    public function getProducts($id = null) {
         return $this->where('client_id', $id)->get();
     }
 

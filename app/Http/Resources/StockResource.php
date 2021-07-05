@@ -14,12 +14,22 @@ class StockResource extends JsonResource
      */
     public function toArray($request)
     {
+        if (auth()->user()->hasRole() === 'client')
+            return [
+                'name' => $this->name,
+                'color' => $this->color,
+                'size' => $this->size,
+                'vendor_code' => $this->vendor_code,
+                'count' => $this->count,
+            ];
+
         return [
             'id' => $this->id,
             'name' => $this->name,
             'color' => $this->color,
             'size' => $this->size,
             'vendor_code' => $this->vendor_code,
+            'barcode' => 'штрих',
             'count' => $this->count,
         ];
     }

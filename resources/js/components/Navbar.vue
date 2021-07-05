@@ -15,6 +15,10 @@
                             <router-link to="/client/list"><img src="/images/sidebar/clipboard.svg" alt="list"><span>Список заявок</span>
                             </router-link>
                         </li>
+                        <li v-if="role === 'client'" class="sidebar__item">
+                            <router-link to="/client/fulfillment"><img src="/images/sidebar/box.svg" alt="list"><span>Фулфилмент</span>
+                            </router-link>
+                        </li>
 
                         <li v-if="role === 'courier'" class="sidebar__item">
                             <router-link to="/courier/open"><img src="/images/sidebar/open.svg" alt="pen"><span>Открытые заказы</span>
