@@ -30,14 +30,12 @@ Vue.component('popup', require('./components/Popup.vue').default);
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
+import Vuex from 'vuex';
 
 import router from "./router";
-import auth from "./auth/index";
+import store from "./store";
 
-router.beforeEach((to, from, next) => {
-    document.title = to.meta.title || 'B&B Logistic';
-    next();
-});
+Vue.use(Vuex);
 
 /**
  * Плагины
@@ -51,5 +49,5 @@ Vue.use(LoadPlugin);
 const app = new Vue({
     el: '#app',
     router,
-    auth,
+    store: new Vuex.Store(store)
 });
