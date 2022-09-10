@@ -1,6 +1,10 @@
+import Vue from "vue";
+import Vuex from "vuex";
 import { roles } from "../data/constants";
 
-export default {
+Vue.use(Vuex);
+
+export default new Vuex.Store({
   state: {
     user: null
   },
@@ -14,4 +18,4 @@ export default {
   getters: {
     userRole: (state) => state.user && state.user.role ? roles[state.user.role] : null
   }
-}
+})
