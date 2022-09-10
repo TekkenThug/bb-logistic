@@ -1,5 +1,6 @@
-import Admin from "@/views/admin/Admin";
-import AdminCreateUser from "@/views/admin/CreateUser";
+import LayoutApp from "@/components/layouts/layout-app"
+import CreateUser from "@/views/admin/create-user";
+
 import AdminClientList from "@/views/admin/ClientList";
 import AdminCourierList from "@/views/admin/CourierList";
 import AdminOrderList from "@/views/admin/OrderList";
@@ -11,7 +12,10 @@ import AdminFulfillment from "@/views/admin/Fulfillment";
 
 export default {
   path: "/admin",
-  component: Admin,
+  component: LayoutApp,
+  props: {
+    role: 'admin'
+  },
   redirect: "/admin/create-user",
   meta: {
       auth: {
@@ -25,7 +29,7 @@ export default {
           meta: {
             title: "Создать пользователя"
           },
-          component: AdminCreateUser
+          component: CreateUser
       },
       {
           path: "clients",
