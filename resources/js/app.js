@@ -22,25 +22,6 @@ window.Vue = require('vue').default;
 Vue.component('message', require('./components/ModalWindow.vue').default);
 Vue.component('popup', require('./components/Popup.vue').default);
 
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
-import router from "./router";
-import store from "./store";
-
-/**
- * Плагины
- */
-import ApiPlugin from "./plugins/api";
-import LoadPlugin from "./plugins/load"
-
-Vue.use(ApiPlugin);
-Vue.use(LoadPlugin);
-
 const app = new Vue({
     el: '#app',
-    router,
-    store
 });

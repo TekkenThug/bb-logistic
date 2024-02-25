@@ -5,7 +5,7 @@ import Auth from "@/views/auth";
 // import errorRoutes from './errors';
 // import adminRoutes from './admin';
 import courierRouters from './courier';
-// import clientRoutes from './client';
+import clientRoutes from './client';
 
 const postfix = (str) => `${str} - B&B Logistic`;
 
@@ -19,7 +19,7 @@ const routes = [
           auth: false
       }
     },
-    // clientRoutes,
+    clientRoutes,
     courierRouters,
     // adminRoutes,
     // ...errorRoutes,

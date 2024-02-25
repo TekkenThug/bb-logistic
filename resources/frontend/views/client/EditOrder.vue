@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import CreateForm from "../../components/CreateForm";
+import CreateForm from "@/components/forms/create-form";
 
 export default {
     name: "EditOrder",

@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import SmallBtn from "../../components/new/SmallBtn";
+import SmallBtn from "./components/SmallBtn";
 
 export default {
     name: "StockTable",

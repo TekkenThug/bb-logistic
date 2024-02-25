@@ -142,8 +142,8 @@
 </template>
 
 <script>
-import PhoneInput from "./form/PhoneInput";
-import ProductRow from "./form/ProductRow";
+import PhoneInput from "./components/PhoneInput";
+import ProductRow from "./components/ProductRow";
 
 export default {
     name: "CreateForm",
@@ -260,7 +260,3 @@ export default {
     }
 }
 </script>
-
-<style scoped>
-
-</style>

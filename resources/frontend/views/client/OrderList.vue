@@ -3,9 +3,14 @@
         <div class="col-lg-8 offset-lg-2">
 
             <div id="order-list" class="client__list client-tab">
-                <SelectFilter v-model="filter" />
-                <preloader v-if="preloader" />
-                <h2 v-if="orders.length === 0 && !preloader" class="text-center">Заявок нет</h2>
+                <StatusSelect v-model="filter" />
+
+                <UIPreloader v-if="isLoading" />
+
+                <h2 v-else-if="orders.length" class="text-center">
+                    Заявок нет
+                </h2>
+
                 <OrderRow v-for="order in orders"
                           :key="order.id"
                           :id="order.id"
@@ -29,15 +34,17 @@
 </template>
 
 <script>
-import OrderRow from "../../components/OrderRow";
-import SelectFilter from "../../components/SelectFilter";
+import { getOrders } from "@/services/api/orders";
+
+import OrderRow from "@/components/order-row";
+import StatusSelect from "@/components/status-select";
 
 export default {
     name: "OrderList",
-    components: { OrderRow, SelectFilter },
+    components: { OrderRow, StatusSelect },
     data() {
         return {
-            preloader: true,
+            isLoading: true,
             stopSearch: false,
             orders: [],
             filter: "",
@@ -48,29 +55,28 @@ export default {
             this.getOrders();
         }
     },
+
     methods: {
-        getOrders() {
+        async getOrders() {
             if (!this.stopSearch) {
                 this.stopSearch = true;
                 this.orders= [];
-                this.preloader = true;
-                axios.get(`/orders?filter=${this.filter}`).then(res => {
-                    this.orders = res.data.orders;
-                    this.preloader = false;
-                    this.stopSearch = false;
-                })
+                this.isLoading = true;
+
+                const { data } = await getOrders({ filter: this.filter });
+
+                this.orders = data.orders;
+                this.isLoading = false;
+                this.stopSearch = false;
             }
         }
     },
-    mounted() {
-        axios.get('/orders?role=client').then(res => {
-           this.orders = res.data.orders;
-           this.preloader = false;
-        })
+
+    async mounted() {
+        const { data } = await getOrders({ role: "client" });
+        
+        this.orders = data.orders;
+        this.isLoading = false;
     }
 }
 </script>
-
-<style scoped>
-
-</style>
