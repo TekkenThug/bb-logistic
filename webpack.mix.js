@@ -18,4 +18,4 @@ mix.alias({
 
 mix.js('resources/js/app.js', 'public/js')
     .vue()
-    .sass('resources/sass/app.scss', 'public/css');
+    .sass('resources/frontend/assets/styles/global.scss', 'public/css');
