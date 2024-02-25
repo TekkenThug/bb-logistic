@@ -1,5 +1,5 @@
 import LayoutApp from "@/components/layouts/layout-app"
-import CreateUser from "@/views/admin/create-user";
+import CreateUser from "@/views/admin/CreateUser";
 
 import AdminClientList from "@/views/admin/ClientList";
 import AdminCourierList from "@/views/admin/CourierList";

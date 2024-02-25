@@ -1,9 +1,9 @@
-import http from "../libs/http";
+import axios from "axios";
 
 export const getCSRF = () => {
-  return http.get('/sanctum/csrf-cookie')
+  return axios.get('/sanctum/csrf-cookie')
 }
 
 export const login = (data) => {
-  return http.post('/auth/login', data).then(({ data }) => data);
+  return axios.post('/auth/login', data).then(({ data }) => data);
 }
