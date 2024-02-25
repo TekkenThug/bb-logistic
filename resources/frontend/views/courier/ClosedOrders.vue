@@ -7,8 +7,13 @@
                     <h4>Наличные: {{ cash }} руб.</h4>
                     <h4>Безналичный расчет: {{ credit }} руб.</h4>
                 </div>
-                <h2 v-if="orders.length === 0 && !preloader" class="text-center">Заявок нет</h2>
-                <preloader v-if="preloader" />
+
+                <UIPreloader v-if="isLoading" />
+
+                <h2 v-else-if="orders.length === 0" class="text-center">
+                    Заявок нет
+                </h2>
+
                 <OrderRow v-for="order in orders"
                           :role="'courier'"
                           :key="order.id"
@@ -32,10 +37,10 @@
 </template>
 
 <script>
-import OrderRow from "../../components/OrderRow";
+import OrderRow from "@/components/order-row";
 
 export default {
-    name: "ClosingOrders",
+    name: "ClosedOrders",
     components: { OrderRow },
     data() {
       return {
@@ -46,34 +51,31 @@ export default {
       }
     },
     methods: {
-        getOrders() {
-            this.preloader = true;
+        async getOrders() {
+            this.isLoading = true;
             this.orders = [];
-            axios.get(`/orders?courier=true`).then(res => {
-                if (res.data.status === 'success') {
-                    this.preloader = false;
-                    this.orders = res.data.orders
-                    this.credit = res.data.payments.credit
-                    this.cash = res.data.payments.cash
-                }
-            })
+            const { data } = await axios.get(`/orders?courier=true`);
+
+            if (data.status === 'success') {
+                this.isLoading = false;
+                this.orders = data.orders
+                this.credit = data.payments.credit
+                this.cash = data.payments.cash
+            }
         },
-        changeOrderStatus(status, id) {
-            axios.patch(`/orders/${id}?role=courier&status=${status}`).then(res => {
-                if (res.data.status === 'success') {
-                    this.getOrders();
-                } else {
-                    console.log("Невозможно обновить статус")
-                }
-            })
+
+        async changeOrderStatus(status, id) {
+            const { data } = await axios.patch(`/orders/${id}?role=courier&status=${status}`);
+
+            if (data.status === 'success') {
+                this.getOrders();
+            } else {
+                console.log("Невозможно обновить статус")
+            }
         }
     },
-    beforeMount() {
+    create() {
         this.getOrders();
     }
 }
 </script>
-
-<style scoped>
-
-</style>

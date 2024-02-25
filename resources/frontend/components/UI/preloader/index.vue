@@ -1,16 +1,16 @@
 <template>
-    <div class="wrapper">
+    <div :class="$style.wrapper">
         <img src="/images/preloader.svg" alt="preloader">
     </div>
 </template>
 
 <script>
 export default {
-    name: "Preloader"
+    name: "UIPreloader"
 }
 </script>
 
-<style scoped>
+<style module>
     .wrapper {
         text-align: center;
     }

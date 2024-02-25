@@ -1,10 +1,10 @@
-import Courier from "@/views/courier/Courier";
-import CourierOpenOrders from "@/views/courier/OpenOrders";
-import CourierClosingOrders from "@/views/courier/ClosingOrders";
+import DefaultLayout from "@/layouts/default";
+import OpenedOrders from "@/views/courier/OpenedOrders";
+import ClosedOrders from "@/views/courier/ClosedOrders";
 
 export default {
   path: "/courier",
-  component: Courier,
+  component: DefaultLayout,
   redirect: "/courier/open",
   meta: {
       auth: {
@@ -12,17 +12,20 @@ export default {
           forbiddenRedirect: { name: 'forbidden' },
       }
   },
+  props: {
+    role: 'courier',
+  },
   children: [
       {
           path: "open",
           meta: {
             title: "Доступные заявки"
           },
-          component: CourierOpenOrders
+          component: OpenedOrders
       },
       {
           path: "close",
-          component: CourierClosingOrders,
+          component: ClosedOrders,
           meta: {
             title: "Завершенные заявки"
           },

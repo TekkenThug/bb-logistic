@@ -1,13 +1,10 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-
-Vue.use(VueRouter);
+import VueRouter from 'vue-router';
 
 import Auth from "@/views/auth";
 
 // import errorRoutes from './errors';
 // import adminRoutes from './admin';
-// import courierRouters from './courier';
+import courierRouters from './courier';
 // import clientRoutes from './client';
 
 const postfix = (str) => `${str} - B&B Logistic`;
@@ -23,7 +20,7 @@ const routes = [
       }
     },
     // clientRoutes,
-    // courierRouters,
+    courierRouters,
     // adminRoutes,
     // ...errorRoutes,
 ];
@@ -33,7 +30,7 @@ const router = new VueRouter({
     routes
 });
 
-router.beforeEach((to, from, next) => {
+router.beforeEach((to, _, next) => {
   document.title = postfix(to.meta.title) || 'B&B Logistic';
   next();
 });

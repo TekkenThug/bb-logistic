@@ -19,9 +19,6 @@ window.Vue = require('vue').default;
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
-
-Vue.component('v-footer', require('./components/Footer.vue').default);
-Vue.component('preloader', require('./components/Preloader.vue').default);
 Vue.component('message', require('./components/ModalWindow.vue').default);
 Vue.component('popup', require('./components/Popup.vue').default);
 

@@ -7,3 +7,5 @@ export const getCSRF = () => {
 export const login = (data) => {
   return axios.post('/auth/login', data).then(({ data }) => data);
 }
+
+export const logout = () => {};
