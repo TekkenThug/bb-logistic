@@ -1,4 +1,4 @@
-import Error from "@/views/Errors/Error";
+import Error from "@/views/error";
 
 export default [
     {
