@@ -13,9 +13,9 @@ const path = require('path');
  */
 
 mix.alias({
-    '@': path.join(__dirname, 'resources/js'),
+    '@': path.join(__dirname, 'resources/frontend'),
 })
 
-mix.js('resources/js/app.js', 'public/js')
+mix.js('resources/frontend/App.js', 'public/js')
     .vue()
     .sass('resources/frontend/assets/styles/global.scss', 'public/css');
