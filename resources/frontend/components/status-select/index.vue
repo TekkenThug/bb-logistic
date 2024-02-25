@@ -14,13 +14,9 @@
 
 <script>
 export default {
-    name: "SelectFilter",
+    name: "StatusSelect",
     props: {
         filter: "all"
     }
 }
 </script>
-
-<style scoped>
-
-</style>
