@@ -3,7 +3,7 @@ import { ROLES } from "@/data/constants";
 
 export default createStore({
   state: {
-    user: null
+    user: { role: "client" }
   },
 
   mutations: {
