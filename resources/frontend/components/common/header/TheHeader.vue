@@ -3,7 +3,11 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-3 col-sm-2 d-flex justify-content-center align-items-center">
-                    <!-- <img src="/images/header/logo.png" alt="bandb"> -->
+                    <img
+                        :class="$style.logo"
+                        :src="logo"
+                        alt="bandb"
+                    >
                 </div>
                 
                 <div class="col-6 col-sm-8">
@@ -41,6 +45,8 @@ import UIIcon from "@/components/UI/icon/UIIcon";
 import { logout } from '@/services/api/auth';
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
+
+import logo from "@/assets/images/common/logo.png";
 
 const router = useRouter();
 const signOut = async () => {
@@ -130,10 +136,12 @@ const items = computed(() => {
         background-color: $primary-100;
         padding: 20px 0;
         text-align: right;
+    }
 
-        img {
-            width: 80px;
-        }
+    .logo {
+        filter: brightness(0) invert(1);
+        width: 64px;
+        object-fit: contain;
     }
 
     .logoutButton {
