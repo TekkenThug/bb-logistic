@@ -1,6 +1,6 @@
 <template>
     <div :class="$style.DefaultLayout">
-        <Navbar :role="role" />
+        <TheHeader />
         
         <main :class="$style.main">
           <div class="container">
@@ -13,13 +13,13 @@
   </template>
   
   <script>
-  import Navbar from "@/components/navbar";
+  import TheHeader from "@/components/common/header/TheHeader";
   import Footer from "@/components/footer";
   
   export default {
     name: "DefaultLayout",
   
-    components: { Navbar, Footer },
+    components: { TheHeader, Footer },
   
     props: {
       role: {
