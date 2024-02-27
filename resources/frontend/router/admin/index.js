@@ -26,6 +26,7 @@ export default {
   children: [
       {
           path: "create-user",
+          name: "admin-create-user",
           meta: {
             title: "Создать пользователя"
           },
@@ -33,6 +34,7 @@ export default {
       },
       {
           path: "clients",
+          name: "admin-client-list",
           meta: {
             title: "Список клиентов"
           },
@@ -40,6 +42,7 @@ export default {
       },
       {
           path: "clients/:id",
+          name: "admin-client",
           meta: {
             title: "Клиент"
           },
@@ -47,6 +50,7 @@ export default {
       },
       {
           path: "couriers",
+          name: "admin-courier-list",
           meta: {
             title: "Список курьеров"
           },
@@ -54,6 +58,7 @@ export default {
       },
       {
           path: "couriers/:id",
+          name: "admin-courier",
           meta: {
             title: "Курьер"
           },
@@ -61,6 +66,7 @@ export default {
       },
       {
           path: "orders",
+          name: "admin-order-list",
           meta: {
             title: "Список заявок"
           },
@@ -68,6 +74,7 @@ export default {
       },
       {
           path: "orders/:id",
+          name: "admin-order",
           meta: {
             title: "Редактировать заявку"
           },
@@ -75,6 +82,7 @@ export default {
       },
       {
           path: "new-order",
+          name: "admin-new-order",
           meta: {
             title: "Создать заявку"
           },
@@ -82,6 +90,7 @@ export default {
       },
       {
           path: "fulfillment",
+          name: "admin-fullfilment",
           meta: {
             title: "Фулфилмент"
           },

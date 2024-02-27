@@ -20,6 +20,7 @@ export default {
   children: [
       {
           path: "create",
+          name: "client-create-order",
           meta: {
             title: "Создать заявку"
           },
@@ -27,6 +28,7 @@ export default {
       },
       {
           path: "list",
+          name: "client-order-list",
           component: OrderList,
           meta: {
             title: "Список заявок"
@@ -34,6 +36,7 @@ export default {
       },
       {
           path: "list/:order_id",
+          name: "client-edit-order",
           component: EditOrder,
           meta: {
             title: "Изменить заказ"
@@ -41,6 +44,7 @@ export default {
       },
       {
           path: "fulfillment",
+          name: "client-fullfilment",
           component: Fulfillment,
           meta: {
             title: "Фулфилмент"

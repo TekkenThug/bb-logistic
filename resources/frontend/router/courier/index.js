@@ -18,6 +18,7 @@ export default {
   children: [
       {
           path: "open",
+          name: "courier-opened-orders",
           meta: {
             title: "Доступные заявки"
           },
@@ -25,6 +26,7 @@ export default {
       },
       {
           path: "close",
+          name: "courier-closed-orders",
           component: ClosedOrders,
           meta: {
             title: "Завершенные заявки"
