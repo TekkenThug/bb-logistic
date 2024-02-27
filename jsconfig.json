@@ -1,0 +1,37 @@
+{
+  "compilerOptions": {
+      "target": "ES2020",
+      "useDefineForClassFields": true,
+      "lib": ["ES2020", "DOM", "DOM.Iterable"],
+      "module": "ESNext",
+      "skipLibCheck": true,
+
+      /* Bundler mode */
+      "moduleResolution": "bundler",
+      "allowImportingTsExtensions": true,
+      "allowJs": true,
+      "resolveJsonModule": true,
+      "isolatedModules": true,
+      "noEmit": true,
+      "jsx": "react-jsx",
+
+      /* Linting */
+      "strict": true,
+      "noUnusedLocals": true,
+      "noUnusedParameters": true,
+      "noFallthroughCasesInSwitch": true,
+      "baseUrl": "./",
+      "paths": {
+          "@/*": ["./resources/frontend/*"]
+      }
+  },
+  "include": [
+      "env.d.ts",
+      "resources/frontend/**/*",
+      "resources/frontend/**/*.vue",
+      "resources/frontend/**/*.tsx",
+      "resources/frontend/**/*.ts",
+      "resources/frontend/**/*.jsx",
+      "resources/frontend/**/*.js"
+  ],
+}

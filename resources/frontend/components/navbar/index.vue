@@ -1,5 +1,5 @@
 <template>
-    <header class="header">
+    <!-- <header class="header">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-3 col-sm-2 d-flex justify-content-center align-items-center">
@@ -57,7 +57,7 @@
                 </div>
             </div>
         </div>
-    </header>
+    </header> -->
 </template>
 
 <script>

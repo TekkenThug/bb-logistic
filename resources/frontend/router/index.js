@@ -1,14 +1,19 @@
-import VueRouter from 'vue-router';
+import { createRouter, createWebHistory } from 'vue-router';
 
 import Auth from "@/views/auth";
 
-import errorRoutes from './errors';import adminRoutes from './admin';
+import errorRoutes from './errors';
+import adminRoutes from './admin';
 import courierRouters from './courier';
 import clientRoutes from './client';
 
 const postfix = (str) => `${str} - B&B Logistic`;
 
 const routes = [
+    {
+      path: "/",
+      redirect: { name: "login" },
+    },
     {
       path: "/login",
       component: Auth,
@@ -24,9 +29,9 @@ const routes = [
     ...errorRoutes,
 ];
 
-const router = new VueRouter({
-    mode: "history",
-    routes
+const router = createRouter({
+    history: createWebHistory(),
+    routes,
 });
 
 router.beforeEach((to, _, next) => {

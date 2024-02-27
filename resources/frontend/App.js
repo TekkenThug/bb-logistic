@@ -1,17 +1,14 @@
-import Vue from "vue";
-import VueRouter from 'vue-router';
+import { createApp } from "vue";
 
 import router from "@/router";
 import store from "@/store";
 
 import UIPreloader from "@/components/UI/preloader";
 
-Vue.use(VueRouter);
+import App from "./App.vue";
 
-Vue.component('UIPreloader', UIPreloader);
-
-const app = new Vue({
-    el: '#app',
-    router,
-    store,
-});
+createApp(App)
+.use(router)
+.use(store)
+.component('UIPreloader', UIPreloader)
+.mount("#app");

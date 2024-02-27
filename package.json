@@ -1,32 +1,23 @@
 {
     "private": true,
+    "version": "0.2.0",
+    "type": "module",
     "scripts": {
-        "dev": "npm run development",
-        "development": "mix",
-        "watch": "mix watch",
-        "watch-poll": "mix watch -- --watch-options-poll=1000",
-        "hot": "mix watch --hot",
-        "prod": "npm run production",
-        "production": "mix --production"
+        "dev": "vite"
     },
     "devDependencies": {
+        "@vitejs/plugin-vue": "^5.0.4",
         "axios": "^1.6.7",
         "bootstrap": "^5.3.3",
-        "laravel-echo": "^1.10.0",
-        "laravel-mix": "^6.0.6",
+        "laravel-vite-plugin": "^1.0.1",
         "postcss": "^8.1.14",
-        "pusher-js": "^7.0.3",
-        "resolve-url-loader": "^5.0.0",
         "sass": "^1.32.11",
-        "sass-loader": "^14.1.1",
-        "vue": "^2.6.12",
-        "vue-loader": "^15.9.5",
-        "vue-router": "^3.5.1",
-        "vue-template-compiler": "^2.6.12"
+        "vite": "^5.1.4",
+        "vite-plugin-vue": "^0.0.1"
     },
     "dependencies": {
-        "vue-echo-laravel": "0.0.6",
-        "vuelidate": "^0.7.6",
-        "vuex": "^3.6.2"
+        "vue": "^3.4.20",
+        "vue-router": "^4.3.0",
+        "vuex": "^4.1.0"
     }
 }

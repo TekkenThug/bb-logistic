@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-lg-4 offset-lg-4">
                 <div class="login-form-wrapper">
-                    <img class="login-form__img" src="/images/logo.png" alt="bandb">
+                    <!-- <img class="login-form__img" src="/images/logo.png" alt="bandb"> -->
                     <form class="login-form" @submit.prevent="sendLoginDataToServer">
                         <div class="form-group login">
                             <input
@@ -38,7 +38,7 @@
                             Войти
                         </button>
 
-                        <preloader v-if="isLoading" class="mt-2" />
+                        <UIPreloader v-if="isLoading" class="mt-2" />
                     </form>
                 </div>
             </div>

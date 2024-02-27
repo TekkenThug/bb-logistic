@@ -1,6 +1,6 @@
 <template>
     <div :class="$style.wrapper">
-        <img src="/images/preloader.svg" alt="preloader">
+        <!-- <img src="/images/preloader.svg" alt="preloader"> -->
     </div>
 </template>
 

@@ -16,11 +16,9 @@
     <title>B&B Logistic</title>
 </head>
 <body>
-<div id="app">
-    <section class="global-wrapper">
-        <router-view></router-view>
-    </section>
-</div>
-<script src="js/app.js"></script>
+    <div id="app"></div>
+    
+    <script type="module" src="http://localhost:5173/@vite/client"></script>
+    <script type="module" src="http://localhost:5173/resources/frontend/App.js"></script>
 </body>
 </html>
