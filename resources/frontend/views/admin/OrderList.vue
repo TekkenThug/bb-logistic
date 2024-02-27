@@ -8,9 +8,11 @@
                     <router-link to="/admin/new-order" style="width: 200px" class="flex-shrink-0 btn btn-primary">Создать
                         новую заявку</router-link>
                 </div>
-                <SelectFilter v-model="filter" />
-                <preloader v-if="preloader" />
+                <StatusSelect v-model="filter" />
+                <UIPreloader v-if="preloader" />
+
                 <h2 v-if="orders.length === 0 && !preloader" class="text-center">Заявок нет</h2>
+                
                 <div class="admin__client-list">
                     <OrderRow
                         v-for="order in orders"
@@ -42,13 +44,13 @@
 </template>
 
 <script>
-import OrderRow from "../../components/OrderRow";
-import SearchInput from "../../components/SearchInput";
-import SelectFilter from "../../components/SelectFilter";
+import OrderRow from "@/components/order-row";
+import SearchInput from "@/components/search-input";
+import StatusSelect from "@/components/status-select";
 
 export default {
     name: "OrderList",
-    components: { SearchInput, OrderRow, SelectFilter },
+    components: { SearchInput, OrderRow, StatusSelect },
     data() {
         return {
             role: 'admin',

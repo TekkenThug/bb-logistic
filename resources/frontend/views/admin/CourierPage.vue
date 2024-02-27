@@ -49,7 +49,7 @@
                             :client-pay="order.delivery_pay"
                             :products="order.goods"
                             :role="'admin'"
-                            :user-name="order.client_id === 1 ? 'Админ' : order.client_name""
+                            :user-name="order.client_id === 1 ? 'Админ' : order.client_name"
 
                             :courier-name="order.courier_name"
                             :courier-phone="order.courier_phone"
@@ -62,8 +62,8 @@
 </template>
 
 <script>
-import OrderRow from "../../components/OrderRow";
-import EditUserData from "../../components/EditUserData";
+import OrderRow from "@/components/order-row";
+import EditUserData from "@/components/edit-user-data";
 
 export default {
     name: "CourierPage",

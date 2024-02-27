@@ -22,8 +22,8 @@
 </template>
 
 <script>
-import SearchInput from "../../components/SearchInput";
-import UserRow from "../../components/UserRow";
+import SearchInput from "@/components/search-input";
+import UserRow from "@/components/user-row";
 
 export default {
     name: "CourierList",
@@ -64,7 +64,3 @@ export default {
     }
 }
 </script>
-
-<style scoped>
-
-</style>

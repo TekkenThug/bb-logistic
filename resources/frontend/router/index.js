@@ -2,8 +2,7 @@ import VueRouter from 'vue-router';
 
 import Auth from "@/views/auth";
 
-import errorRoutes from './errors';
-// import adminRoutes from './admin';
+import errorRoutes from './errors';import adminRoutes from './admin';
 import courierRouters from './courier';
 import clientRoutes from './client';
 
@@ -21,7 +20,7 @@ const routes = [
     },
     clientRoutes,
     courierRouters,
-    // adminRoutes,
+    adminRoutes,
     ...errorRoutes,
 ];
 

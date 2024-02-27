@@ -39,9 +39,9 @@
 </template>
 
 <script>
-import SelectField from "../../components/new/SelectField";
-import StockTable from "../../components/new/StockTable";
-import AddForm from "../../components/fulfillment/AddForm";
+import SelectField from "@/components/select-field";
+import StockTable from "@/components/stock-table";
+import AddForm from "@/components/fulfillment/AddForm";
 
 export default {
     name: "Fulfillment",

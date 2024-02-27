@@ -1,4 +1,4 @@
-import LayoutApp from "@/components/layouts/layout-app"
+import DefaultLayout from "@/layouts/default"
 import CreateUser from "@/views/admin/CreateUser";
 
 import AdminClientList from "@/views/admin/ClientList";
@@ -12,7 +12,7 @@ import AdminFulfillment from "@/views/admin/Fulfillment";
 
 export default {
   path: "/admin",
-  component: LayoutApp,
+  component: DefaultLayout,
   props: {
     role: 'admin'
   },

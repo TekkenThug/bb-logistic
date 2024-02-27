@@ -4,8 +4,10 @@
             <div class="admin-client-list overall">
                 <h4>Список клиентов:</h4>
                 <SearchInput v-model="searchText" style="margin-bottom: 20px" placeholder="Поиск по клиентам..."/>
+
                 <div class="admin__client-list">
-                    <preloader v-if="preloader" />
+                    <UIPreloader v-if="isLoading" />
+
                     <UserRow v-for="client in clients"
                              :path="'/admin/clients/'"
                              :role="'client'"
@@ -21,8 +23,8 @@
 </template>
 
 <script>
-import SearchInput from "../../components/SearchInput";
-import UserRow from "../../components/UserRow";
+import SearchInput from "@/components/search-input";
+import UserRow from "@/components/user-row";
 
 export default {
     name: "ClientList",
@@ -30,7 +32,7 @@ export default {
     data() {
         return {
             clients: [],
-            preloader: true,
+            isLoading: true,
             searchText: "",
             stopSearch: false,
         }
@@ -40,11 +42,11 @@ export default {
             if (!this.stopSearch) {
                 this.stopSearch = true;
                 this.clients = [];
-                this.preloader = true;
+                this.isLoading = true;
                 axios.get(`/clients?name=${this.searchText}`).then(res => {
                     console.log(res.data)
                     this.clients = res.data.clients;
-                    this.preloader = false;
+                    this.isLoading = false;
                     this.stopSearch = false;
                 })
             }
@@ -58,14 +60,8 @@ export default {
     mounted() {
         axios.get('/clients').then(res => {
             this.clients = res.data.clients;
-            this.preloader = false;
+            this.isLoading = false;
         })
     }
 }
-
-
 </script>
-
-<style scoped>
-
-</style>
