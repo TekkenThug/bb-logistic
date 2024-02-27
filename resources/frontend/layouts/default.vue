@@ -8,18 +8,18 @@
           </div>
         </main>
   <!--        <message :text="'Тестовая модалка'" />-->
-        <Footer />
+        <TheFooter />
     </div>
   </template>
   
   <script>
   import TheHeader from "@/components/common/header/TheHeader";
-  import Footer from "@/components/footer";
+  import TheFooter from "@/components/common/footer/TheFooter";
   
   export default {
     name: "DefaultLayout",
   
-    components: { TheHeader, Footer },
+    components: { TheHeader, TheFooter },
   
     props: {
       role: {

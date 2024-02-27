@@ -26,4 +26,8 @@ export default defineConfig({
         },
         extensions: ['.vue', '.js', '.ts', '.tsx', '.jsx'],
     },
+
+    define: {
+        '__APP_VERSION__': JSON.stringify(process.env.npm_package_version),
+    }
 })

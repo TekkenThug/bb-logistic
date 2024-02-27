@@ -418,16 +418,6 @@ body {
   border-color: transparent;
 }
 
-.footer {
-  background-color: #0f5b9e;
-  color: #ffffff;
-  padding: 15px 0;
-}
-
-.footer a {
-  color: inherit;
-}
-
 .login-form-wrapper {
   min-height: 100vh;
   display: flex;
