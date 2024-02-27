@@ -11,6 +11,15 @@ export default defineConfig({
         }),
         vue(),
     ],
+
+    css: {
+        preprocessorOptions: {
+            scss: {
+                additionalData: "@use './resources/frontend/assets/styles/exported' as *;",
+            },
+        },
+    },
+
     resolve: {
         alias: {
             "@": "/resources/frontend",
