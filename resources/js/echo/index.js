@@ -1,3 +1,0 @@
-import './echo';
-
-export default {};
