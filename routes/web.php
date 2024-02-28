@@ -20,9 +20,3 @@ Route::get('/', function () {
 
 Route::post('/', [SendMailController::class, 'sendMail'])->name('sendEmailFromLanding');
 
-Route::get('{any}', function () {
-    return view('index');
-})->where('any', '.*');
-
-
-
