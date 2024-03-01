@@ -27,14 +27,14 @@ Route::group(['middleware' => ['api'], 'prefix' => 'auth'], function($router){
     Route::post('register', [AuthController::class, 'register']);
 });
 
-Route::middleware('auth:api')->group(function() {
+// Route::middleware('auth:api')->group(function() {
     Route::apiResource('clients', ClientController::class);
     Route::apiResource('couriers', CourierController::class);
     Route::apiResource('orders', OrderController::class);
 
     /* Роуты для фулфилмента */
     Route::apiResource('stock', StockController::class);
-});
+// });
 
 
 

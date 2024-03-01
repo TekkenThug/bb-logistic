@@ -1,6 +1,7 @@
 {
     "private": true,
     "type": "module",
+    "version": "0.2.0",
     "scripts": {
         "dev": "vite",
         "build": "vite build"
@@ -8,6 +9,15 @@
     "devDependencies": {
         "axios": "^1.6.4",
         "laravel-vite-plugin": "^1.0.0",
-        "vite": "^5.0.0"
+        "vite": "^5.0.0",
+        "@vitejs/plugin-vue": "^5.0.4",
+        "sass": "^1.32.11"
+    },
+    "dependencies": {
+        "bootstrap": "^5.3.3",
+        "primeicons": "^6.0.1",
+        "vue": "^3.4.20",
+        "vue-router": "^4.3.0",
+        "vuex": "^4.1.0"
     }
 }

@@ -418,7 +418,7 @@ body {
   border-color: transparent;
 }
 
-.login-form-wrapper {
+/* .login-form-wrapper {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -471,7 +471,7 @@ body {
   width: 100%;
   background-color: #0f5b9e;
   font-weight: 600;
-}
+} */
 
 .client__order {
   padding: 90px 0 40px;
