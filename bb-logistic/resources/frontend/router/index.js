@@ -12,12 +12,12 @@ const postfix = (str) => `${str} - B&B Logistic`;
 const routes = [
     {
       path: "/",
-      redirect: { name: "login" },
+      redirect: { name: "auth" },
     },
     {
-      path: "/login",
+      path: "/auth",
       component: Auth,
-      name: 'login',
+      name: 'auth',
       meta: {
           title: "Вход",
           auth: false

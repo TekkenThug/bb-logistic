@@ -29,7 +29,7 @@ const text = computed(() => {
         display: flex;
         justify-content: center;
         align-items: center;
-        background-color: $primary-100;
+        // background-color: $primary-100;
         color: #ffffff;
         padding: 15px;
 

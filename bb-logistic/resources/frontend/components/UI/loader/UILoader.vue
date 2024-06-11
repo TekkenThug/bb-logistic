@@ -20,7 +20,7 @@
     width: 13px;
     height: 13px;
     border-radius: 50%;
-    background: $primary-100;
+    // background: $primary-100;
     animation-timing-function: cubic-bezier(0, 1, 1, 0);
 }
 

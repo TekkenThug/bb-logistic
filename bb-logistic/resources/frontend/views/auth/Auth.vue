@@ -1,6 +1,7 @@
 <template>
     <div :class="$style.Auth">
-        <!-- <img class="login-form__img" src="/images/logo.png" alt="bandb"> -->
+        <ThemeToggle :class="$style.themeToggle" />
+
         <form
             :class="$style.form"
             @submit.prevent="sendLoginDataToServer"
@@ -9,11 +10,11 @@
                 <UIIcon name="user" />
 
                 <input
-                    v-model="email"
+                    v-model="loginCredentials.email"
                     type="text"
                     name="email"
                     class="form-control"
-                    placeholder="Логин"
+                    placeholder="Email"
                     required
                 />
             </div>
@@ -22,7 +23,7 @@
                 <UIIcon name="lock" />
 
                 <input
-                    v-model="password"
+                    v-model="loginCredentials.password"
                     type="password"
                     name="password"
                     class="form-control"
@@ -32,7 +33,7 @@
             </div>
 
             <div
-                v-if="error"
+                v-if="isError"
                 class="error"
                 role="alert"
             >
@@ -43,13 +44,10 @@
                 type="submit"
                 class="btn btn-primary mt-2"
             >
-                Войти
+                Sign in
             </button>
 
-            <UILoader
-                v-if="isLoading"
-                class="mt-2"
-            />
+            <UILoader v-if="isLoading" />
         </form>
     </div>
 </template>
@@ -60,9 +58,10 @@ import { login, getCSRF } from '@/services/api/auth';
 import UIIcon from "@/components/UI/icon/UIIcon";
 import { reactive, ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import { useStore } from 'vuex';
+import { useUserStore } from "@/store/user";
+import ThemeToggle from "../../components/common/theme-toggle/ThemeToggle.vue";
 
-const loginCrenedtials = reactive({ email: null, password: null });
+const loginCredentials = reactive({ email: null, password: null });
 
 const isError = ref(false);
 const isLoading = ref(false);
@@ -71,26 +70,23 @@ onMounted(async () => {
     await getCSRF();
 });
 
-const store = useStore();
 const router = useRouter();
+const { user, role } = useUserStore();
 
 const sendLoginDataToServer = async () => {
     isLoading.value = true;
     isError.value = false;
 
     try {
-        const data = await login(loginCrenedtials.value);
+        const data = await login(loginCredentials.value);
 
-        // this.$store.commit('setUser', { token, role });
+        user.value = { role: data.role };
 
-        store.commit('setUser', { role: data.role });
+        const redirectPath = role === 'admin' ? '/admin' :
+        role === 'courier' ? '/courier' :
+        role === 'client' ? '/client' : '/';
 
-        const userRole = store.getters.userRole;
-        const redirectPath = userRole === 'admin' ? '/admin' :
-        userRole === 'courier' ? '/courier' :
-        userRole === 'client' ? '/client' : '/';
-
-        this.$router.push(redirectPath);
+        await router.push(redirectPath);
     } catch (e) {
         isError.value = true;
     } finally {
@@ -101,6 +97,7 @@ const sendLoginDataToServer = async () => {
 
 <style lang="scss" module>
 .Auth {
+    position: relative;
     width: 100vw;
     min-height: 100vh;
     display: flex;
@@ -109,14 +106,17 @@ const sendLoginDataToServer = async () => {
     padding: 10px;
 }
 
+.themeToggle {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+}
+
 .form {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    padding: 16px;
-    max-width: 380px;
-    border: 3px solid $primary-100;
-    border-radius: 10px;
+    padding: 24px;
+    border: 2px solid transparent;
+    border-radius: 12px;
+    box-shadow: $blue-400 0 7px 29px 0;
 }
 
 .error {

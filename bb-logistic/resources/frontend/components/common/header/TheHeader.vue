@@ -9,7 +9,7 @@
                         alt="bandb"
                     >
                 </div>
-                
+
                 <div class="col-6 col-sm-8">
                     <ul :class="$style.navList">
                         <router-link
@@ -44,9 +44,9 @@ import { computed } from "vue";
 import UIIcon from "@/components/UI/icon/UIIcon";
 import { logout } from '@/services/api/auth';
 import { useRouter } from "vue-router";
-import { useStore } from "vuex";
 
 import logo from "@/assets/images/common/logo.png";
+import {useUserStore} from "@/store/user";
 
 const router = useRouter();
 const signOut = async () => {
@@ -54,8 +54,7 @@ const signOut = async () => {
     await router.push({ name: "login" });
 };
 
-const store = useStore();
-const role = computed(() => store.state.user?.role);
+const { role } = useUserStore();
 const items = computed(() => {
     switch (role.value) {
         case "client":
@@ -133,7 +132,7 @@ const items = computed(() => {
 
 <style lang="scss" module>
     .TheHeader {
-        background-color: $primary-100;
+        // background-color: $primary-100;
         padding: 20px 0;
         text-align: right;
     }
