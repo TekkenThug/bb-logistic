@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
-import Auth from "@/views/auth/Auth";
+import Auth from "@/views/Auth";
 
 import errorRoutes from './errors';
 import adminRoutes from './admin';

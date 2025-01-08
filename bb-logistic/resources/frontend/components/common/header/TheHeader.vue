@@ -42,7 +42,7 @@
 <script setup>
 import { computed } from "vue";
 import UIIcon from "@/components/UI/icon/UIIcon";
-import { logout } from '@/services/api/auth';
+// import { logout } from '@/services/api/auth';
 import { useRouter } from "vue-router";
 
 import logo from "@/assets/images/common/logo.png";
@@ -50,7 +50,7 @@ import {useUserStore} from "@/store/user";
 
 const router = useRouter();
 const signOut = async () => {
-    await logout();
+    // await logout();
     await router.push({ name: "login" });
 };
 
