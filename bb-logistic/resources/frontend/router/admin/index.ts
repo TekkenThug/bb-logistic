@@ -1,5 +1,5 @@
 import DefaultLayout from '@/layouts/default';
-import CreateUser from '@/views/admin/CreateUser';
+import CreateUser from '@/views/admin/create-user';
 
 import AdminClientList from '@/views/admin/ClientList';
 import AdminCourierList from '@/views/admin/CourierList';

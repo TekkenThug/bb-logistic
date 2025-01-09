@@ -1,17 +1,19 @@
 <template>
-  <div>
-    <div
-      v-if="isLoading"
-      class="flex justify-center items-center h-dvh"
-    >
-      <Progress
-        :model-value="status"
-        class="w-72"
-      />
-    </div>
+  <TooltipProvider>
+    <div>
+      <div
+        v-if="isLoading"
+        class="flex justify-center items-center h-dvh"
+      >
+        <Progress
+          :model-value="status"
+          class="w-72"
+        />
+      </div>
 
-    <RouterView v-else />
-  </div>
+      <RouterView v-else />
+    </div>
+  </TooltipProvider>
 </template>
 
 <script setup>
@@ -19,6 +21,7 @@ import { watch, onBeforeMount, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { getCSRF, me } from '@/services/api/auth';
 import { Progress } from '@/components/ui/progress';
+import { TooltipProvider } from '@/components/ui/tooltip';
 
 import { useAppStore } from '@/store/app';
 import { useUserStore } from '@/store/user';

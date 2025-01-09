@@ -57,7 +57,7 @@
 export default {
     name: 'StatusSelect',
     props: {
-        filter: all
+        filter: 'all'
     }
 };
 </script>

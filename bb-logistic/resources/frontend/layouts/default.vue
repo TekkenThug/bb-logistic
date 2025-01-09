@@ -1,6 +1,6 @@
 <template>
   <div :class="$style.DefaultLayout">
-    <Sidebar :class="$style.sidebar" />
+    <Sidebar />
 
     <main :class="$style.main">
       <ThemeToggle :class="$style.themeToggle" />
@@ -9,7 +9,7 @@
     </main>
     <!--        <message :text="'Тестовая модалка'" />-->
 
-    <Footer />
+    <Footer :class="$style.footer" />
   </div>
 </template>
 
@@ -28,7 +28,6 @@ import ThemeToggle from '@/components/common/theme-toggle';
 <style module>
 .DefaultLayout {
   display: grid;
-  grid-template-columns: 240px 1fr;
   grid-template-rows: 1fr 60px;
   min-height: 100vh;
 }
@@ -38,8 +37,9 @@ import ThemeToggle from '@/components/common/theme-toggle';
   flex-grow: 1;
 }
 
-.sidebar {
-  grid-area: 1 / 1 / 3 / 2; 
+.main,
+.footer {
+  margin-left: 52px;
 }
 
 .themeToggle {
