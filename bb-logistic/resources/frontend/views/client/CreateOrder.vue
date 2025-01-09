@@ -10,22 +10,22 @@
 </template>
 
 <script>
-import CreateForm from "@/components/forms/create-form";
+import CreateForm from '@/components/forms/create-form';
 
 export default {
-    name: "CreateOrder",
+    name: 'CreateOrder',
     components: { CreateForm },
     methods: {
         createOrder(obj) {
             axios.post('/orders', obj)
                 .then(res => {
-                    if (res.data.status === "success") {
+                    if (res.data.status === 'success') {
                         this.$router.push('/client/list');
                     }
-                })
+                });
         }
     }
-}
+};
 </script>
 
 <style scoped>

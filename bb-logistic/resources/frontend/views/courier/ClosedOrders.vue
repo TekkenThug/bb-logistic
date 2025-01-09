@@ -41,10 +41,10 @@
 </template>
 
 <script>
-import OrderRow from "@/components/order-row";
+import OrderRow from '@/components/order-row';
 
 export default {
-    name: "ClosedOrders",
+    name: 'ClosedOrders',
     components: { OrderRow },
     data() {
       return {
@@ -52,19 +52,19 @@ export default {
           cash: 0,
           preloader: true,
           orders: []
-      }
+      };
     },
     methods: {
         async getOrders() {
             this.isLoading = true;
             this.orders = [];
-            const { data } = await axios.get(`/orders?courier=true`);
+            const { data } = await axios.get('/orders?courier=true');
 
             if (data.status === 'success') {
                 this.isLoading = false;
-                this.orders = data.orders
-                this.credit = data.payments.credit
-                this.cash = data.payments.cash
+                this.orders = data.orders;
+                this.credit = data.payments.credit;
+                this.cash = data.payments.cash;
             }
         },
 
@@ -74,12 +74,12 @@ export default {
             if (data.status === 'success') {
                 this.getOrders();
             } else {
-                console.log("Невозможно обновить статус")
+                console.log('Невозможно обновить статус');
             }
         }
     },
     create() {
         this.getOrders();
     }
-}
+};
 </script>

@@ -216,7 +216,7 @@
 
 <script>
 export default {
-    name: "OrderRow",
+    name: 'OrderRow',
     props: {
         id: {
             required: true,
@@ -272,11 +272,11 @@ export default {
 
         courierName: {
             type: String,
-            default: ""
+            default: ''
         },
         courierPhone: {
             type: String,
-            default: ""
+            default: ''
         },
 
         fenceAddress: {
@@ -288,25 +288,25 @@ export default {
         return {
             showMore: false,
             showModal: false,
-            selectCourier: this.status === "not-allocated",
+            selectCourier: this.status === 'not-allocated',
             courierId: 'not',
             payMethod: 'cash',
-        }
+        };
     },
     computed: {
         setStatusOrder() {
             if (this.status === 'not-allocated')
-                return 'Не распределено'
+                return 'Не распределено';
             else if (this.status === 'pending')
-                return 'Ожидает забора товара'
+                return 'Ожидает забора товара';
             else if (this.status === 'stock')
-                return 'На складе'
+                return 'На складе';
             else if (this.status === 'courier')
-                return 'У курьера'
+                return 'У курьера';
             else if (this.status === 'finished')
-                return 'Отгружено'
+                return 'Отгружено';
             else if (this.status === 'return')
-                return 'Возврат'
+                return 'Возврат';
         },
         setOrderDate() {
             let rawDate = new Date(this.createDate);
@@ -314,8 +314,8 @@ export default {
             let date = new Intl.DateTimeFormat('ru', {
                 hour12: false,
                 year: 'numeric',
-                hour: "numeric",
-                minute: "numeric",
+                hour: 'numeric',
+                minute: 'numeric',
                 month: '2-digit',
                 day: '2-digit'
             }).format(rawDate);
@@ -327,7 +327,7 @@ export default {
         deleteOrder() {
             axios.delete(`/orders/${this.id}`)
                 .then((res) => {
-                    if (res.data.status === "success") {
+                    if (res.data.status === 'success') {
                         this.showModal = false;
                         setTimeout(() => {
                             this.$destroy();
@@ -335,12 +335,12 @@ export default {
                         }, 500);
 
                     } else {
-                        console.log("Ошибка!")
+                        console.log('Ошибка!');
                     }
-                })
+                });
         },
     }
-}
+};
 </script>
 
 <style scoped>

@@ -12,12 +12,12 @@
 
 <script>
 export default {
-    name: "Error",
+    name: 'Error',
     props: {
-        title: "",
-        text: ""
+        title: '',
+        text: ''
     }
-}
+};
 </script>
 
 <style scoped>

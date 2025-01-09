@@ -55,9 +55,9 @@
 
 <script>
 export default {
-    name: "StatusSelect",
+    name: 'StatusSelect',
     props: {
-        filter: "all"
+        filter: all
     }
-}
+};
 </script>

@@ -22,19 +22,19 @@
 </template>
 
 <script>
-import { getStockProducts } from "@/services/api/stock";
+import { getStockProducts } from '@/services/api/stock';
 
-import StockTable from "@/components/stock-table";
+import StockTable from '@/components/stock-table';
 
 export default {
-    name: "Stock",
+    name: 'Stock',
     components: {StockTable},
     data() {
         return {
             tableHeaders: ['№', 'Название', 'Цвет', 'Размер', 'Артикул', 'Шт.'],
             tableData: [],
             isLoading: true,
-        }
+        };
     },
     async created() {
         this.tableData = await this.getItems(this.$store.state.user?.id);
@@ -46,7 +46,7 @@ export default {
             return data.stock;
         },
     }
-}
+};
 </script>
 
 <style scoped>

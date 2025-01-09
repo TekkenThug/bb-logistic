@@ -48,10 +48,10 @@
 </template>
 
 <script>
-import SmallBtn from "./components/SmallBtn";
+import SmallBtn from './components/SmallBtn';
 
 export default {
-    name: "StockTable",
+    name: 'StockTable',
     components: {SmallBtn},
     props: {
         headers: {
@@ -69,7 +69,7 @@ export default {
             default: false,
         }
     }
-}
+};
 </script>
 
 <style scoped>

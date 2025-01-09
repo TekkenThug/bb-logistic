@@ -93,28 +93,28 @@
 
 <script>
 export default {
-    name: "EditUserData",
+    name: 'EditUserData',
     props: {
         obj: {
             type: Object,
             default() {
-                return {}
+                return {};
             }
         },
         user: {
             type: String,
-            default: ""
+            default: ''
         },
     },
     data() {
         return {
             name: this.obj.name,
             email: this.obj.email,
-            password: "",
-            repeatPassword: "",
+            password: '',
+            repeatPassword: '',
             address: this.obj.address,
             phone: this.obj.phone
-        }
+        };
     },
     methods: {
         serializeUpdateUser() {
@@ -123,16 +123,16 @@ export default {
                 email: this.email,
                 address: this.address,
                 phone: this.phone
-            }
+            };
 
             if (this.password.trim().length !== 0
                 && this.repeatPassword.trim().length !== 0
                 && this.password.trim() === this.repeatPassword.trim()) {
-                obj.password = this.password.trim()
+                obj.password = this.password.trim();
             }
 
             this.$emit('serialize', obj);
         }
     }
-}
+};
 </script>

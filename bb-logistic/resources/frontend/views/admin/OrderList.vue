@@ -60,12 +60,12 @@
 </template>
 
 <script>
-import OrderRow from "@/components/order-row";
-import SearchInput from "@/components/search-input";
-import StatusSelect from "@/components/status-select";
+import OrderRow from '@/components/order-row';
+import SearchInput from '@/components/search-input';
+import StatusSelect from '@/components/status-select';
 
 export default {
-    name: "OrderList",
+    name: 'OrderList',
     components: { SearchInput, OrderRow, StatusSelect },
     data() {
         return {
@@ -74,9 +74,9 @@ export default {
             stopSearch: false,
             orders: [],
             couriers: [],
-            searchText: "",
-            filter: ""
-        }
+            searchText: '',
+            filter: ''
+        };
     },
     watch: {
         searchText() {
@@ -91,7 +91,7 @@ export default {
                     this.orders = res.data.orders;
                     this.preloader = false;
                     this.stopSearch = false;
-                })
+                });
             }
         }
     },
@@ -115,7 +115,7 @@ export default {
                     this.orders = res.data.orders;
                     this.preloader = false;
                     this.stopSearch = false;
-                })
+                });
             }
         },
         setCourier(id, courierId) {
@@ -123,12 +123,12 @@ export default {
                 axios.patch(`/orders/${id}?role=admin&fast=true`, {
                     courier_id: courierId
                 }).then(res => {
-                    if (res.data.status === "success") {
+                    if (res.data.status === 'success') {
                         this.updateOrdersPage();
                     } else {
-                        console.log("Ошибка на получении заявок")
+                        console.log('Ошибка на получении заявок');
                     }
-                })
+                });
             }
         },
         updateOrdersPage() {
@@ -142,7 +142,7 @@ export default {
             }
         }
     }
-}
+};
 </script>
 
 <style scoped>

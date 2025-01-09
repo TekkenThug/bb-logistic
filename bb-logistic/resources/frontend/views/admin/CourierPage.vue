@@ -95,28 +95,28 @@
 </template>
 
 <script>
-import OrderRow from "@/components/order-row";
-import EditUserData from "@/components/edit-user-data";
+import OrderRow from '@/components/order-row';
+import EditUserData from '@/components/edit-user-data';
 
 export default {
-    name: "CourierPage",
+    name: 'CourierPage',
     components: { OrderRow, EditUserData },
     data() {
         return {
             preloader: true,
             displayUserSettings: false,
             displayCashAttempt: false,
-            comment: "",
+            comment: '',
             courier: [],
             orders: [],
 
-            cash: "",
-            credit: ""
-        }
+            cash: '',
+            credit: ''
+        };
     },
     computed: {
         btnMsg() {
-            return this.displayUserSettings ? "Скрыть настройки" : "Показать настройки пользователя"
+            return this.displayUserSettings ? 'Скрыть настройки' : 'Показать настройки пользователя';
         }
     },
     beforeMount() {
@@ -126,10 +126,10 @@ export default {
         getCourierOrders() {
             axios.get(`/couriers/${this.$route.params.id}`)
                 .then(res => {
-                    if (res.data.status !== 'success') this.$router.push('/admin/clients')
+                    if (res.data.status !== 'success') this.$router.push('/admin/clients');
                     else {
                         this.courier = res.data.courier;
-                        this.comment = res.data.courier.courier_comment
+                        this.comment = res.data.courier.courier_comment;
                         this.credit = res.data.money.credit;
                         this.cash = res.data.money.cash;
                         this.orders = res.data.courierOrders;
@@ -143,19 +143,19 @@ export default {
                     if (res.data.status === 'success') {
                         this.displayUserSettings = false;
                     } else {
-                        console.log('Ошибка при обновлении курьера')
+                        console.log('Ошибка при обновлении курьера');
                     }
-                })
+                });
         },
         setComment() {
             axios.patch(`/couriers/${this.courier.id}?comment=true`, {comment: this.comment})
                 .then(res => {
                     if (res.data.status === 'success') {
-                        console.log('Всё хорошо!')
+                        console.log('Всё хорошо!');
                     } else {
-                        console.log('Ошибка при добавлении комментария')
+                        console.log('Ошибка при добавлении комментария');
                     }
-                })
+                });
         },
         cashFlowMove() {
             this.preloader = true;
@@ -163,10 +163,10 @@ export default {
                 if (res.data.status === 'success') {
                     this.preloader = false;
                 }
-            })
+            });
         }
     }
-}
+};
 </script>
 
 <style scoped>

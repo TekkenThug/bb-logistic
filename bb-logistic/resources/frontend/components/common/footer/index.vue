@@ -8,19 +8,19 @@
 </template>
 
 <script setup>
-import { computed } from "vue";
+import { computed } from 'vue';
 
 const text = computed(() => {
-    if (import.meta.env.MODE === "production") {
+    if (import.meta.env.MODE === 'production') {
         const email = import.meta.env.VITE_SUPPORT_EMAIL;
 
         return `
             Система находится в тестовом режиме.
             В случае неполадок, просьба обратиться - <a href="mailto:${email}">${email}</a>
-        `
+        `;
     }
 
-    return `Система запущена в dev режиме. Версия приложения - ${window.__APP_VERSION__}`
+    return `Система запущена в dev режиме. Версия приложения - ${window.__APP_VERSION__}`;
 });
 </script>
 

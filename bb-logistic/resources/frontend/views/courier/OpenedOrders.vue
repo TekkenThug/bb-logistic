@@ -39,17 +39,17 @@
 </template>
 
 <script>
-import { getOrders, updateOrder } from "@/services/api/orders";
-import OrderRow from "@/components/order-row";
+import { getOrders, updateOrder } from '@/services/api/orders';
+import OrderRow from '@/components/order-row';
 
 export default {
-    name: "OpenedOrders",
+    name: 'OpenedOrders',
     components: { OrderRow },
     data() {
       return {
           isLoading: true,
           orders: []
-      }
+      };
     },
     beforeMount() {
         this.getOrders();
@@ -58,23 +58,23 @@ export default {
         async getOrders() {
             this.isLoading = true;
             this.orders = [];
-            const { data } = await getOrders({ filter: "open" });
+            const { data } = await getOrders({ filter: 'open' });
 
             if (data.status === 'success') {
                 this.isLoading = false;
-                this.orders = data.orders
+                this.orders = data.orders;
             }
         },
 
         async changeOrderStatus(status, id, payMethod = null) {
-            const { data } = updateOrder(id, { role: "courier", status, payMethod });
+            const { data } = updateOrder(id, { role: 'courier', status, payMethod });
 
             if (data.status === 'success') {
                 this.getOrders();
             } else {
-                console.log("Невозможно обновить статус")
+                console.log('Невозможно обновить статус');
             }
         }
     }
-}
+};
 </script>

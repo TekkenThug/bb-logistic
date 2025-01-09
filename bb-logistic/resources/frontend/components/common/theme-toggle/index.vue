@@ -20,8 +20,8 @@
 </template>
 
 <script setup>
-import { Icon } from "@iconify/vue";
-import { useAppStore } from "@/store/app";
+import { Icon } from '@iconify/vue';
+import { useAppStore } from '@/store/app';
 
 const store = useAppStore();
 </script>

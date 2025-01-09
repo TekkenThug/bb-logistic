@@ -20,40 +20,40 @@
 
 <script>
 export default {
-    name: "UserRow",
+    name: 'UserRow',
     props: {
         name: {
             type: String,
-            default: "User",
+            default: 'User',
         },
         email: {
             type: String,
-            default: "mail@mail.ru"
+            default: 'mail@mail.ru'
         },
         address: {
             type: String,
-            default: "г. Москва"
+            default: 'г. Москва'
         },
         phone: {
             type: String,
-            default: ""
+            default: ''
         },
         comment: {
             type: String,
-            default: "",
+            default: '',
         },
         role: {
             type: String,
-            default: ""
+            default: ''
         },
         path: {
             type: String,
-            default: ""
+            default: ''
         },
         id: {
             type: Number,
             default: 0
         }
     }
-}
+};
 </script>

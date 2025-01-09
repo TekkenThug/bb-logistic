@@ -16,29 +16,29 @@
 </template>
 
 <script>
-import CreateForm from "@/components/forms/create-form";
+import CreateForm from '@/components/forms/create-form';
 
 export default {
-    name: "EditOrder",
+    name: 'EditOrder',
     components: { CreateForm },
     data() {
         return {
             order: {},
             preloader: true
-        }
+        };
     },
     beforeMount() {
        axios.get(`/orders/${this.$route.params.order_id}`)
         .then(res => {
-            if (res.data.status === "fail") {
-                console.log('fail')
+            if (res.data.status === 'fail') {
+                console.log('fail');
                 this.$router.push('/client/list');
             } else {
                 this.order = res.data.order;
             }
 
-            this.preloader = false
-        })
+            this.preloader = false;
+        });
     },
     updated: function() {
         this.$refs.form.completedForm();
@@ -47,13 +47,13 @@ export default {
         updateOrder(obj) {
             axios.patch(`/orders/${this.$route.params.order_id}?role=client`, obj)
                 .then(res => {
-                    if (res.data.status === "success") {
+                    if (res.data.status === 'success') {
                         this.$router.push('/client/list');
                     }
-                })
+                });
         }
     },
-}
+};
 </script>
 
 <style scoped>

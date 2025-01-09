@@ -1,13 +1,13 @@
-import DefaultLayout from "@/layouts/default";
-import OrderList from "@/views/client/OrderList";
-import CreateOrder from "@/views/client/CreateOrder";
-import EditOrder from "@/views/client/EditOrder"
-import Fulfillment from "@/views/client/Stock";
+import DefaultLayout from '@/layouts/default';
+import OrderList from '@/views/client/OrderList';
+import CreateOrder from '@/views/client/CreateOrder';
+import EditOrder from '@/views/client/EditOrder';
+import Fulfillment from '@/views/client/Stock';
 
 export default {
-  path: "/client",
+  path: '/client',
   component: DefaultLayout,
-  redirect: "/client/create",
+  redirect: '/client/create',
   meta: {
       auth: {
           roles: 2,
@@ -15,40 +15,40 @@ export default {
       }
   },
   props: {
-    role: "client"
+    role: 'client'
   },
   children: [
       {
-          path: "create",
-          name: "client-create-order",
+          path: 'create',
+          name: 'client-create-order',
           meta: {
-            title: "Создать заявку"
+            title: 'Создать заявку'
           },
           component: CreateOrder
       },
       {
-          path: "list",
-          name: "client-order-list",
+          path: 'list',
+          name: 'client-order-list',
           component: OrderList,
           meta: {
-            title: "Список заявок"
+            title: 'Список заявок'
           },
       },
       {
-          path: "list/:order_id",
-          name: "client-edit-order",
+          path: 'list/:order_id',
+          name: 'client-edit-order',
           component: EditOrder,
           meta: {
-            title: "Изменить заказ"
+            title: 'Изменить заказ'
           },
       },
       {
-          path: "fulfillment",
-          name: "client-fullfilment",
+          path: 'fulfillment',
+          name: 'client-fullfilment',
           component: Fulfillment,
           meta: {
-            title: "Фулфилмент"
+            title: 'Фулфилмент'
           },
       }
   ]
-}
+};

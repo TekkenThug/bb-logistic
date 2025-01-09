@@ -14,9 +14,9 @@
 
 <script>
 export default {
-    name: "PhoneInput",
+    name: 'PhoneInput',
     props: {
-        value: ""
+        value: ''
     }
-}
+};
 </script>

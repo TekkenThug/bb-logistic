@@ -1,11 +1,11 @@
-import DefaultLayout from "@/layouts/default";
-import OpenedOrders from "@/views/courier/OpenedOrders";
-import ClosedOrders from "@/views/courier/ClosedOrders";
+import DefaultLayout from '@/layouts/default';
+import OpenedOrders from '@/views/courier/OpenedOrders';
+import ClosedOrders from '@/views/courier/ClosedOrders';
 
 export default {
-  path: "/courier",
+  path: '/courier',
   component: DefaultLayout,
-  redirect: "/courier/open",
+  redirect: '/courier/open',
   meta: {
       auth: {
           roles: 3,
@@ -17,20 +17,20 @@ export default {
   },
   children: [
       {
-          path: "open",
-          name: "courier-opened-orders",
+          path: 'open',
+          name: 'courier-opened-orders',
           meta: {
-            title: "Доступные заявки"
+            title: 'Доступные заявки'
           },
           component: OpenedOrders
       },
       {
-          path: "close",
-          name: "courier-closed-orders",
+          path: 'close',
+          name: 'courier-closed-orders',
           component: ClosedOrders,
           meta: {
-            title: "Завершенные заявки"
+            title: 'Завершенные заявки'
           },
       }
   ]
-}
+};

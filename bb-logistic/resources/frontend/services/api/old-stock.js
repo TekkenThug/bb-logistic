@@ -13,5 +13,5 @@ export default function () {
         deleteProducts(id, product) {
             return axios.delete(`/stock/${id}`, {product});
         }
-    }
+    };
 }

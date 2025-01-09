@@ -1,28 +1,28 @@
-import Error from "@/views/error";
+import Error from '@/views/error';
 
 export default [
     {
-      path: "/404",
+      path: '/404',
       component: Error,
       name: 'error',
       props: {
-          title: "404",
-          text: "Страница не найдена"
+          title: '404',
+          text: 'Страница не найдена'
       },
       meta: {
-          title: "404"
+          title: '404'
       }
     },
     {
-        path: "/403",
+        path: '/403',
         component: Error,
         name: 'forbidden',
         props: {
-            title: "403",
-            text: "Недостаточно прав"
+            title: '403',
+            text: 'Недостаточно прав'
         },
         meta: {
-            title: "403"
+            title: '403'
         }
     }
-]
+];

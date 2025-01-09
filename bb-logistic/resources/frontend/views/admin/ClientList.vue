@@ -29,19 +29,19 @@
 </template>
 
 <script>
-import SearchInput from "@/components/search-input";
-import UserRow from "@/components/user-row";
+import SearchInput from '@/components/search-input';
+import UserRow from '@/components/user-row';
 
 export default {
-    name: "ClientList",
+    name: 'ClientList',
     components: {SearchInput, UserRow},
     data() {
         return {
             clients: [],
             isLoading: true,
-            searchText: "",
+            searchText: '',
             stopSearch: false,
-        }
+        };
     },
     watch: {
         searchText() {
@@ -52,7 +52,7 @@ export default {
         axios.get('/clients').then(res => {
             this.clients = res.data.clients;
             this.isLoading = false;
-        })
+        });
     },
     methods: {
         getOrderNumber() {
@@ -61,13 +61,13 @@ export default {
                 this.clients = [];
                 this.isLoading = true;
                 axios.get(`/clients?name=${this.searchText}`).then(res => {
-                    console.log(res.data)
+                    console.log(res.data);
                     this.clients = res.data.clients;
                     this.isLoading = false;
                     this.stopSearch = false;
-                })
+                });
             }
         }
     }
-}
+};
 </script>

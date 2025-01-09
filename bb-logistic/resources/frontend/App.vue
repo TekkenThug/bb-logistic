@@ -1,23 +1,37 @@
 <template>
   <div>
-    <RouterView />
+    <div
+      v-if="isLoading"
+      class="flex justify-center items-center h-dvh"
+    >
+      <Progress
+        :model-value="status"
+        class="w-72"
+      />
+    </div>
+
+    <RouterView v-else />
   </div>
 </template>
 
 <script setup>
-import { watch, onBeforeMount } from "vue";
+import { watch, onBeforeMount, ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { getCSRF, me } from "@/services/api/auth";
+import { getCSRF, me } from '@/services/api/auth';
+import { Progress } from '@/components/ui/progress';
 
-import { useAppStore } from "@/store/app";
-import { useUserStore } from "@/store/user"
+import { useAppStore } from '@/store/app';
+import { useUserStore } from '@/store/user';
 
 const router = useRouter();
 const appStore = useAppStore();
 const userStore = useUserStore();
 
+const isLoading = ref(false);
+const status = ref(15);
+
 watch(() => appStore.theme, (value) => {
-    const body = document.querySelector("body");
+    const body = document.querySelector('body');
 
     body.dataset.theme = value;
 }, {
@@ -25,16 +39,30 @@ watch(() => appStore.theme, (value) => {
 });
 
 onBeforeMount(async () => {
+    isLoading.value = true;
+
     await getCSRF();
+
+    status.value += 15;
 
     try {
         const { data } = await me();
 
+        status.value += 15;
+
         userStore.setupUser(data);
 
         await router.push({ path: `/${userStore.role}` });
+
+        status.value = 100;
+
+        isLoading.value = false;
     } catch (error) {
-        console.log("Error")
+        if (error.status === 401) {
+            await router.push({ name: 'auth' });
+            status.value = 100;
+            isLoading.value = false;
+        }
     }
 });
 </script>

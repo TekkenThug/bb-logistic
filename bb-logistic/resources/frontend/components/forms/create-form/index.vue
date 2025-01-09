@@ -329,11 +329,11 @@
 </template>
 
 <script>
-import PhoneInput from "./components/PhoneInput";
-import ProductRow from "./components/ProductRow";
+import PhoneInput from './components/PhoneInput';
+import ProductRow from './components/ProductRow';
 
 export default {
-    name: "CreateForm",
+    name: 'CreateForm',
     components: {PhoneInput, ProductRow},
     props: {
         isAdmin: {
@@ -347,39 +347,39 @@ export default {
         order: {
             type: Object,
             default() {
-                return {}
+                return {};
             }
         },
         clients: {
             type: Array,
             default() {
-                return []
+                return [];
             }
         },
         couriers: {
             type: Array,
             default() {
-                return []
+                return [];
             }
         },
     },
     data() {
         return {
-            deliveryType: "Стандарт",
+            deliveryType: 'Стандарт',
             date: null,
-            time: "В любое время",
+            time: 'В любое время',
             address: null,
             fullname: null,
-            contacts: [""],
+            contacts: [''],
             products: [{}],
             clientPay: false,
             clientPayCost: null,
-            comment: "",
+            comment: '',
 
             user: 1,
-            courier: "",
-            deliveryStatus: "not-allocated"
-        }
+            courier: '',
+            deliveryStatus: 'not-allocated'
+        };
     },
     computed: {
         getTodayDate() {
@@ -387,17 +387,17 @@ export default {
             const dd = String(date.getDate()).padStart(2, '0');
             const mm = String(date.getMonth() + 1).padStart(2, '0');
             const yyyy = date.getFullYear();
-            return `${yyyy}-${mm}-${dd}`
+            return `${yyyy}-${mm}-${dd}`;
         },
     },
     watch: {
         clientPay(val) {
-            if (val === false) this.clientPayCost = null
+            if (val === false) this.clientPayCost = null;
         }
     },
     methods: {
         addPhone() {
-            this.contacts.push("");
+            this.contacts.push('');
         },
         addProduct() {
             this.products.push({});
@@ -418,7 +418,7 @@ export default {
                 user: this.user,
                 courier: this.courier,
                 deliveryStatus: this.deliveryStatus
-            })
+            });
         },
         completedForm() {
             this.deliveryType = this.order.delivery_type;
@@ -438,12 +438,12 @@ export default {
                     cost: product.cost,
                     count: product.count
                 });
-            })
+            });
 
             this.deliveryStatus = this.order.status;
             this.user = this.order.client_id;
             this.courier = this.order.courier_id;
         }
     }
-}
+};
 </script>

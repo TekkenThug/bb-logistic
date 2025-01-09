@@ -14,9 +14,9 @@
 </template>
 
 <script setup>
-import Footer from "@/components/common/footer";
-import Sidebar from "@/components/common/sidebar";
-import ThemeToggle from "@/components/common/theme-toggle"
+import Footer from '@/components/common/footer';
+import Sidebar from '@/components/common/sidebar';
+import ThemeToggle from '@/components/common/theme-toggle';
 
 // mounted() {
   //     this.$echo.channel('new-order').listen('ImportantOrderCreated', (payload) => {

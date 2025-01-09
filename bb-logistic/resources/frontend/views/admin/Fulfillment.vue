@@ -59,23 +59,23 @@
 </template>
 
 <script>
-import SelectField from "@/components/select-field";
-import StockTable from "@/components/stock-table";
-import AddForm from "@/components/fulfillment/AddForm";
+import SelectField from '@/components/select-field';
+import StockTable from '@/components/stock-table';
+import AddForm from '@/components/fulfillment/AddForm';
 
 export default {
-    name: "Fulfillment",
+    name: 'Fulfillment',
     components: {SelectField, StockTable, AddForm},
 
     filters: {
         translate(value) {
-            if (value === 'name') return 'Имя'
-            if (value === 'color') return 'Цвет'
-            if (value === 'size') return 'Размер'
-            if (value === 'vendor_code') return 'Артикул'
-            if (value === 'count') return 'Шт.'
-            if (value === 'barcode') return 'Штрихкод'
-            else return 0
+            if (value === 'name') return 'Имя';
+            if (value === 'color') return 'Цвет';
+            if (value === 'size') return 'Размер';
+            if (value === 'vendor_code') return 'Артикул';
+            if (value === 'count') return 'Шт.';
+            if (value === 'barcode') return 'Штрихкод';
+            else return 0;
         }
     },
     data() {
@@ -89,7 +89,7 @@ export default {
                 show: false,
                 data: null
             }
-        }
+        };
     },
     watch: {
         /* Слежение за изменением клиента */
@@ -97,20 +97,20 @@ export default {
             this.preloader = true;
             this.$load(async () => {
                 this.tableData = await this.getItems(id);
-                this.preloader = false
-            })
+                this.preloader = false;
+            });
         }
     },
     mounted() {
         /* Получение списка клиентов */
         this.$load(async () => {
-            this.users = await this.$api.common.getClients()
+            this.users = await this.$api.common.getClients();
         });
     },
     methods: {
         /* Получение продуктов */
         getItems(id) {
-            return this.$api.stock.getProducts(id)
+            return this.$api.stock.getProducts(id);
         },
 
         /* Удаление продукта */
@@ -145,7 +145,7 @@ export default {
                 this.tableData = await this.getItems(this.selectUser);
                 this.preloader = false;
                 this.popup.data = {};
-            })
+            });
         },
 
         /* Открытие модалки по редактированию продукта */
@@ -154,7 +154,7 @@ export default {
             this.popup.data = Object.assign({}, data);
         }
     }
-}
+};
 </script>
 
 <style scoped>

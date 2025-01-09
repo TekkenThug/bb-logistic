@@ -13,35 +13,35 @@
 </template>
 
 <script>
-import CreateForm from "@/components/forms/create-form"
+import CreateForm from '@/components/forms/create-form';
 
 export default {
-    name: "CreateOrder",
+    name: 'CreateOrder',
     components: {CreateForm},
     data() {
         return {
             couriers: [],
             clients: []
-        }
+        };
     },
     beforeCreate() {
         axios.get('/clients').then(res => {
-            this.clients = res.data.clients
-        })
+            this.clients = res.data.clients;
+        });
 
         axios.get('/couriers').then(res => {
-            this.couriers = res.data.couriers
-        })
+            this.couriers = res.data.couriers;
+        });
     },
     methods: {
         createOrder(obj) {
             axios.post('/orders', obj)
                 .then(res => {
-                    if (res.data.status === "success") {
+                    if (res.data.status === 'success') {
                         this.$router.push('/admin/orders');
                     }
-                })
+                });
         }
     }
-}
+};
 </script>

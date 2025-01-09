@@ -9,14 +9,14 @@
 
 <script>
 export default {
-    name: "SmallBtn",
+    name: 'SmallBtn',
     props: {
         icon: {
             type: String,
             default: null
         }
     }
-}
+};
 </script>
 
 <style scoped>

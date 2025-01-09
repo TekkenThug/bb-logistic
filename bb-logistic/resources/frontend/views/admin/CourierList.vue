@@ -28,19 +28,19 @@
 </template>
 
 <script>
-import SearchInput from "@/components/search-input";
-import UserRow from "@/components/user-row";
+import SearchInput from '@/components/search-input';
+import UserRow from '@/components/user-row';
 
 export default {
-    name: "CourierList",
+    name: 'CourierList',
     components: { SearchInput, UserRow },
     data() {
         return {
             couriers: [],
             preloader: true,
-            searchText: "",
+            searchText: '',
             stopSearch: false,
-        }
+        };
     },
     watch: {
         searchText() {
@@ -51,7 +51,7 @@ export default {
         axios.get('/couriers').then(res => {
             this.couriers = res.data.couriers;
             this.preloader = false;
-        })
+        });
     },
     methods: {
         getOrderNumber() {
@@ -60,13 +60,13 @@ export default {
                 this.couriers = [];
                 this.preloader = true;
                 axios.get(`/couriers?name=${this.searchText}`).then(res => {
-                    console.log(res.data)
+                    console.log(res.data);
                     this.couriers = res.data.couriers;
                     this.preloader = false;
                     this.stopSearch = false;
-                })
+                });
             }
         }
     }
-}
+};
 </script>

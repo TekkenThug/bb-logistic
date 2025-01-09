@@ -7,8 +7,8 @@
         required
         name="delivery-info"
         type="text"
-        @input="send($event, 'name')"
         placeholder="Наименование товара"
+        @input="send($event, 'name')"
       >
     </td>
     <td class="client__order-item-cost">
@@ -18,8 +18,8 @@
         required
         name="delivery-info"
         type="text"
-@input="send($event, 'cost')"
         placeholder="Стоимость шт."
+        @input="send($event, 'cost')"
       >
     </td>
     <td class="client__order-item-count">
@@ -29,8 +29,9 @@
         class="form-control"
         name="delivery-info"
         type="number"
-@input="send($event, 'count')" min="1"
+        min="1"
         placeholder="Кол-во"
+        @input="send($event, 'count')"
       >
     </td>
   </tr>
@@ -38,16 +39,16 @@
 
 <script>
 export default {
-    name: "ProductRow",
+    name: 'ProductRow',
     props: {
         info: {
             type: Object,
             default() {
                 return {
-                    name: "",
+                    name: '',
                     count: 0,
                     cost: 0
-                }
+                };
             }
         }
     },
@@ -57,5 +58,5 @@ export default {
             this.$emit('input', this.info);
         }
     }
-}
+};
 </script>

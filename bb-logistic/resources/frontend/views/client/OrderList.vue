@@ -40,21 +40,21 @@
 </template>
 
 <script>
-import { getOrders } from "@/services/api/orders";
+import { getOrders } from '@/services/api/orders';
 
-import OrderRow from "@/components/order-row";
-import StatusSelect from "@/components/status-select";
+import OrderRow from '@/components/order-row';
+import StatusSelect from '@/components/status-select';
 
 export default {
-    name: "OrderList",
+    name: 'OrderList',
     components: { OrderRow, StatusSelect },
     data() {
         return {
             isLoading: true,
             stopSearch: false,
             orders: [],
-            filter: "",
-        }
+            filter: '',
+        };
     },
     watch: {
         filter() {
@@ -63,7 +63,7 @@ export default {
     },
 
     async mounted() {
-        const { data } = await getOrders({ role: "client" });
+        const { data } = await getOrders({ role: 'client' });
         
         this.orders = data.orders;
         this.isLoading = false;
@@ -84,5 +84,5 @@ export default {
             }
         }
     }
-}
+};
 </script>

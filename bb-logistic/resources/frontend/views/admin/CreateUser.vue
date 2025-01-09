@@ -138,25 +138,25 @@
 
 <script>
 export default {
-    name: "CreateUser",
+    name: 'CreateUser',
     data() {
         return {
             name: '',
             email: '',
             password: '',
             passwordDuplicate: '',
-            role: "admin",
+            role: 'admin',
             deliveryAddress: '',
             phone: '',
             errors: [],
             preloader: false,
-        }
+        };
     },
     watch: {
-        name() { this.errors = [] },
-        email() { this.errors = [] },
-        password() { this.errors = [] },
-        role() { this.errors = [] },
+        name() { this.errors = []; },
+        email() { this.errors = []; },
+        password() { this.errors = []; },
+        role() { this.errors = []; },
     },
     methods: {
         createUser(){
@@ -173,23 +173,23 @@ export default {
                     },
                     redirect: null
                 }).then(res => {
-                    if (res.data.status === "success") {
+                    if (res.data.status === 'success') {
                         this.cleanFields();
                         this.preloader = false;
                     }
                 }).catch(error => {
-                    this.extractErrors(error.response.data.errors)
+                    this.extractErrors(error.response.data.errors);
                     this.preloader = false;
                 });
 
             } else {
                 this.preloader = false;
-                this.errors.push("Пароли не совпадают");
+                this.errors.push('Пароли не совпадают');
             }
         },
         cleanFields() {
             this.name = this.email = this.password = this.passwordDuplicate = this.phone = this.deliveryAddress = '';
-            this.role = "admin";
+            this.role = 'admin';
         },
         extractErrors(errors) {
             for (let key in errors) {
@@ -197,5 +197,5 @@ export default {
             }
         }
     }
-}
+};
 </script>

@@ -96,11 +96,11 @@
 </template>
 
 <script>
-import OrderRow from "@/components/order-row";
-import EditUserData from "@/components/edit-user-data";
+import OrderRow from '@/components/order-row';
+import EditUserData from '@/components/edit-user-data';
 
 export default {
-    name: "ClientPage",
+    name: 'ClientPage',
     components: { OrderRow, EditUserData },
     data() {
         return {
@@ -113,11 +113,11 @@ export default {
 
             cash: 0,
             credit: 0,
-        }
+        };
     },
     computed: {
         btnMsg() {
-            return this.displayUserSettings ? "Скрыть настройки" : "Показать настройки пользователя"
+            return this.displayUserSettings ? 'Скрыть настройки' : 'Показать настройки пользователя';
         },
     },
     beforeMount() {
@@ -129,18 +129,18 @@ export default {
                 axios.patch(`/orders/${id}?role=admin&fast=true`, {
                     courier_id: courierId
                 }).then(res => {
-                    if (res.data.status === "success") {
+                    if (res.data.status === 'success') {
                         this.updateOrdersPage();
                     } else {
-                        console.log("Ошибка на назначении курьера")
+                        console.log('Ошибка на назначении курьера');
                     }
-                })
+                });
             }
         },
         getClientOrders(filter = '') {
             axios.get(`/clients/${this.$route.params.id}?filter=${filter}`)
                 .then(res => {
-                    if (res.data.status !== 'success') this.$router.push('/admin/clients')
+                    if (res.data.status !== 'success') this.$router.push('/admin/clients');
                     else {
                         this.client = res.data.client;
                         this.orders = res.data.clientOrders;
@@ -149,7 +149,7 @@ export default {
                         this.cash = res.data.money.cash;
                         this.preloader = false;
                     }
-                })
+                });
         },
         updateClient(obj) {
             axios.patch(`/clients/${this.client.id}`, obj)
@@ -157,9 +157,9 @@ export default {
                     if (res.data.status === 'success') {
                         this.displayUserSettings = false;
                     } else {
-                        console.log('Ошибка при обновлении клиента')
+                        console.log('Ошибка при обновлении клиента');
                     }
-                })
+                });
         },
         cashFlowMove() {
             this.preloader = true;
@@ -167,8 +167,8 @@ export default {
                 if (res.data.status === 'success') {
                     this.preloader = false;
                 }
-            })
+            });
         }
     }
-}
+};
 </script>

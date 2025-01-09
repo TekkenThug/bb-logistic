@@ -30,20 +30,20 @@
 </template>
 
 <script setup>
-import { computed } from "vue";
-import { useRouter } from "vue-router";
-import { useUserStore } from "@/store/user";
-import { NAVIGATION } from "@/data/constants";
+import { computed } from 'vue';
+import { useRouter } from 'vue-router';
+import { useUserStore } from '@/store/user';
+import { NAVIGATION } from '@/data/constants';
 import { logout } from '@/services/api/auth';
-import { Icon } from "@iconify/vue";
-import logo from "@/assets/images/common/logo.png";
+import { Icon } from '@iconify/vue';
+import logo from '@/assets/images/common/logo.png';
 
 const userStore = useUserStore();
 const router = useRouter();
 
 const signOut = async () => {
     await logout();
-    await router.push({ name: "auth" });
+    await router.push({ name: 'auth' });
 };
 
 const items = computed(() => {

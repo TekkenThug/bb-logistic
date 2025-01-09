@@ -1,3 +1,3 @@
 export const KEYS = {
-    "theme": "theme"
-}
+    'theme': 'theme'
+};

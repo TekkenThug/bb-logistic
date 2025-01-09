@@ -16,10 +16,10 @@
 </template>
 
 <script>
-import CreateForm from "@/components/forms/create-form"
+import CreateForm from '@/components/forms/create-form';
 
 export default {
-    name: "EditOrder",
+    name: 'EditOrder',
     components: {CreateForm},
     data() {
         return {
@@ -27,7 +27,7 @@ export default {
             preloader: true,
             order: {},
             clients: []
-        }
+        };
     },
     updated() {
         this.$refs.form.completedForm();
@@ -35,36 +35,36 @@ export default {
     beforeMount() {
         axios.get(`/orders/${this.$route.params.id}?role=admin`)
             .then(res => {
-                if (res.data.status === "fail") {
-                    console.log('fail')
+                if (res.data.status === 'fail') {
+                    console.log('fail');
                     this.$router.push('/admin/orders');
                 } else {
                     this.order = res.data.order;
                 }
 
-                this.preloader = false
-            })
+                this.preloader = false;
+            });
     },
     beforeCreate() {
         axios.get('/clients').then(res => {
-            this.clients = res.data.clients
-        })
+            this.clients = res.data.clients;
+        });
 
         axios.get('/couriers').then(res => {
-            this.couriers = res.data.couriers
-        })
+            this.couriers = res.data.couriers;
+        });
     },
     methods: {
         updateOrder(obj) {
             axios.patch(`/orders/${this.$route.params.id}?role=admin`, obj)
                 .then(res => {
-                    if (res.data.status === "success") {
+                    if (res.data.status === 'success') {
                         this.$router.push('/admin/orders');
                     }
-                })
+                });
         }
     }
-}
+};
 </script>
 
 <style scoped>

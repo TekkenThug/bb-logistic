@@ -64,7 +64,7 @@
 
 <script>
 export default {
-    name: "AddForm",
+    name: 'AddForm',
     data() {
         return {
             formData: {
@@ -75,7 +75,7 @@ export default {
                 count: null,
                 barcode: null
             }
-        }
+        };
     },
     methods: {
         clear() {
@@ -86,10 +86,10 @@ export default {
                 size: null,
                 count: null,
                 barcode: null
-            }
+            };
         }
     }
-}
+};
 </script>
 
 <style scoped>

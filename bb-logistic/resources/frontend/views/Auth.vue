@@ -1,20 +1,20 @@
 <script setup lang="ts">
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 
 import { login } from '@/services/api/auth';
 
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { useUserStore } from "@/store/user";
+import { useUserStore } from '@/store/user';
 
-import bg from "@/assets/images/auth_bg.jpg";
+import bg from '@/assets/images/auth_bg.jpg';
 
 const router = useRouter();
 const userStore = useUserStore();
 
-const loginCredentials = ref<{ email: string, password: string }>({ email: "", password: "" });
+const loginCredentials = ref<{ email: string, password: string }>({ email: '', password: '' });
 const isError = ref(false);
 const isLoading = ref(false);
 
@@ -23,13 +23,13 @@ const sendLoginDataToServer = async () => {
   isError.value = false;
 
   if (loginCredentials.value.email === null || loginCredentials.value.password === null) {
-    return
+    return;
   }
 
   try {
     const { data } = await login(loginCredentials.value);
 
-    userStore.setupUser(data)
+    userStore.setupUser(data);
 
     await router.push({ path: `/${userStore.role}` });
   } catch (_) {
@@ -59,6 +59,7 @@ const sendLoginDataToServer = async () => {
             <Label for="email">Email</Label>
 
             <Input
+              v-model="loginCredentials.email"
               type="email"
               placeholder="example@ya.ru"
               required
@@ -69,6 +70,7 @@ const sendLoginDataToServer = async () => {
             <Label for="password">Пароль</Label>
 
             <Input
+              v-model="loginCredentials.password"
               type="password"
               required
             />
@@ -86,8 +88,13 @@ const sendLoginDataToServer = async () => {
     </div>
 
     <div class="hidden bg-muted lg:block">
-      <img :src="bg" alt="Image" width="1920" height="1080"
-        class="h-full w-full object-cover dark:brightness-[0.2] dark:grayscale">
+      <img
+        :src="bg"
+        alt="Image"
+        width="1920"
+        height="1080"
+        class="h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
+      >
     </div>
   </div>
 </template>

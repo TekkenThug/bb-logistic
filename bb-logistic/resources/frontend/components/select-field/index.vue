@@ -29,12 +29,12 @@
 
 <script>
 export default {
-    name: "SelectField",
+    name: 'SelectField',
     props: {
         value: null,
         dataArray: null,
         dataProperty: null,
         dataView: null
     }
-}
+};
 </script>

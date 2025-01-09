@@ -12,13 +12,13 @@
 
 <script>
 export default {
-    name: "SearchInput",
+    name: 'SearchInput',
     props: {
-        value: "",
+        value: '',
         placeholder: {
             type: String,
-            default: "Поиск"
+            default: 'Поиск'
         }
     },
-}
+};
 </script>
