@@ -1,201 +1,184 @@
-<template>
-  <div class="row">
-    <div class="col-lg-6 offset-lg-3">
-      <div class="admin-create overall">
-        <form
-          class="admin-create__form"
-          method="POST"
-          @submit.prevent="createUser"
-        >
-          <h4 class="admin-create__form-title">
-            Создание учетной записи
-          </h4>
-          <div class="admin-create__form-inner">
-            <div class="admin-create__row">
-              <h4>Тип учетной записи:</h4>
-              <label>Администратор <input
-                v-model="role"
-                type="radio"
-                name="role"
-                value="admin"
-                required
-              ></label>
-              <label>Клиент <input
-                v-model="role"
-                type="radio"
-                name="role"
-                value="client"
-                required
-              ></label>
-              <label>Курьер <input
-                v-model="role"
-                type="radio"
-                name="role"
-                value="courier"
-                required
-              ></label>
-            </div>
-            <div class="admin-create__row">
-              <h4>Имя:</h4>
-              <input
-                v-model="name"
-                class="form-control"
-                type="text"
-                name="name"
-                placeholder="Введите имя"
-                required
-              >
-            </div>
-            <div class="admin-create__row">
-              <h4>E-mail:</h4>
-              <input
-                v-model="email"
-                class="form-control"
-                type="email"
-                name="email"
-                placeholder="Введите e-mail"
-                required
-              >
-            </div>
-            <div class="admin-create__row">
-              <h4>Пароль:</h4>
-              <input
-                v-model="password"
-                class="form-control"
-                type="password"
-                name="password"
-                placeholder="Введите пароль"
-                required
-              >
-            </div>
-            <div class="admin-create__row">
-              <h4>Повторите пароль:</h4>
-              <input
-                v-model="passwordDuplicate"
-                class="form-control"
-                type="password"
-                name="password_confirmation"
-                placeholder="Введите пароль ещё раз"
-                required
-              >
-            </div>
-            <div
-              v-if="role === 'client'"
-              class="admin-create__row"
-            >
-              <h4>Адрес забора посылки:</h4>
-              <input
-                v-model="deliveryAddress"
-                class="form-control"
-                type="text"
-                name="delivery_address"
-                placeholder="Введите адрес забора"
-                required
-              >
-            </div>
+<script lang="ts" setup>
+import { useForm } from 'vee-validate';
+import { createUserSchema } from '@/data/forms';
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Button } from '@/components/ui/button';
+import { FormField, FormItem, FormLabel, FormControl, FormMessage, FormDescription } from '@/components/ui/form';
 
-            <div
-              v-if="role === 'courier'"
-              class="admin-create__row"
-            >
-              <h4>Номер телефона:</h4>
-              <input
-                v-model="phone"
-                class="form-control"
-                type="text"
-                name="phone_number"
-                placeholder="Введите номер телефона"
-                required
-              >
-            </div>
-          </div>
-          <div
-            v-if="errors.length > 0"
-            class="alert alert-danger mt-3"
-            role="alert"
-          >
-            <span
-              v-for="(error, index) in errors"
-              :key="index"
-              class="d-block"
-            >{{ error }}</span>
-          </div>
-          <button
-            class="btn btn-primary mt-4 w-100"
-            type="submit"
-          >
-            Создать учетную запись
-          </button>
-          <preloader
-            v-if="preloader"
-            class="mt-2"
-          />
-        </form>
-      </div>
-    </div>
-  </div>
-</template>
+const form = useForm({
+  validationSchema: createUserSchema,
+});
 
-<script>
-export default {
-    name: 'CreateUser',
-    data() {
-        return {
-            name: '',
-            email: '',
-            password: '',
-            passwordDuplicate: '',
-            role: 'admin',
-            deliveryAddress: '',
-            phone: '',
-            errors: [],
-            preloader: false,
-        };
-    },
-    watch: {
-        name() { this.errors = []; },
-        email() { this.errors = []; },
-        password() { this.errors = []; },
-        role() { this.errors = []; },
-    },
-    methods: {
-        createUser(){
-            this.preloader = true;
-            if (this.password === this.passwordDuplicate) {
-                this.$auth.register({
-                    data: {
-                        name: this.name,
-                        email: this.email,
-                        password: this.password,
-                        role: this.role,
-                        deliveryAddress: this.deliveryAddress,
-                        phone: this.phone
-                    },
-                    redirect: null
-                }).then(res => {
-                    if (res.data.status === 'success') {
-                        this.cleanFields();
-                        this.preloader = false;
-                    }
-                }).catch(error => {
-                    this.extractErrors(error.response.data.errors);
-                    this.preloader = false;
-                });
-
-            } else {
-                this.preloader = false;
-                this.errors.push('Пароли не совпадают');
-            }
-        },
-        cleanFields() {
-            this.name = this.email = this.password = this.passwordDuplicate = this.phone = this.deliveryAddress = '';
-            this.role = 'admin';
-        },
-        extractErrors(errors) {
-            for (let key in errors) {
-                errors[key].forEach(str => this.errors.push(str));
-            }
-        }
-    }
-};
+const createNewUser = form.handleSubmit((values) => {
+  console.log(values);
+});
 </script>
+
+<template>
+  <section class="w-1/3">
+    <h2>Создание учетной записи</h2>
+
+    <form
+      class="space-y-8"
+      @submit="createNewUser"
+    >
+      <FormField
+        v-slot="{ componentField }"
+        name="role"
+      >
+        <FormItem>
+          <FormLabel>Роль</FormLabel>
+
+          <FormControl>
+            <RadioGroup
+              v-bind="componentField"
+              default-value="admin"
+              :orientation="'vertical'"
+            >
+              <div class="flex items-center space-x-2">
+                <RadioGroupItem
+                  id="r1"
+                  value="admin"
+                />
+                <Label for="r1">Администратор</Label>
+              </div>
+
+              <div class="flex items-center space-x-2">
+                <RadioGroupItem
+                  id="r2"
+                  value="client"
+                />
+                <Label for="r2">Клиент</Label>
+              </div>
+
+              <div class="flex items-center space-x-2">
+                <RadioGroupItem
+                  id="r3"
+                  value="courier"
+                />
+                <Label for="r3">Курьер</Label>
+              </div>
+            </RadioGroup>
+          </FormControl>
+        </FormItem>
+      </FormField>
+
+      <FormField
+        v-slot="{ componentField }"
+        name="name"
+      >
+        <FormItem>
+          <FormLabel>Имя</FormLabel>
+
+          <FormControl>
+            <Input v-bind="componentField" />
+          </FormControl>
+
+          <FormDescription>
+            Имя может отражать как одно лицо, так и целую компанию (пример ООО "Рога и Копыта")
+          </FormDescription>
+        </FormItem>
+      </FormField>
+
+      <FormField
+        v-slot="{ componentField }"
+        name="email"
+      >
+        <FormItem>
+          <FormLabel>Email</FormLabel>
+
+          <FormControl>
+            <Input v-bind="componentField" />
+          </FormControl>
+
+          <FormMessage />
+        </FormItem>
+      </FormField>
+
+      <FormField
+        v-slot="{ componentField }"
+        name="password"
+      >
+        <FormItem>
+          <FormLabel>Пароль</FormLabel>
+
+          <FormControl>
+            <Input
+              v-bind="componentField"
+              type="password"
+            />
+          </FormControl>
+
+          <FormDescription>
+            Пароль должен быть от 6 символов, содержать хотя бы одну цифру и один спецсимвол.
+          </FormDescription>
+        </FormItem>
+      </FormField>
+
+      <FormField
+        v-slot="{ componentField }"
+        name="repeatPassword"
+      >
+        <FormItem>
+          <FormLabel>Повторите пароль</FormLabel>
+
+          <FormControl>
+            <Input
+              v-bind="componentField"
+              type="password"
+            />
+          </FormControl>
+
+          <FormMessage />
+        </FormItem>
+      </FormField>
+
+      <FormField
+        v-if="form.values.role === 'client'"
+        v-slot="{ componentField }"
+        name="deliveryAddress"
+      >
+        <FormItem>
+          <FormLabel>Адрес</FormLabel>
+
+          <FormControl>
+            <Input
+              v-bind="componentField"
+            />
+          </FormControl>
+
+          <FormDescription>
+            Адрес, по которому будет совершаться забор посылок.
+            Указывайте полный адрес, начиная с города, заканчивая квартирой.
+          </FormDescription>
+
+          <FormMessage />
+        </FormItem>
+      </FormField>
+
+      <FormField
+        v-if="form.values.role === 'courier'"
+        v-slot="{ componentField }"
+        name="phone"
+      >
+        <FormItem>
+          <FormLabel>Номер телефона</FormLabel>
+
+          <FormControl>
+            <Input
+              v-bind="componentField"
+            />
+          </FormControl>
+
+          <FormMessage />
+        </FormItem>
+      </FormField>
+
+      <Button>
+        Создать учетную запись
+      </Button>
+    </form>
+  </section>
+</template>
