@@ -1,13 +1,21 @@
 <template>
-    <router-link :to="{ path: path + id}" v-if="role === 'client'" class="admin-client-list__item">
-        <h4>{{ name }} <span>{{ email }}</span></h4>
-        <span>Aдрес забора: {{ address }}</span>
-    </router-link>
+  <router-link
+    v-if="role === 'client'"
+    :to="{ path: path + id}"
+    class="admin-client-list__item"
+  >
+    <h4>{{ name }} <span>{{ email }}</span></h4>
+    <span>Aдрес забора: {{ address }}</span>
+  </router-link>
 
-    <router-link :to="{ path: path + id}" v-else-if="role === 'courier'" class="admin-client-list__item">
-        <h4>{{ name }} <span>{{ comment }}</span></h4>
-        <span>{{ email }} {{ phone }}</span>
-    </router-link>
+  <router-link
+    v-else-if="role === 'courier'"
+    :to="{ path: path + id}"
+    class="admin-client-list__item"
+  >
+    <h4>{{ name }} <span>{{ comment }}</span></h4>
+    <span>{{ email }} {{ phone }}</span>
+  </router-link>
 </template>
 
 <script>

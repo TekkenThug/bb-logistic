@@ -1,24 +1,30 @@
 <template>
-    <div class="row">
-        <div class="col-lg-6 offset-lg-3">
-            <div class="admin-client-list overall">
-                <h4>Список курьеров:</h4>
-                <SearchInput v-model="searchText" style="margin-bottom: 20px" placeholder="Поиск по курьерам..."/>
-                <div class="admin__client-list">
-                    <preloader v-if="preloader" />
-                    <UserRow v-for="courier in couriers"
-                             :role="'courier'"
-                             :path="'/admin/couriers/'"
-                             :key="courier.id"
-                             :id="courier.id"
-                             :name="courier.name"
-                             :email="courier.email"
-                             :comment="courier.courier_comment"
-                             :phone="courier.phone_number"/>
-                </div>
-            </div>
+  <div class="row">
+    <div class="col-lg-6 offset-lg-3">
+      <div class="admin-client-list overall">
+        <h4>Список курьеров:</h4>
+        <SearchInput
+          v-model="searchText"
+          style="margin-bottom: 20px"
+          placeholder="Поиск по курьерам..."
+        />
+        <div class="admin__client-list">
+          <preloader v-if="preloader" />
+          <UserRow
+            v-for="courier in couriers"
+            :id="courier.id"
+            :key="courier.id"
+            :role="'courier'"
+            :path="'/admin/couriers/'"
+            :name="courier.name"
+            :email="courier.email"
+            :comment="courier.courier_comment"
+            :phone="courier.phone_number"
+          />
         </div>
+      </div>
     </div>
+  </div>
 </template>
 
 <script>
@@ -36,6 +42,17 @@ export default {
             stopSearch: false,
         }
     },
+    watch: {
+        searchText() {
+            this.getOrderNumber();
+        }
+    },
+    mounted() {
+        axios.get('/couriers').then(res => {
+            this.couriers = res.data.couriers;
+            this.preloader = false;
+        })
+    },
     methods: {
         getOrderNumber() {
             if (!this.stopSearch) {
@@ -50,17 +67,6 @@ export default {
                 })
             }
         }
-    },
-    watch: {
-        searchText() {
-            this.getOrderNumber();
-        }
-    },
-    mounted() {
-        axios.get('/couriers').then(res => {
-            this.couriers = res.data.couriers;
-            this.preloader = false;
-        })
     }
 }
 </script>

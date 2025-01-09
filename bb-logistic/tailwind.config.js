@@ -7,7 +7,7 @@ module.exports = {
   prefix: "",
   
   content: [
-    './resources/frontend/**/*.{js,jsx,vue}',
+    './resources/frontend/**/*.{ts,tsx,vue}',
 	],
   
   theme: {

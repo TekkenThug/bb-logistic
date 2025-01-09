@@ -1,13 +1,15 @@
 <template>
-    <div class="row">
-        <div class="col-lg-8 offset-lg-2">
-            <CreateForm :clients="clients"
-                        :couriers="couriers"
-                        @serializeForm="createOrder"
-                        is-admin
-                        new-order/>
-        </div>
+  <div class="row">
+    <div class="col-lg-8 offset-lg-2">
+      <CreateForm
+        :clients="clients"
+        :couriers="couriers"
+        is-admin
+        new-order
+        @serialize-form="createOrder"
+      />
     </div>
+  </div>
 </template>
 
 <script>
@@ -22,6 +24,15 @@ export default {
             clients: []
         }
     },
+    beforeCreate() {
+        axios.get('/clients').then(res => {
+            this.clients = res.data.clients
+        })
+
+        axios.get('/couriers').then(res => {
+            this.couriers = res.data.couriers
+        })
+    },
     methods: {
         createOrder(obj) {
             axios.post('/orders', obj)
@@ -31,15 +42,6 @@ export default {
                     }
                 })
         }
-    },
-    beforeCreate() {
-        axios.get('/clients').then(res => {
-            this.clients = res.data.clients
-        })
-
-        axios.get('/couriers').then(res => {
-            this.couriers = res.data.couriers
-        })
     }
 }
 </script>

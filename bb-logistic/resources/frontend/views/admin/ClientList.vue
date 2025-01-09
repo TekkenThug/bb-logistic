@@ -1,25 +1,31 @@
 <template>
-    <div class="row">
-        <div class="col-lg-6 offset-lg-3">
-            <div class="admin-client-list overall">
-                <h4>Список клиентов:</h4>
-                <SearchInput v-model="searchText" style="margin-bottom: 20px" placeholder="Поиск по клиентам..."/>
+  <div class="row">
+    <div class="col-lg-6 offset-lg-3">
+      <div class="admin-client-list overall">
+        <h4>Список клиентов:</h4>
+        <SearchInput
+          v-model="searchText"
+          style="margin-bottom: 20px"
+          placeholder="Поиск по клиентам..."
+        />
 
-                <div class="admin__client-list">
-                    <UIPreloader v-if="isLoading" />
+        <div class="admin__client-list">
+          <UIPreloader v-if="isLoading" />
 
-                    <UserRow v-for="client in clients"
-                             :path="'/admin/clients/'"
-                             :role="'client'"
-                             :key="client.id"
-                             :name="client.name"
-                             :id="client.id"
-                             :email="client.email"
-                             :address="client.delivery_address"/>
-                </div>
-            </div>
+          <UserRow
+            v-for="client in clients"
+            :id="client.id"
+            :key="client.id"
+            :path="'/admin/clients/'"
+            :role="'client'"
+            :name="client.name"
+            :email="client.email"
+            :address="client.delivery_address"
+          />
         </div>
+      </div>
     </div>
+  </div>
 </template>
 
 <script>
@@ -37,6 +43,17 @@ export default {
             stopSearch: false,
         }
     },
+    watch: {
+        searchText() {
+            this.getOrderNumber();
+        }
+    },
+    mounted() {
+        axios.get('/clients').then(res => {
+            this.clients = res.data.clients;
+            this.isLoading = false;
+        })
+    },
     methods: {
         getOrderNumber() {
             if (!this.stopSearch) {
@@ -51,17 +68,6 @@ export default {
                 })
             }
         }
-    },
-    watch: {
-        searchText() {
-            this.getOrderNumber();
-        }
-    },
-    mounted() {
-        axios.get('/clients').then(res => {
-            this.clients = res.data.clients;
-            this.isLoading = false;
-        })
     }
 }
 </script>

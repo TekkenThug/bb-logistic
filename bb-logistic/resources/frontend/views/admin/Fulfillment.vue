@@ -1,41 +1,61 @@
 <template>
-    <div class="row">
-        <div class="col-lg-8 offset-lg-2 fulfillment">
-            <div class="fulfillment__stock">
-                <h2>Складские остатки</h2>
-                <select-field v-model="selectUser"
-                              :data-array="users"
-                              data-view="name"
-                              data-property="id">
-                    Выберите пользователя
-                </select-field>
-                <stock-table v-show="tableData.length && !preloader"
-                             :headers="tableHeaders"
-                             :data="tableData"
-                             @itemHandlerUpdate="popupLogic"
-                             @itemHandlerDelete="deleteItem"
-                >
-                    <template v-slot:after>
-                        <add-form ref="addForm" @serialize="createProduct"/>
-                    </template>
-                </stock-table>
-                <h3 v-show="tableData.length < 1 && selectUser && !preloader">На складе отсутствует товар</h3>
-                <preloader v-if="preloader"/>
+  <div class="row">
+    <div class="col-lg-8 offset-lg-2 fulfillment">
+      <div class="fulfillment__stock">
+        <h2>Складские остатки</h2>
+        <select-field
+          v-model="selectUser"
+          :data-array="users"
+          data-view="name"
+          data-property="id"
+        >
+          Выберите пользователя
+        </select-field>
+        <stock-table
+          v-show="tableData.length && !preloader"
+          :headers="tableHeaders"
+          :data="tableData"
+          @item-handler-update="popupLogic"
+          @item-handler-delete="deleteItem"
+        >
+          <template #after>
+            <add-form
+              ref="addForm"
+              @serialize="createProduct"
+            />
+          </template>
+        </stock-table>
+        <h3 v-show="tableData.length < 1 && selectUser && !preloader">
+          На складе отсутствует товар
+        </h3>
+        <preloader v-if="preloader" />
 
-                <popup @serverEvent="updateProduct" @close="popup.show = false" v-if="popup.show">
-                    <template v-slot:header>
-                        Редактирование товара
-                    </template>
-                    <template v-slot:body>
-                        <div v-for="(field, name) in popup.data" v-if="name !== 'id'" class="form-group">
-                            <label>{{ name | translate }}</label>
-                            <input class="form-control" type="text" v-model="popup.data[name]">
-                        </div>
-                    </template>
-                </popup>
+        <popup
+          v-if="popup.show"
+          @server-event="updateProduct"
+          @close="popup.show = false"
+        >
+          <template #header>
+            Редактирование товара
+          </template>
+          <template #body>
+            <div
+              v-for="(field, name) in popup.data"
+              v-if="name !== 'id'"
+              class="form-group"
+            >
+              <label>{{ name | translate }}</label>
+              <input
+                v-model="popup.data[name]"
+                class="form-control"
+                type="text"
+              >
             </div>
-        </div>
+          </template>
+        </popup>
+      </div>
     </div>
+  </div>
 </template>
 
 <script>
@@ -46,6 +66,18 @@ import AddForm from "@/components/fulfillment/AddForm";
 export default {
     name: "Fulfillment",
     components: {SelectField, StockTable, AddForm},
+
+    filters: {
+        translate(value) {
+            if (value === 'name') return 'Имя'
+            if (value === 'color') return 'Цвет'
+            if (value === 'size') return 'Размер'
+            if (value === 'vendor_code') return 'Артикул'
+            if (value === 'count') return 'Шт.'
+            if (value === 'barcode') return 'Штрихкод'
+            else return 0
+        }
+    },
     data() {
         return {
             selectUser: null,
@@ -59,12 +91,6 @@ export default {
             }
         }
     },
-    mounted() {
-        /* Получение списка клиентов */
-        this.$load(async () => {
-            this.users = await this.$api.common.getClients()
-        });
-    },
     watch: {
         /* Слежение за изменением клиента */
         selectUser(id) {
@@ -74,6 +100,12 @@ export default {
                 this.preloader = false
             })
         }
+    },
+    mounted() {
+        /* Получение списка клиентов */
+        this.$load(async () => {
+            this.users = await this.$api.common.getClients()
+        });
     },
     methods: {
         /* Получение продуктов */
@@ -120,18 +152,6 @@ export default {
         popupLogic(data) {
             this.popup.show = true;
             this.popup.data = Object.assign({}, data);
-        }
-    },
-
-    filters: {
-        translate(value) {
-            if (value === 'name') return 'Имя'
-            if (value === 'color') return 'Цвет'
-            if (value === 'size') return 'Размер'
-            if (value === 'vendor_code') return 'Артикул'
-            if (value === 'count') return 'Шт.'
-            if (value === 'barcode') return 'Штрихкод'
-            else return 0
         }
     }
 }

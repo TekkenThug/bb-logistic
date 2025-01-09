@@ -1,9 +1,12 @@
 <template>
-    <div class="row">
-        <div class="col-lg-8 offset-lg-2">
-            <CreateForm @serializeForm="createOrder" newOrder />
-        </div>
+  <div class="row">
+    <div class="col-lg-8 offset-lg-2">
+      <CreateForm
+        new-order
+        @serialize-form="createOrder"
+      />
     </div>
+  </div>
 </template>
 
 <script>

@@ -1,30 +1,65 @@
 <template>
-    <form @submit.prevent>
-        <div class="form-row">
-            <div class="form-group">
-                <input v-model="formData.name" type="text" class="form-control" placeholder="Название">
-            </div>
-            <div class="form-group">
-                <input v-model="formData.barcode" type="text" class="form-control" placeholder="Штрихкод">
-            </div>
-        </div>
-        <div class="form-row">
-            <div class="form-group">
-                <input v-model="formData.vendorCode" type="text" class="form-control" placeholder="Артикул">
-            </div>
-            <div class="form-group">
-                <input v-model="formData.color" type="text" class="form-control" placeholder="Цвет">
-            </div>
-            <div class="form-group">
-                <input v-model="formData.size" type="text" class="form-control" placeholder="Размер">
-            </div>
-            <div class="form-group">
-                <input v-model="formData.count" type="number" class="form-control" placeholder="Шт.">
-            </div>
-        </div>
+  <form @submit.prevent>
+    <div class="form-row">
+      <div class="form-group">
+        <input
+          v-model="formData.name"
+          type="text"
+          class="form-control"
+          placeholder="Название"
+        >
+      </div>
+      <div class="form-group">
+        <input
+          v-model="formData.barcode"
+          type="text"
+          class="form-control"
+          placeholder="Штрихкод"
+        >
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <input
+          v-model="formData.vendorCode"
+          type="text"
+          class="form-control"
+          placeholder="Артикул"
+        >
+      </div>
+      <div class="form-group">
+        <input
+          v-model="formData.color"
+          type="text"
+          class="form-control"
+          placeholder="Цвет"
+        >
+      </div>
+      <div class="form-group">
+        <input
+          v-model="formData.size"
+          type="text"
+          class="form-control"
+          placeholder="Размер"
+        >
+      </div>
+      <div class="form-group">
+        <input
+          v-model="formData.count"
+          type="number"
+          class="form-control"
+          placeholder="Шт."
+        >
+      </div>
+    </div>
 
-        <button @click.prevent="$emit('serialize', formData)" class="w-100 btn btn-primary">Создать</button>
-    </form>
+    <button
+      class="w-100 btn btn-primary"
+      @click.prevent="$emit('serialize', formData)"
+    >
+      Создать
+    </button>
+  </form>
 </template>
 
 <script>

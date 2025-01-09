@@ -1,13 +1,15 @@
 <template>
-    <div>
-        <input required
-               class="form-control"
-               type="text"
-               name="delivery-phone"
-               placeholder="+7 (999) 999-99-99"
-               :value="value"
-               @input="$emit('input', $event.target.value)">
-    </div>
+  <div>
+    <input
+      required
+      class="form-control"
+      type="text"
+      name="delivery-phone"
+      placeholder="+7 (999) 999-99-99"
+      :value="value"
+      @input="$emit('input', $event.target.value)"
+    >
+  </div>
 </template>
 
 <script>

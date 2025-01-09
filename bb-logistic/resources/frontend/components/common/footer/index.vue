@@ -1,10 +1,10 @@
 <template>
-    <footer :class="$style.TheFooter">
-        <div
-            v-html="text"
-            :class="$style.text"
-        />
-    </footer>
+  <footer :class="$style.Footer">
+    <div
+      :class="$style.text"
+      v-html="text"
+    />
+  </footer>
 </template>
 
 <script setup>
@@ -25,25 +25,24 @@ const text = computed(() => {
 </script>
 
 <style lang="scss" module>
-    .TheFooter {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        // background-color: $primary-100;
-        color: #ffffff;
-        padding: 15px;
+.Footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    // background-color: $primary-100;
+    padding: 15px;
 
-        @include respond($mobile) {
-            padding: 10px;
-        }
+    @include respond($mobile) {
+        padding: 10px;
     }
+}
 
-    .text {
-        font-weight: 700;
-        text-align: center;
+.text {
+    font-weight: 700;
+    text-align: center;
 
-        @include respond($mobile) {
-            font-size: 12px;
-        }
+    @include respond($mobile) {
+        font-size: 12px;
     }
+}
 </style>

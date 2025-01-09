@@ -1,17 +1,18 @@
 <template>
-    <div class="row">
-        <div class="col-lg-8 offset-lg-2">
-            <UILoader v-if="preloader" />
-            <CreateForm v-else
-                        :clients="clients"
-                        :couriers="couriers"
-                        :order="order"
-                        ref="form"
-                        @serializeForm="updateOrder"
-                        is-admin
-            />
-        </div>
+  <div class="row">
+    <div class="col-lg-8 offset-lg-2">
+      <UILoader v-if="preloader" />
+      <CreateForm
+        v-else
+        ref="form"
+        :clients="clients"
+        :couriers="couriers"
+        :order="order"
+        is-admin
+        @serialize-form="updateOrder"
+      />
     </div>
+  </div>
 </template>
 
 <script>
@@ -26,16 +27,6 @@ export default {
             preloader: true,
             order: {},
             clients: []
-        }
-    },
-    methods: {
-        updateOrder(obj) {
-            axios.patch(`/orders/${this.$route.params.id}?role=admin`, obj)
-                .then(res => {
-                    if (res.data.status === "success") {
-                        this.$router.push('/admin/orders');
-                    }
-                })
         }
     },
     updated() {
@@ -62,6 +53,16 @@ export default {
         axios.get('/couriers').then(res => {
             this.couriers = res.data.couriers
         })
+    },
+    methods: {
+        updateOrder(obj) {
+            axios.patch(`/orders/${this.$route.params.id}?role=admin`, obj)
+                .then(res => {
+                    if (res.data.status === "success") {
+                        this.$router.push('/admin/orders');
+                    }
+                })
+        }
     }
 }
 </script>

@@ -1,10 +1,13 @@
 <template>
-    <div class="admin-client-list__search">
-        <input class="form-control" type="text"
-               :value="value"
-               @input="$emit('input', $event.target.value)"
-               :placeholder="placeholder">
-    </div>
+  <div class="admin-client-list__search">
+    <input
+      class="form-control"
+      type="text"
+      :value="value"
+      :placeholder="placeholder"
+      @input="$emit('input', $event.target.value)"
+    >
+  </div>
 </template>
 
 <script>

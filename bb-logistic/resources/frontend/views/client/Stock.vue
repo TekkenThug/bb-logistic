@@ -1,24 +1,24 @@
 <template>
-    <div class="row">
-        <div class="col-lg-8 offset-lg-2 fulfillment">
-            <div class="fulfillment__stock">
-                <h2>Складские остатки</h2>
+  <div class="row">
+    <div class="col-lg-8 offset-lg-2 fulfillment">
+      <div class="fulfillment__stock">
+        <h2>Складские остатки</h2>
 
-                <UIPreloader v-if="isLoading" />
+        <UIPreloader v-if="isLoading" />
 
-                <h3 v-else-if="!tableData.length">
-                    На складе отсутствует товар
-                </h3>
+        <h3 v-else-if="!tableData.length">
+          На складе отсутствует товар
+        </h3>
 
-                <stock-table
-                    v-else
-                    :operation="false"
-                    :headers="tableHeaders"
-                    :data="tableData"
-                />
-            </div>
-        </div>
+        <stock-table
+          v-else
+          :operation="false"
+          :headers="tableHeaders"
+          :data="tableData"
+        />
+      </div>
     </div>
+  </div>
 </template>
 
 <script>

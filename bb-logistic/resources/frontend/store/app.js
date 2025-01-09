@@ -1,15 +1,15 @@
 import { defineStore } from "pinia";
-import { ref } from "vue";
+import { KEYS } from "@/data/localstorage";
 
-export const useAppStore = defineStore('app', () => {
-    const theme = ref("dark");
+export const useAppStore = defineStore('app', {
+    state: () => ({ theme: localStorage.getItem(KEYS.theme) ?? "light" }),
 
-    const toggleTheme = () => {
-        theme.value = theme.value === "dark" ? "light" : "dark";
-    }
+    actions: {
+        toggleTheme() {
+            const newTheme = this.theme === "dark" ? "light" : "dark";
 
-    return {
-        theme,
-        toggleTheme,
+            this.theme = newTheme
+            localStorage.setItem(KEYS.theme, newTheme)
+        }
     }
 })

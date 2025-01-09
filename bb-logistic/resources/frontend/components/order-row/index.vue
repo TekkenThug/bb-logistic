@@ -1,127 +1,222 @@
 <template>
-    <div class="client__item" :class="{ 'dvd': deliveryType === 'ДВД' }">
-        <h4 class="client__item-title">
-            {{ role === 'admin' ? `№ ${id} - ${userName}` : `Заявка № ${id}` }} <span class="status" :class="status">{{
-                setStatusOrder
-            }}</span>
+  <div
+    class="client__item"
+    :class="{ 'dvd': deliveryType === 'ДВД' }"
+  >
+    <h4 class="client__item-title">
+      {{ role === 'admin' ? `№ ${id} - ${userName}` : `Заявка № ${id}` }} <span
+        class="status"
+        :class="status"
+      >{{
+        setStatusOrder
+      }}</span>
 
-            <span v-if="courierName" style="font-size: 16px" class="mt-2 d-block">Курьер: {{
-                    courierName
-                }}, {{ courierPhone }}</span>
+      <span
+        v-if="courierName"
+        style="font-size: 16px"
+        class="mt-2 d-block"
+      >Курьер: {{
+        courierName
+      }}, {{ courierPhone }}</span>
 
-            <div class="buttons">
-                <router-link :to="{ path: role === 'admin' ? '/admin/orders/' + id:'/client/list/' + id}"
-                             v-if="(status === 'not-allocated' && role === 'client') || role === 'admin'"
-                             class="btn edit-order"
-                             title="Изменить">
-                    <i class="fas fa-pen"></i>
-                </router-link>
-                <button @click="showModal = true"
-                        v-if="(status === 'not-allocated' && role === 'client') || role === 'admin'"
-                        class="btn delete-order"
-                        title="Отменить">
-                    <i class="fas fa-times"></i>
-                </button>
-                <button @click="showMore = !showMore" type="button" class="btn btn-more" title="Раскрыть">
-                    <i class="fas fa-chevron-down" :class="{ active: showMore }"></i>
-                </button>
+      <div class="buttons">
+        <router-link
+          v-if="(status === 'not-allocated' && role === 'client') || role === 'admin'"
+          :to="{ path: role === 'admin' ? '/admin/orders/' + id:'/client/list/' + id}"
+          class="btn edit-order"
+          title="Изменить"
+        >
+          <i class="fas fa-pen" />
+        </router-link>
+        <button
+          v-if="(status === 'not-allocated' && role === 'client') || role === 'admin'"
+          class="btn delete-order"
+          title="Отменить"
+          @click="showModal = true"
+        >
+          <i class="fas fa-times" />
+        </button>
+        <button
+          type="button"
+          class="btn btn-more"
+          title="Раскрыть"
+          @click="showMore = !showMore"
+        >
+          <i
+            class="fas fa-chevron-down"
+            :class="{ active: showMore }"
+          />
+        </button>
+      </div>
+      <div class="short-descr">
+        <span class="date">{{ setOrderDate }}</span>
+        <span class="address mx-2">{{ deliveryAddress }}</span>
+        <span class="type">{{ deliveryType }}</span>
+        <div
+          v-if="selectCourier && role === 'admin'"
+          class="d-flex align-items-center"
+        >
+          <select
+            v-model="courierId"
+            class="form-select d-inline-block"
+          >
+            <option
+              value="not"
+              selected
+              disabled
+            >
+              Выберите курьера
+            </option>
+            <option
+              v-for="courier in couriers"
+              :key="courier.id"
+              :value="courier.id"
+            >
+              {{ courier.name }} - {{ courier.courier_comment }}
+            </option>
+          </select>
+          <button
+            class="btn btn-primary"
+            @click="$emit('setCourier', id, courierId)"
+          >
+            Назначить
+          </button>
+        </div>
+      </div>
+    </h4>
+
+    <transition name="fade">
+      <div v-show="showMore">
+        <div class="client__item-info">
+          <div
+            v-if="role === 'courier' && fenceAddress"
+            class="info"
+          >
+            Адрес забора: <span>{{ fenceAddress }}</span>
+          </div>
+          <div class="info">
+            Дата доставки: <span>{{ deliveryDate }}</span>
+          </div>
+          <div class="info">
+            Время доставки: <span>{{ deliveryTime }}</span>
+          </div>
+          <div class="info">
+            Имя клиента: <span>{{ clientFullname }}</span>
+          </div>
+          <div class="info">
+            Контакты: <span style="white-space: break-spaces">{{ clientPhones }}</span>
+          </div>
+          <div
+            v-if="clientPay"
+            class="info"
+          >
+            Плата с клиента: <span>Да - {{ clientPay }}</span>
+          </div>
+          <div
+            v-if="comment"
+            class="info"
+          >
+            Комментарий: <span>{{ comment }}</span>
+          </div>
+          <div class="info">
+            Товары к доставке:
+            <span
+              v-for="product in products"
+              :key="product.id"
+            >{{ product.name }} - {{
+              product.count
+            }} шт.</span>
+          </div>
+        </div>
+        <div
+          v-if="role === 'courier'"
+          class="buttons mt-3"
+        >
+          <button
+            v-if="status === 'pending'"
+            class="btn btn-primary"
+            @click="$emit('statusEvent', 'courier', id)"
+          >
+            Взять заказ
+          </button>
+          <button
+            v-if="status === 'courier'"
+            class="btn btn-primary"
+            @click="$emit('statusEvent', 'finished', id, payMethod)"
+          >
+            Отгрузить
+          </button>
+          <button
+            v-if="status === 'courier'"
+            class="btn btn-danger"
+            @click="$emit('statusEvent', 'return', id)"
+          >
+            Возврат
+          </button>
+          <div
+            v-if="status === 'courier'"
+            class="mt-3"
+          >
+            <div class="form-check">
+              <input
+                id="flexRadioDefault1"
+                v-model="payMethod"
+                value="cash"
+                class="form-check-input"
+                type="radio"
+                name="flexRadioDefault"
+              >
+              <label
+                class="form-check-label"
+                for="flexRadioDefault1"
+              >
+                Наличный расчёт
+              </label>
             </div>
-            <div class="short-descr">
-                <span class="date">{{ setOrderDate }}</span>
-                <span class="address mx-2">{{ deliveryAddress }}</span>
-                <span class="type">{{ deliveryType }}</span>
-                <div v-if="selectCourier && role === 'admin'" class="d-flex align-items-center">
-                    <select v-model="courierId" class="form-select d-inline-block">
-                        <option value="not" selected disabled>Выберите курьера</option>
-                        <option v-for="courier in couriers" :key="courier.id" :value="courier.id">
-                            {{ courier.name }} - {{ courier.courier_comment }}
-                        </option>
-                    </select>
-                    <button @click="$emit('setCourier', id, courierId)" class="btn btn-primary">Назначить</button>
-                </div>
+            <div class="form-check">
+              <input
+                id="flexRadioDefault2"
+                v-model="payMethod"
+                value="card"
+                class="form-check-input"
+                type="radio"
+                name="flexRadioDefault"
+                checked
+              >
+              <label
+                class="form-check-label"
+                for="flexRadioDefault2"
+              >
+                Оплата картой
+              </label>
             </div>
-        </h4>
+          </div>
+        </div>
+      </div>
+    </transition>
 
-        <transition name="fade">
-            <div v-show="showMore">
-                <div class="client__item-info">
-                    <div v-if="role === 'courier' && fenceAddress" class="info">
-                        Адрес забора: <span>{{ fenceAddress }}</span>
-                    </div>
-                    <div class="info">
-                        Дата доставки: <span>{{ deliveryDate }}</span>
-                    </div>
-                    <div class="info">
-                        Время доставки: <span>{{ deliveryTime }}</span>
-                    </div>
-                    <div class="info">
-                        Имя клиента: <span>{{ clientFullname }}</span>
-                    </div>
-                    <div class="info">
-                        Контакты: <span style="white-space: break-spaces">{{ clientPhones }}</span>
-                    </div>
-                    <div v-if="clientPay" class="info">
-                        Плата с клиента: <span>Да - {{ clientPay }}</span>
-                    </div>
-                    <div v-if="comment" class="info">
-                        Комментарий: <span>{{ comment }}</span>
-                    </div>
-                    <div class="info">
-                        Товары к доставке:
-                        <span v-for="product in products" :key="product.id">{{ product.name }} - {{
-                                product.count
-                            }} шт.</span>
-                    </div>
-                </div>
-                <div v-if="role === 'courier'" class="buttons mt-3">
-                    <button @click="$emit('statusEvent', 'courier', id)" v-if="status === 'pending'"
-                            class="btn btn-primary">Взять заказ
-                    </button>
-                    <button @click="$emit('statusEvent', 'finished', id, payMethod)" v-if="status === 'courier'"
-                            class="btn btn-primary">Отгрузить
-                    </button>
-                    <button @click="$emit('statusEvent', 'return', id)" v-if="status === 'courier'"
-                            class="btn btn-danger">Возврат
-                    </button>
-                    <div class="mt-3" v-if="status === 'courier'">
-                        <div class="form-check">
-                            <input v-model="payMethod" value="cash" class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                            <label class="form-check-label" for="flexRadioDefault1">
-                                Наличный расчёт
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input v-model="payMethod" value="card" class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
-                            <label class="form-check-label" for="flexRadioDefault2">
-                                Оплата картой
-                            </label>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </transition>
-
-        <popup v-if="showModal" @serverEvent="deleteOrder" @close="showModal = false">
-            <h3 slot="header">Удаление заявки</h3>
-            <p slot="body">
-                Вы действительно хотите удалить зявку?
-            </p>
-        </popup>
-    </div>
+    <popup
+      v-if="showModal"
+      @server-event="deleteOrder"
+      @close="showModal = false"
+    >
+      <template #header>
+        <h3>
+          Удаление заявки
+        </h3>
+      </template>
+      <template #body>
+        <p>
+          Вы действительно хотите удалить зявку?
+        </p>
+      </template>
+    </popup>
+  </div>
 </template>
 
 <script>
 export default {
     name: "OrderRow",
-    data() {
-        return {
-            showMore: false,
-            showModal: false,
-            selectCourier: this.status === "not-allocated",
-            courierId: 'not',
-            payMethod: 'cash',
-        }
-    },
     props: {
         id: {
             required: true,
@@ -187,6 +282,15 @@ export default {
         fenceAddress: {
             type: String,
             default: null
+        }
+    },
+    data() {
+        return {
+            showMore: false,
+            showModal: false,
+            selectCourier: this.status === "not-allocated",
+            courierId: 'not',
+            payMethod: 'cash',
         }
     },
     computed: {

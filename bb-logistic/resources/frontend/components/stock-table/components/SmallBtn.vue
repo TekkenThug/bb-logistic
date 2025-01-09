@@ -1,7 +1,10 @@
 <template>
-    <button @click="$emit('click', $event)" class="btn btn-primary">
-        <i :class="icon"></i>
-    </button>
+  <button
+    class="btn btn-primary"
+    @click="$emit('click', $event)"
+  >
+    <i :class="icon" />
+  </button>
 </template>
 
 <script>

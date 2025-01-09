@@ -10,6 +10,6 @@
 <body>
     <div id="app"></div>
 
-    @vite(['resources/frontend/main.js'])
+    @vite(['resources/frontend/main.ts'])
 </body>
 </html>

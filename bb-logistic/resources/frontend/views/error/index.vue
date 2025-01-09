@@ -1,14 +1,13 @@
 <template>
-    <div class="container">
-        <div class="row">
-            <div class="col-12">
-                <div class="text-center">
-                    <h1>{{ title }}: {{ text }}</h1>
-                </div>
-            </div>
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <div class="text-center">
+          <h1>{{ title }}: {{ text }}</h1>
         </div>
+      </div>
     </div>
-
+  </div>
 </template>
 
 <script>

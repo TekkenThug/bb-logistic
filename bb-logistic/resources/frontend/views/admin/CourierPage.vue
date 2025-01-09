@@ -1,64 +1,97 @@
 <template>
-    <div class="row">
-        <div class="col-lg-8 offset-lg-2">
-            <preloader class="mt-5" v-if="preloader" />
-            <div v-else class="admin-client overall">
-                <h2 class="admin-client__name">{{ courier.name }}</h2>
-                <h5>Наличный расчет: {{ cash }} руб.</h5>
-                <h5>Безналичный расчет: {{ credit }} руб.</h5>
-                <button @click="displayUserSettings = !displayUserSettings" class="btn btn-primary w-100">
-                    {{ btnMsg }}
-                </button>
-                <EditUserData v-if="displayUserSettings"
-                              :user="'courier'"
-                              :obj="{name: courier.name, email: courier.email, phone: courier.phone_number}"
-                              @serialize="updateCourier"
-                />
-                <form class="admin-client__required-form">
-                    <button class="btn btn-primary w-100 btn-change-cash"
-                            type="button"
-                            @click="displayCashAttempt = !displayCashAttempt">
-                        Взять деньги у курьера
-                    </button>
-                    <div v-if="displayCashAttempt" class="warning">
-                        <b class="mb-2">Вы подтверждаете действие?</b>
-                        <button class="btn btn-warning w-100" @click.prevent="cashFlowMove">Да</button>
-                    </div>
-                </form>
-                <div class="mb-5">
-                    <h5>Комментарий к курьеру:</h5>
-                    <textarea v-model="comment" name="courier_comment" class="form-control" maxlength="256"></textarea>
-                    <button @click="setComment" class="btn btn-warning w-100 mt-3" type="submit">Сохранить</button>
-                </div>
-                <div class="admin-client__orders">
-                    <h5>Список заявок:</h5>
-                    <div class="admin-client__orders-list">
-                        <OrderRow
-                            v-for="order in orders"
-                            :key="order.id"
-                            :id="order.id"
-                            :status="order.status"
-                            :create-date="order.created_at"
-                            :delivery-type="order.delivery_type"
-                            :delivery-address="order.delivery_address"
-                            :delivery-time="order.delivery_time"
-                            :delivery-date="order.delivery_date"
-                            :client-phones="order.delivery_phones"
-                            :client-fullname="order.delivery_fio"
-                            :comment="order.delivery_comment"
-                            :client-pay="order.delivery_pay"
-                            :products="order.goods"
-                            :role="'admin'"
-                            :user-name="order.client_id === 1 ? 'Админ' : order.client_name"
-
-                            :courier-name="order.courier_name"
-                            :courier-phone="order.courier_phone"
-                        />
-                    </div>
-                </div>
-            </div>
+  <div class="row">
+    <div class="col-lg-8 offset-lg-2">
+      <preloader
+        v-if="preloader"
+        class="mt-5"
+      />
+      <div
+        v-else
+        class="admin-client overall"
+      >
+        <h2 class="admin-client__name">
+          {{ courier.name }}
+        </h2>
+        <h5>Наличный расчет: {{ cash }} руб.</h5>
+        <h5>Безналичный расчет: {{ credit }} руб.</h5>
+        <button
+          class="btn btn-primary w-100"
+          @click="displayUserSettings = !displayUserSettings"
+        >
+          {{ btnMsg }}
+        </button>
+        <EditUserData
+          v-if="displayUserSettings"
+          :user="'courier'"
+          :obj="{name: courier.name, email: courier.email, phone: courier.phone_number}"
+          @serialize="updateCourier"
+        />
+        <form class="admin-client__required-form">
+          <button
+            class="btn btn-primary w-100 btn-change-cash"
+            type="button"
+            @click="displayCashAttempt = !displayCashAttempt"
+          >
+            Взять деньги у курьера
+          </button>
+          <div
+            v-if="displayCashAttempt"
+            class="warning"
+          >
+            <b class="mb-2">Вы подтверждаете действие?</b>
+            <button
+              class="btn btn-warning w-100"
+              @click.prevent="cashFlowMove"
+            >
+              Да
+            </button>
+          </div>
+        </form>
+        <div class="mb-5">
+          <h5>Комментарий к курьеру:</h5>
+          <textarea
+            v-model="comment"
+            name="courier_comment"
+            class="form-control"
+            maxlength="256"
+          />
+          <button
+            class="btn btn-warning w-100 mt-3"
+            type="submit"
+            @click="setComment"
+          >
+            Сохранить
+          </button>
         </div>
+        <div class="admin-client__orders">
+          <h5>Список заявок:</h5>
+          <div class="admin-client__orders-list">
+            <OrderRow
+              v-for="order in orders"
+              :id="order.id"
+              :key="order.id"
+              :status="order.status"
+              :create-date="order.created_at"
+              :delivery-type="order.delivery_type"
+              :delivery-address="order.delivery_address"
+              :delivery-time="order.delivery_time"
+              :delivery-date="order.delivery_date"
+              :client-phones="order.delivery_phones"
+              :client-fullname="order.delivery_fio"
+              :comment="order.delivery_comment"
+              :client-pay="order.delivery_pay"
+              :products="order.goods"
+              :role="'admin'"
+              :user-name="order.client_id === 1 ? 'Админ' : order.client_name"
+
+              :courier-name="order.courier_name"
+              :courier-phone="order.courier_phone"
+            />
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 </template>
 
 <script>
@@ -85,6 +118,9 @@ export default {
         btnMsg() {
             return this.displayUserSettings ? "Скрыть настройки" : "Показать настройки пользователя"
         }
+    },
+    beforeMount() {
+        this.getCourierOrders();
     },
     methods: {
         getCourierOrders() {
@@ -129,9 +165,6 @@ export default {
                 }
             })
         }
-    },
-    beforeMount() {
-        this.getCourierOrders();
     }
 }
 </script>

@@ -1,13 +1,18 @@
 <template>
-    <div class="row">
-        <div class="col-lg-8 offset-lg-2">
-            <preloader v-if="preloader" class="mt-5" />
-            <CreateForm v-else @serializeForm="updateOrder"
-                        :order="order"
-                        ref="form"
-            />
-        </div>
+  <div class="row">
+    <div class="col-lg-8 offset-lg-2">
+      <preloader
+        v-if="preloader"
+        class="mt-5"
+      />
+      <CreateForm
+        v-else
+        ref="form"
+        :order="order"
+        @serialize-form="updateOrder"
+      />
     </div>
+  </div>
 </template>
 
 <script>

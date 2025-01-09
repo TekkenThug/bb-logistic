@@ -1,29 +1,50 @@
 <template>
-    <div>
-        <table class="table table-bordered">
-            <thead>
-            <tr>
-                <th v-for="head in headers" scope="col">{{ head }}</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr v-for="(dataItem, index) in data" :key="index">
-                <th scope="row">{{ index + 1 }}</th>
-                <td v-for="(dataField, index) in dataItem" :key="index">
-                    <img v-if="index === 'barcodeImg'" :src="dataField" alt="">
-                    <span v-else>{{ dataField }}</span>
-                </td>
-                <td v-if="operation">
-                    <small-btn @click="$emit('itemHandlerUpdate', dataItem)" icon="fas fa-edit" />
-                    <small-btn @click="$emit('itemHandlerDelete', dataItem['id'])" icon="far fa-trash-alt" />
-                </td>
-            </tr>
-            </tbody>
-        </table>
-        <slot name="after">
-        </slot>
-    </div>
-
+  <div>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th
+            v-for="head in headers"
+            scope="col"
+          >
+            {{ head }}
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          v-for="(dataItem, index) in data"
+          :key="index"
+        >
+          <th scope="row">
+            {{ index + 1 }}
+          </th>
+          <td
+            v-for="(dataField, index) in dataItem"
+            :key="index"
+          >
+            <img
+              v-if="index === 'barcodeImg'"
+              :src="dataField"
+              alt=""
+            >
+            <span v-else>{{ dataField }}</span>
+          </td>
+          <td v-if="operation">
+            <small-btn
+              icon="fas fa-edit"
+              @click="$emit('itemHandlerUpdate', dataItem)"
+            />
+            <small-btn
+              icon="far fa-trash-alt"
+              @click="$emit('itemHandlerDelete', dataItem['id'])"
+            />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <slot name="after" />
+  </div>
 </template>
 
 <script>
