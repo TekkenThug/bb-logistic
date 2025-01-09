@@ -34,9 +34,11 @@ const isLoading = ref(false);
 const status = ref(15);
 
 watch(() => appStore.theme, (value) => {
-    const body = document.querySelector('body');
-
-    body.dataset.theme = value;
+    if (value === 'dark') {
+        document.documentElement.classList.add('dark');
+    } else {
+        document.documentElement.classList.remove('dark');
+    }
 }, {
     immediate: true,
 });
