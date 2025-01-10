@@ -6,13 +6,20 @@ import { Input } from '@/components/ui/input';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Button } from '@/components/ui/button';
 import { FormField, FormItem, FormLabel, FormControl, FormMessage, FormDescription } from '@/components/ui/form';
+import { createUser } from '@/services/api/users';
 
 const form = useForm({
   validationSchema: createUserSchema,
+  initialValues: {
+    role: 'client'
+  }
 });
 
-const createNewUser = form.handleSubmit((values) => {
+const createNewUser = form.handleSubmit(async (values) => {
   console.log(values);
+  try {
+    await createUser(values);
+  } catch (error) {}
 });
 </script>
 
@@ -34,31 +41,23 @@ const createNewUser = form.handleSubmit((values) => {
           <FormControl>
             <RadioGroup
               v-bind="componentField"
-              default-value="admin"
+              default-value="client"
               :orientation="'vertical'"
             >
               <div class="flex items-center space-x-2">
                 <RadioGroupItem
                   id="r1"
-                  value="admin"
+                  value="client"
                 />
-                <Label for="r1">Администратор</Label>
+                <Label for="r1">Клиент</Label>
               </div>
 
               <div class="flex items-center space-x-2">
                 <RadioGroupItem
                   id="r2"
-                  value="client"
-                />
-                <Label for="r2">Клиент</Label>
-              </div>
-
-              <div class="flex items-center space-x-2">
-                <RadioGroupItem
-                  id="r3"
                   value="courier"
                 />
-                <Label for="r3">Курьер</Label>
+                <Label for="r2">Курьер</Label>
               </div>
             </RadioGroup>
           </FormControl>
@@ -119,7 +118,7 @@ const createNewUser = form.handleSubmit((values) => {
 
       <FormField
         v-slot="{ componentField }"
-        name="repeatPassword"
+        name="confirm_password"
       >
         <FormItem>
           <FormLabel>Повторите пароль</FormLabel>
@@ -138,7 +137,7 @@ const createNewUser = form.handleSubmit((values) => {
       <FormField
         v-if="form.values.role === 'client'"
         v-slot="{ componentField }"
-        name="deliveryAddress"
+        name="address"
       >
         <FormItem>
           <FormLabel>Адрес</FormLabel>
@@ -161,7 +160,7 @@ const createNewUser = form.handleSubmit((values) => {
       <FormField
         v-if="form.values.role === 'courier'"
         v-slot="{ componentField }"
-        name="phone"
+        name="phone_number"
       >
         <FormItem>
           <FormLabel>Номер телефона</FormLabel>
