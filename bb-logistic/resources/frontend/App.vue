@@ -13,6 +13,8 @@
 
       <RouterView v-else />
     </div>
+
+    <Toaster />
   </TooltipProvider>
 </template>
 
@@ -22,6 +24,7 @@ import { useRouter } from 'vue-router';
 import { getCSRF, me } from '@/services/api/auth';
 import { Progress } from '@/components/ui/progress';
 import { TooltipProvider } from '@/components/ui/tooltip';
+import { Toaster } from '@/components/ui/toast';
 
 import { useAppStore } from '@/store/app';
 import { useUserStore } from '@/store/user';

@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { ref } from 'vue';
 import { useForm } from 'vee-validate';
 import { createUserSchema } from '@/data/forms';
 import { Label } from '@/components/ui/label';
@@ -7,7 +8,9 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Button } from '@/components/ui/button';
 import { FormField, FormItem, FormLabel, FormControl, FormMessage, FormDescription } from '@/components/ui/form';
 import { createUser } from '@/services/api/users';
+import { useToast } from '@/components/ui/toast/use-toast';
 
+const { toast } = useToast();
 const form = useForm({
   validationSchema: createUserSchema,
   initialValues: {
@@ -15,11 +18,21 @@ const form = useForm({
   }
 });
 
+const isLoading = ref(false);
+
 const createNewUser = form.handleSubmit(async (values) => {
-  console.log(values);
   try {
+    isLoading.value = true;
+
     await createUser(values);
-  } catch (error) {}
+
+    form.resetForm();
+    toast({ title: 'Успех', description: 'Пользователь создан' });
+  } catch (error) {
+    toast({ title: 'Ошибка', description: error });
+  } finally {
+    isLoading.value = false;
+  }
 });
 </script>
 
@@ -184,7 +197,7 @@ const createNewUser = form.handleSubmit(async (values) => {
         </FormItem>
       </FormField>
 
-      <Button>
+      <Button :disabled="isLoading">
         Создать учетную запись
       </Button>
     </form>
