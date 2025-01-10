@@ -3,7 +3,8 @@ import * as z from 'zod';
 import { RU_PHONENUMBER, PASSWORD } from "./regexp";
 
 export const createUserSchema = toTypedSchema(z.object({
-    name: z.string().min(2).max(50),
+    first_name: z.string().min(2).max(50),
+    last_name: z.string().min(2).max(50),
     email: z.string({ required_error: 'Поле обязательно' }).email('Неверный формат почты'),
     password: z.string({ required_error: 'Поле обязательно' }).regex(PASSWORD, 'Неверный формат пароля'),
     confirm_password: z.string({ required_error: 'Поле обязательно' }),

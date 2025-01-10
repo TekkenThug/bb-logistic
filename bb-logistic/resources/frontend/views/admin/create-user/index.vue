@@ -66,7 +66,7 @@ const createNewUser = form.handleSubmit(async (values) => {
 
       <FormField
         v-slot="{ componentField }"
-        name="name"
+        name="first_name"
       >
         <FormItem>
           <FormLabel>Имя</FormLabel>
@@ -74,10 +74,19 @@ const createNewUser = form.handleSubmit(async (values) => {
           <FormControl>
             <Input v-bind="componentField" />
           </FormControl>
+        </FormItem>
+      </FormField>
 
-          <FormDescription>
-            Имя может отражать как одно лицо, так и целую компанию (пример ООО "Рога и Копыта")
-          </FormDescription>
+      <FormField
+        v-slot="{ componentField }"
+        name="last_name"
+      >
+        <FormItem>
+          <FormLabel>Фамилия</FormLabel>
+
+          <FormControl>
+            <Input v-bind="componentField" />
+          </FormControl>
         </FormItem>
       </FormField>
 

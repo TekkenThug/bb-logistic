@@ -27,7 +27,8 @@ class CreateUserRequest extends FormRequest
             'role' => 'required',
             'password' => ['required', Password::defaults()],
             'confirm_password' => 'required|same:password',
-            'name' => 'required|min:2',
+            'first_name' => 'required|min:2',
+            'last_name' => 'required|min:2',
             'address' => 'required_if:role,client',
             'phone_number' => 'required_if:role,courier'
         ];
