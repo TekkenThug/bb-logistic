@@ -19,17 +19,17 @@ class UserService
             'role_id' => Role::where('name', $data['role'])->first()['id']
         ];
 
-        if ($data['role'] == 'client')
-        {
-            $payload['address_id'] = Address::create(['address' => $data['address']])['id'];
-        }
-
         if ($data['role'] == 'courier')
         {
             $payload['phone_number'] = $data['phone_number'];
         }
 
         $user = User::create($payload);
+
+        if ($data['role'] == 'client')
+        {
+            Address::create(['address' => $data['address'], 'user_id' => $user['id']]);
+        }
 
         return $user;
     }

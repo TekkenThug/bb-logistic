@@ -1,10 +1,7 @@
 import axios from 'axios';
-
-import api from './api';
 import stock from './old-stock';
 
 export default {
-    common: api(),
     stock: stock()
 };
 

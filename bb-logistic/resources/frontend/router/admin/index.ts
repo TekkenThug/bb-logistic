@@ -1,7 +1,7 @@
 import DefaultLayout from '@/layouts/default';
 import CreateUser from '@/views/admin/create-user';
+import ClientList from '@/views/admin/client-list';
 
-import AdminClientList from '@/views/admin/ClientList';
 import AdminCourierList from '@/views/admin/CourierList';
 import AdminOrderList from '@/views/admin/OrderList';
 import AdminCreateOrder from '@/views/admin/CreateOrder';
@@ -38,7 +38,7 @@ export default {
           meta: {
             title: 'Список клиентов'
           },
-          component: AdminClientList
+          component: ClientList
       },
       {
           path: 'clients/:id',

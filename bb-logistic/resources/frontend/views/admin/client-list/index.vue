@@ -1,4 +1,68 @@
+<script lang="ts" setup>
+import { onBeforeMount, ref } from 'vue';
+import { getAll } from '@/services/api/clients';
+import { useToast } from '@/components/ui/toast';
+import { Table, TableHeader, TableHead, TableRow, TableBody, TableCell } from '@/components/ui/table';
+
+const { toast } = useToast();
+
+const list = ref<Awaited<ReturnType<typeof getAll>>>([]);
+const heading = ['ID', 'Имя', 'Email', 'Адрес'];
+
+onBeforeMount(async () => {
+  try {
+    list.value = await getAll();
+  } catch (error) {
+    toast({ title: 'Ошибка', description: error });
+  }
+});
+</script>
+
 <template>
+  <section>
+    <h2>
+      Список клиентов
+    </h2>
+
+    <Table>
+      <TableHeader>
+        <TableRow>
+          <TableHead
+            v-for="item in heading"
+            :key="item"
+          >
+            {{ item }}
+          </TableHead>
+        </TableRow>
+      </TableHeader>
+
+      <TableBody>
+        <TableRow
+          v-for="item in list"
+          :key="item.id"
+        >
+          <TableCell>
+            {{ item.id }}
+          </TableCell>
+
+          <TableCell>
+            {{ item.last_name }} {{ item.first_name }}
+          </TableCell>
+
+          <TableCell>
+            {{ item.email }}
+          </TableCell>
+
+          <TableCell>
+            {{ item.address }}
+          </TableCell>
+        </TableRow>
+      </TableBody>
+    </Table>
+  </section>
+</template>
+
+<!-- <template>
   <div class="row">
     <div class="col-lg-6 offset-lg-3">
       <div class="admin-client-list overall">
@@ -70,4 +134,4 @@ export default {
         }
     }
 };
-</script>
+</script> -->

@@ -23,9 +23,6 @@ return new class extends Migration
             $table->unsignedBigInteger('role_id');
             $table->foreign('role_id')->references('id')->on('roles')->cascadeOnDelete();
 
-            $table->unsignedBigInteger('address_id')->nullable();
-            $table->foreign('address_id')->references('id')->on('addresses')->cascadeOnDelete();
-
             $table->rememberToken();
             $table->timestamps();
         });
